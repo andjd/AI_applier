@@ -1,0 +1,44 @@
+```yaml
+personal_info:
+  name: Andrew DeFranco
+  email: andrew@defran.co
+  phone: (415) 205-9401
+  location: Columbus, OH (Eastern Time)
+
+summary: Product-focused ...
+
+education:
+  - institution: The Ohio State University
+    location: Columbus, OH
+    degree: J.D.
+    year: 2012
+  - institution: Oberlin College
+    location: Oberlin, OH
+    degree: B.A.
+    year: 2008
+
+skills:
+  skill_type1:
+    - skill1
+    - skill2
+    ...
+  skill_type2:
+    ...
+  ...
+
+experience:
+  - title: Title
+    company: Company One Name, Inc
+    start_year: YYYY
+    end_year: YYYY
+    description: One-Liner describing company business/market
+    achievements:
+      - Most impressive thing I did
+      - Other thing I did
+      ...
+    skills:
+      - skill1
+      - skill2
+      ...
+  ...
+ ```
