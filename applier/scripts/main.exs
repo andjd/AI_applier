@@ -106,15 +106,49 @@ experience:
       - Modernized 25-year old SQL database while maintaining backwards compatibility
 """
 
-yy = """
-personal_info:
-  name: Andrew DeFranco
-  email: andrew@defran.co
-  phone: (415) 205-9401
-  location: Columbus, OH (Eastern Time)
-
-summary: Product-focused full-stack developer with 9+ years experience building scalable systems, developing delightful web and mobile experiences, and leading high-performing teams
-"""
 t="lib/resume_template.tex.eex"
-{_, latex} = Applier.parse_yaml_and_generate_latex(y,t)
-IO.puts(latex)
+
+jd="""
+Rogue Fitness Is Seeking An Experienced Senior Software Engineer To Join Our Application Development Team In Columbus. As a Senior Software Engineer, You Will
+
+Play a key role in developing software which drives the manufacturing processes at Rogue
+Work closely with one or more agile teams to build and enhance our manufacturing systems using a cutting edge technical stack which includes front end development in Vue 3 and typescript with backend development in Node and .NET
+
+
+The Senior Software Engineer is a fully onsite role in Columbus, Ohio. Remote work is not available.
+
+Applicants must be authorized to work in the United States for any employer.
+Responsibilities
+
+
+Full Stack Development: Collaborate with one of our agile teams to design and implement scalable, and efficient full-stack solutions. Code with senior level technical capabilities including implementing well structured code and code that follows best practices
+Code Review and Mentorship: Conduct thorough code reviews to maintain code quality standards. Provide mentorship and guidance to junior developers within the team. Be able to recommend performance improvements and alternative methods to deliver something to ensure the highest performance and reliability
+System Architecture: Weigh in on design decisions made by our architecture team for improvements and optimizations
+Collaboration: Collaborate with product owners, quality assurance and directors to deliver high-quality software solutions. The right candidate should have excellent oral and written communication
+
+
+Required Qualifications
+
+Bachelor's degree in Computer Science, Software Engineering, or related field + 5 years of software experience or Associates degree and 7 years experience
+Minimum of 5 years with Javascript and/or Typescript
+Minimum of 5 years with at least one major front-end technologies including one single-page web application framework such as Vue.js, React, or Angular
+Minimum of 5 years with .NET or Node backend
+Minimum of 5 years with database technologies such as SQL Server, T-SQL, Stored Procedures, TypeORM and/or Entity Framework
+Solid understanding of object oriented design concepts, n-tier architectures, dependency injection, ORMS and relational database design
+Strong problem-solving and analytical skills
+
+
+Preferred Qualifications
+
+Experience in manufacturing or warehousing
+Experience with Vue 3 composition API
+Experience with NestJs
+
+
+By applying to Rogue, regardless of the platform you choose to use, you are agreeing to Rogue's preferred methods of communication (i.e. text message). Submitting an application, through whatever online forum is ultimately used, constitutes a knowing and voluntary agreement to send and receive text messages during the recruitment process.
+"""
+Dotenv.load()
+Mix.Task.run("loadconfig")
+
+{_, cover_letter} = CoverLetterGenerator.generate(y,jd)
+IO.puts(cover_letter)
