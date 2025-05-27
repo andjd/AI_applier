@@ -1,0 +1,120 @@
+
+y = """
+personal_info:
+  name: Andrew DeFranco
+  email: andrew@defran.co
+  phone: (415) 205-9401
+  location: Columbus, OH (Eastern Time)
+  
+skills:
+  languages:
+    - Typescript
+    - Python
+    - Kotlin
+    - Elixir
+  ai:
+    - LLMs
+    - RAG
+  networking:
+    - REST
+    - GraphQL
+    - gRPC
+    - Websockets
+    - AMQP
+    - Kafka
+  databases:
+    - SQL
+    - Elasticsearch
+  cloud:
+    - Systems Architecture
+    - AWS
+    - Serverless
+    - Docker
+    - Kubernetes
+  web_mobile:
+    - React & Redux
+    - iOS + Android
+  tooling:
+    - Git
+    - Continuous Integration
+    - Agile
+    - TDD
+    - Claude Code
+
+experience:
+  - title: Senior Developer
+    company: Kyra Health
+    start_year: 2024
+    end_year: null
+    description: Pre-launch healthcare startup providing ICHRA benefits
+    achievements:
+      - Built HIPAA-compliant LLM-powered tool for health plan discovery
+      - Scaled team productivity by enhancing the dev environment to support multiple independent, concurrent threads of AI code generation
+
+  - title: Senior Developer
+    company: Stealth Healthcare Startup
+    start_year: 2024
+    end_year: null
+    description: Double-sided marketplace for in-home cosmetic treatments
+    achievements:
+      - Developed appointment booking application using Next.js and React
+
+  - title: Lead Developer
+    company: Enterprise Mobility
+    start_year: 2023
+    end_year: 2024
+    description: Market-leading rental car company
+    achievements:
+      - Headed a 10-developer team in greenfield rebuild of mobile apps for Enterprise Rent-a-car in React Native
+
+  - title: Senior Developer
+    company: Neeva
+    start_year: 2022
+    end_year: 2023
+    description: AI-powered startup disrupting web search
+    achievements:
+      - Launched a proof-of-concept mobile search experience featuring LLM summaries
+
+  - title: Lead Developer
+    company: Stationhead
+    start_year: 2017
+    end_year: 2022
+    description: Social network connecting musicians with fandoms
+    achievements:
+      - Architected tipping feature
+      - Planned and implemented our first microservice, creating a scalable framework and practical blueprint for breaking apart our monolith
+      - Automated integrations with In-App-Purchase and payments providers
+      - Leveled up our application security to harden against session jacking, spoofing, and MITM attacks with per-request cryptographically signed payloads
+      - Developed database infrastructure and schema for high availability and strong consistency
+      - Founded and grew the Android App team
+      - Created a custom reactive state-management framework reducing bugs by 80+%
+      - Oversaw outsourced team and transitioned codebase to in-house development
+      - Built and deployed back-end features
+      - Optimized autoscaling infrastructure hosted on AWS using Terraform
+      - Architected a load-testing system to stress-test server infrastructure for stampeding herd scenarios
+      - Planned schema, migrations, and ETL pipelines for SQL, Redis, and Elasticsearch databases
+      - Designed and documented APIs using REST and WebSockets
+
+  - title: Full Stack Developer
+    company: Affinitiv
+    start_year: 2016
+    end_year: 2017
+    description: CRM software for car dealerships
+    achievements:
+      - Updated product to a modern and responsive web app written in React and Python and hosted on AWS
+      - Built secure third party integrations over HTTPS, SOAP, and AMQP
+      - Modernized 25-year old SQL database while maintaining backwards compatibility
+"""
+
+yy = """
+personal_info:
+  name: Andrew DeFranco
+  email: andrew@defran.co
+  phone: (415) 205-9401
+  location: Columbus, OH (Eastern Time)
+
+summary: Product-focused full-stack developer with 9+ years experience building scalable systems, developing delightful web and mobile experiences, and leading high-performing teams
+"""
+t="lib/resume_template.tex.eex"
+{_, latex} = Applier.parse_yaml_and_generate_latex(y,t)
+IO.puts(latex)

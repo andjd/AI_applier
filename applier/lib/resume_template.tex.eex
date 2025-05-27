@@ -1,0 +1,138 @@
+\documentclass[11pt]{article}
+
+\usepackage[utf8]{inputenc}
+% Setting up the page geometry
+\usepackage[letterpaper,margin=0.75in]{geometry}
+\usepackage{enumitem} % For customizing lists
+\usepackage{titlesec} % For customizing section headings
+\usepackage{parskip} % For paragraph spacing
+\usepackage{paracol} % For sidebar and main column
+\usepackage{calc} % For width calculations
+% Load font packages
+\usepackage[T1]{fontenc} % Recommended for modern fonts
+\usepackage[sfdefault]{plex-sans}      % For IBM Plex Sans
+\usepackage{gfsneohellenic} % For GFS Neohellenic
+\usepackage{overlock}
+\usepackage{concmath}
+\usepackage{graphicx}
+\usepackage{xparse}
+\usepackage{etoolbox}
+
+% Setting the default font size slightly smaller
+\renewcommand{\normalsize}{\fontsize{10.5pt}{12pt}\selectfont}
+\normalsize % Apply the new normalsize
+
+\setlistdepth{2} % If you plan to have more than 3 levels of nesting
+
+\setitemize[1]{label=\textbullet}
+\setitemize[2]{label=\scalebox{0.7}{\textbullet}}
+
+% Disabling section numbering
+\setcounter{secnumdepth}{0}
+
+% Customizing section headings 
+\titleformat{\section}{\large\bfseries\overlock}{\thesection}{0.5em}{}
+\titlespacing{\section}{0pt}{6pt}{4pt}
+
+% Customizing subsection headings
+\titleformat{\subsection}{\normalsize\scshape\fontfamily{ccr}\selectfont}{\thesubsection}{0.5em}{}
+\titlespacing{\subsection}{0pt}{2pt}{2pt}
+
+% Define skillcategory as a custom section level
+\newcommand{\skillcategory}[1]{%
+      {\bfseries #1}
+      \vspace{-6pt}
+  }
+
+% Setting up itemize for skills and job descriptions
+\setlist[itemize]{leftmargin=*,itemsep=2pt,topsep=2pt,parsep=0pt}
+
+% Tightening paragraph spacing
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+
+% Defining the header with two-column layout
+\newcommand{\resumeheader}[4]{
+    \begin{minipage}[c]{0.7\textwidth} % Changed alignment to [b] (bottom)
+        \Huge\bfseries\fontfamily{neohellenic}\selectfont\MakeUppercase{#1}
+    \end{minipage}%
+    \hfill% Added \hfill for horizontal spacing
+    \begin{minipage}[c]{0.3\textwidth}
+        #2\\
+        #3\\
+        #4
+    \end{minipage}
+}
+
+\usepackage{titlesec}
+\usepackage{ragged2e} % For better left justification
+
+\newcommand{\experienceheading}[4]{%
+    \noindent\textbf{\large\overlock #1 @ #2}
+    \hfill
+    \settowidth{\dimen0}{ 0000\textendash0000}
+    \makebox[\dimen0][l]{ \daterange{#3}{#4}
+    }
+}
+
+% Helper command for date formatting
+\newcommand{\daterange}[2]{%
+  \ifstrempty{#2}{#1}{#1\textendash#2}% If end year exists, use en dash, else just start year
+}
+
+
+
+\begin{document}
+
+
+% Header with name and contact information
+\resumeheader{Andrew DeFranco}{andrew@defran.co}{(415) 205-9401}{Columbus, OH (Eastern Time)}
+
+% Summary
+\subsection{<%= @summary %>}
+\vspace{4pt}
+
+% Sidebar (Education and Skills)
+\columnratio{0.25}
+
+% Setting up two-column layout for body
+\begin{paracol}{2}
+
+\begin{leftcolumn}
+% Education
+\section{Education}
+The Ohio State University \\
+Columbus, OH \\
+J.D., 2012
+
+Oberlin College\\
+Oberlin, OH \\
+B.A., 2008
+
+% Skills
+\section{Skills}
+<%= for {skill_category, skills} <- @skills do %>
+\skillcategory{<%= String.replace(to_string(skill_category), "_", " ") |> String.capitalize() %>}
+\begin{itemize}
+<%= for skill <- skills do %>
+    \item <%= skill %>
+<% end %>
+\end{itemize}
+<% end %>
+\end{leftcolumn}
+
+% Main column (Experience)
+\begin{rightcolumn}
+<%= for exp <- @experience do %>
+\experienceheading{<%= exp["title"] %>}{<%= exp["company"] %>}{<%= exp["start_year"] %>}{<%= exp["end_year"] || "" %>}
+\subsection{<%= exp["description"] %>}
+\begin{itemize}
+<%= for achievement <- exp["achievements"] do %>
+    \item <%= achievement %>
+<% end %>
+\end{itemize}
+
+<% end %>
+\end{rightcolumn}
+\end{paracol}
+\end{document}
