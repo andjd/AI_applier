@@ -106,7 +106,7 @@ experience:
       - Modernized 25-year old SQL database while maintaining backwards compatibility
 """
 
-t="lib/resume_template.tex.eex"
+_t="templates/resume_template.tex.eex"
 
 jd="""
 Rogue Fitness Is Seeking An Experienced Senior Software Engineer To Join Our Application Development Team In Columbus. As a Senior Software Engineer, You Will

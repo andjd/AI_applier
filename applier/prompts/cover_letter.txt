@@ -20,3 +20,13 @@ Use a 3 step process to generate the cover letter:
 Second, go through the applicant's resume, and evaluate, point-by-point, each requirement you just identified, and find the experience the applicant has that meet that requirement.
 
 Third, using the analysis you just performed, write the cover letter.  Separate the cover letter from the rest of your work product with `<Cover Letter>` on it's own line.
+
+Begin the letter with 
+```
+Dear Hiring Manager,
+```
+and end it with
+```
+Best,
+{Applicant's full name}
+```
