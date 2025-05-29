@@ -150,5 +150,5 @@ By applying to Rogue, regardless of the platform you choose to use, you are agre
 Dotenv.load()
 Mix.Task.run("loadconfig")
 
-{_, cover_letter} = CoverLetterGenerator.generate(y,jd)
+{_, cover_letter} = JdInfoExtractor.extract_text_from_url("https://jobs.ashbyhq.com/vanta/c06afed6-3117-4031-bdf7-997f191065e0")
 IO.puts(cover_letter)

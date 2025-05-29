@@ -1,0 +1,39 @@
+defmodule JdInfoExtractor do
+  @moduledoc """
+  Module for extracting job description information from web pages using Playwright.
+  """
+
+  def extract_text_from_url(url) do
+    case Playwright.launch(:chromium, %{headless: true}) do
+      {:ok, browser} ->
+        try do
+          extract_with_playwright(browser, url)
+        after
+          Playwright.Browser.close(browser)
+        end
+
+      {:error, reason} ->
+        {:error, "Failed to start Playwright: #{inspect(reason)}"}
+    end
+  end
+
+  defp extract_with_playwright(browser, url) do
+    page = Playwright.Browser.new_page(browser)
+    try do
+      Playwright.Page.goto(page, url)
+      # Playwright.Page.wait_for_load_state(page, "networkidle")
+      Process.sleep(2000)
+      extract_visible_text(page)
+    after
+      Playwright.Page.close(page)
+    end
+  end
+
+  defp extract_visible_text(page) do
+    # Extract visible text from body
+      cleaned_text = Playwright.Page.locator(page, "body")
+        |> Playwright.Locator.inner_text()
+        |> String.trim()
+        {:ok, cleaned_text}
+  end
+end
