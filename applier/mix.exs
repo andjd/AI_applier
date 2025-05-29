@@ -26,6 +26,7 @@ defmodule Applier.MixProject do
       {:jason, "~> 1.4"},
       {:dotenv, "~> 3.0.0", only: [:dev, :test]},
       {:playwright, "~> 1.49"},
+      {:iona, "~> 0.4"},
     ]
   end
 end

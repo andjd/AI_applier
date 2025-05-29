@@ -1,0 +1,48 @@
+\documentclass[11pt]{article}
+
+% Loading essential packages
+\usepackage[utf8]{inputenc}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{fancyhdr} % For customizing the footer
+\usepackage{textcase} % For \MakeUppercase command
+
+% Loading font packages
+\usepackage[sfdefault]{plex-sans} % IBM Plex Sans as default sans-serif font
+\usepackage{gfsneohellenic} % GFS Neohellenic for the name in the footer
+
+% Setting font size and spacing to match the resume
+\renewcommand{\normalsize}{\fontsize{12pt}{15pt}\selectfont}
+\normalsize
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+
+% Defining the first-page footer with name and contact info
+\fancypagestyle{firstpage}{
+  \fancyhf{} % Clear header and footer
+  \fancyfoot[C]{\fontfamily{neohellenic}\selectfont \MakeUppercase{Andrew DeFranco} \textbar{} andrew@defran.co \textbar{} (415) 205-9401 \textbar{} Columbus, OH}
+}
+
+\pagestyle{empty}
+
+\begin{document}
+
+\thispagestyle{firstpage}
+
+\today
+
+\vspace{1em}
+
+Dear Hiring Manager,
+
+\vspace{1em}
+
+<%= @body %>
+
+\vspace{1em}
+
+Best,
+
+Andrew DeFranco
+
+\end{document}

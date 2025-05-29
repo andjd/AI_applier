@@ -9,7 +9,10 @@ defmodule TextValidator do
 
     case Helpers.LLM.ask(user_prompt, %{system: system_prompt}) do
       {:ok, response} ->
-        classify_response(response)
+        case classify_response(response) do
+          {:error, message} -> {:error, message}
+          classification when is_atom(classification) -> {classification, text}
+        end
       {:error, reason} ->
         {:error, "LLM request failed: #{reason}"}
     end
@@ -23,9 +26,9 @@ defmodule TextValidator do
       |> normalize_word()
 
     case last_word do
-      "sure" -> {:safe, text}
-      "dangereuse" -> {:dangerous, text}
-      "manuelle" -> {:manual, text}
+      "sure" -> :safe
+      "dangereuse" -> :dangerous
+      "manuelle" -> :manual
       _ -> {:error, "Unexpected response format: #{response}"}
     end
   end

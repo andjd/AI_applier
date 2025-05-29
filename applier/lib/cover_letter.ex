@@ -1,7 +1,8 @@
-defmodule CoverLetterGenerator do
+defmodule CoverLetter do
   @moduledoc """
   Module for generating cover letters using Claude LLM API.
   """
+
 
   def generate(resume, job_description) do
     system_prompt = File.read!("prompts/cover_letter.txt")
@@ -22,6 +23,11 @@ defmodule CoverLetterGenerator do
       {:error, reason} ->
         {:error, reason}
     end
+  end
+
+  def render(body) do
+    Iona.template([body: body], path: "templates/cover_letter.tex.eex")
+     |> Iona.to(:pdf)
   end
 
   defp extract_cover_letter(text) do
