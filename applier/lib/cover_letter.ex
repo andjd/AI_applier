@@ -30,6 +30,24 @@ defmodule CoverLetter do
      |> Iona.to(:pdf)
   end
 
+  def to_text(body) do
+    today = Date.utc_today() |> Date.to_string()
+    
+    text = """
+    #{today}
+
+    Dear Hiring Manager,
+
+    #{body}
+
+    Best,
+
+    Andrew DeFranco
+    """
+    
+    {:ok, text}
+  end
+
   defp extract_cover_letter(text) do
     case Regex.run(~r/<\s*cover\s+letter\s*>\s*\n?(.*)/ims, text) do
       [_, cover_letter] ->
