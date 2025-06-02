@@ -25,8 +25,8 @@ short_id = Sqids.encode!(sqids, hash_numbers)
 
 resume_data = File.read!("assets/resume.yaml")
 filename = "assets/Andrew_DeFranco_#{short_id}"
-pdf_filename = "#{filename}.pdf",
-txt_filename = "#{filename}.txt",
+pdf_filename = "#{filename}.pdf"
+txt_filename = "#{filename}.txt"
 
 IO.puts("Starting cover letter generation process for: #{url}")
 IO.puts("Job ID: #{short_id}")
