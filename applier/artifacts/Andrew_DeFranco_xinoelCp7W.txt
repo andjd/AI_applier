@@ -1,0 +1,12 @@
+2025-06-02
+
+Dear Hiring Manager,
+
+I'm excited to apply for this opportunity at b.well Connected Health, where your mission to simplify healthcare through innovative Connected Health platforms perfectly aligns with my passion for building transformative healthcare technology. My recent experience at Kyra Health developing HIPAA-compliant, LLM-powered tools for health plan discovery has given me deep insight into the complexities of healthcare data management and the critical importance of creating seamless user experiences in this space. Additionally, my work across multiple healthcare startups, including a double-sided marketplace for in-home treatments, has reinforced my commitment to making healthcare more accessible and personalized for families and individuals.
+
+Your platform's focus on longitudinal health records and personalized insights resonates strongly with my technical background in building scalable systems using technologies like Python, React, AWS, and LLMs. At Stationhead, I architected microservices and scaled infrastructure to handle exponential growth, while at Enterprise I led a 10-developer team rebuilding mobile applications in React Native. My experience spans the full spectrum from AI-powered features and secure payment integrations to database optimization and API design using REST, GraphQL, and WebSockets. The combination of my healthcare domain expertise, proven leadership in scaling technical teams, and track record of taking products from pre-launch through rapid growth makes me well-positioned to contribute to b.well's mission of transforming healthcare delivery.
+
+
+Best,
+
+Andrew DeFranco

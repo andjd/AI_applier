@@ -1,0 +1,12 @@
+2025-06-02
+
+Dear Hiring Manager,
+
+I'm excited to apply for the Software Engineer position at Insight M, where I can combine my passion for impactful technology with my experience building scalable systems that solve real-world problems. Your mission to combat climate change through innovative aerospace data science resonates deeply with me, and I'm particularly drawn to how you're using technology to make measurable environmental impact. My experience spans the exact technical domains you're seeking: I have significant Python experience from roles at Affinitiv and other positions, extensive full-stack web development expertise using React (at Enterprise Mobility's mobile rebuild and a stealth healthcare startup), and hands-on experience with AWS infrastructure automation using Terraform at Stationhead. Additionally, my recent work at Kyra Health involved building LLM-powered applications (similar to your machine learning needs), and my background includes REST API development, cloud-based data processing, and modern development practices including TDD and continuous integration.
+
+What makes me particularly excited about this opportunity is how my startup experience aligns with Insight M's innovative approach to solving complex problems. At Stationhead, I joined pre-launch and helped scale the platform through multiple pivots to handle exponential growth, architecting microservices and building load-testing systems for high-scale scenarios. At Kyra Health, I'm currently building HIPAA-compliant systems and enhancing development environments to support AI-powered workflows, while at Neeva I launched proof-of-concept mobile experiences featuring LLM summaries. This combination of technical depth, startup agility, and focus on real-world impact has prepared me to contribute immediately to your team's mission of using software to drive meaningful environmental change at continental scale.
+
+
+Best,
+
+Andrew DeFranco

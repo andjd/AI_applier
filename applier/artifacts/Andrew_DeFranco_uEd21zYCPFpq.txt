@@ -1,0 +1,12 @@
+2025-06-02
+
+Dear Hiring Manager,
+
+I'm excited to apply for the Full-Stack Software Engineering Lead position at FastDemocracy. Your mission to make government transparency happen through innovative technology resonates deeply with me, and I'm eager to help empower organizations to advocate effectively for their causes. With 9+ years of experience leading development teams at startups, I'm well-positioned to help FastDemocracy scale its platform and expand its impact across the advocacy landscape.
+
+My startup leadership experience aligns perfectly with your needs. At Stationhead, I joined pre-launch and helped the company pivot to find product-market fit before scaling to handle exponential growth, leading a team that architected microservices, implemented secure payment systems, and built scalable AWS infrastructure using autoscaling and Terraform. I bring strong full-stack capabilities with extensive Python experience (equivalent to your PHP requirement), advanced JavaScript/TypeScript skills, and deep SQL database expertise demonstrated through complex schema design and ETL pipeline development. My recent work at Kyra Health building HIPAA-compliant LLM-powered tools and at Neeva developing AI-powered search experiences directly supports your goal of incorporating AI technologies. Additionally, my experience at Enterprise leading a 10-developer team in a greenfield mobile app rebuild, combined with my proven ability to work independently while maintaining exceptional customer focus, positions me to thrive in your collaborative, customer-centric environment while driving FastDemocracy's technical innovation forward.
+
+
+Best,
+
+Andrew DeFranco

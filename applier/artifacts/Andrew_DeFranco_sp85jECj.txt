@@ -1,0 +1,12 @@
+2025-06-02
+
+Dear Hiring Manager,
+
+I am excited to apply for the Senior Software Engineer position at Credit Acceptance, where I can leverage my 9+ years of full-stack development experience to drive innovation in your Deal Central platform. While my background spans Typescript, Python, and Kotlin rather than Java specifically, I have extensive experience building the exact type of highly loaded cloud services and microservice architectures that this role demands. At Stationhead, I architected our first microservice for a tipping feature, creating a scalable framework that became the blueprint for breaking apart our monolith, and I've designed mission-critical systems handling exponential user growth. My experience with AWS, Docker, Kubernetes, and comprehensive knowledge of REST, GraphQL, gRPC, and messaging systems like AMQP and Kafka directly aligns with your technology stack, and I've successfully led teams through complex database schema design, ETL pipelines, and CI/CD implementations using Agile methodologies.
+
+What particularly excites me about this opportunity is the chance to apply my leadership experience and technical expertise to Credit Acceptance's mission-critical financial systems. Having led a 10-developer team at Enterprise Mobility on a greenfield mobile app rebuild and founded the Android development team at Stationhead, I'm well-prepared to mentor junior developers and participate in your talent selection process. My startup experience at Kyra Health building HIPAA-compliant systems and at Neeva developing AI-powered search demonstrates my ability to work on enterprise-class applications where reliability and security are paramount. I'm eager to contribute to your award-winning engineering culture while helping drive the continued success of one of the nation's largest used car finance companies.
+
+
+Best,
+
+Andrew DeFranco

@@ -1,0 +1,12 @@
+2025-06-03
+
+Dear Hiring Manager,
+
+I'm excited to apply for the Software Engineer position at Kaleidoscope, where I can combine my passion for impactful technology with my extensive full-stack development experience to accelerate scientific research. Your mission to build connective tissue for R&D teams resonates strongly with my background building scalable systems that bring together complex workflows. At Kyra Health, I developed HIPAA-compliant LLM-powered tools for healthcare plan discovery, giving me direct experience with the intersection of cutting-edge technology and regulated industries like biotech and pharma. My technical stack aligns perfectly with Kaleidoscope's needs - I have extensive experience with React, TypeScript, Node.js, and PostgreSQL, along with AWS and Docker for scalable infrastructure.
+
+My startup experience makes me particularly well-suited for this early-stage role where I can contribute to both system architecture and product direction. At Stationhead, I joined pre-launch and helped the team pivot to find product-market fit before scaling to handle exponential growth, architecting microservices and implementing robust security measures including cryptographically signed payloads and hardened authentication systems. I've successfully led teams through complex technical challenges, from building high-performance integrations and optimizing autoscaling infrastructure to implementing granular data access controls. At Enterprise Mobility, I headed a 10-developer team rebuilding mobile applications, while my work at Neeva involved launching AI-powered search experiences. This combination of technical leadership, full-stack expertise, and startup agility positions me perfectly to help Kaleidoscope scale its platform to support hundreds of millions of scientific data points while maintaining the reliability and performance that innovative research teams depend on.
+
+
+Best,
+
+Andrew DeFranco

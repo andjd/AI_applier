@@ -1,0 +1,12 @@
+2025-06-03
+
+Dear Hiring Manager,
+
+I'm excited to apply for the Full Stack Engineer position at Pursuit, where I can leverage my extensive experience building AI-powered systems and scalable architectures to help advance your contact and entity intelligence platform. My background perfectly aligns with your needs: I've built HIPAA-compliant LLM-powered tools at Kyra Health for complex data discovery, launched LLM summary features at Neeva's AI search startup, and have deep expertise in Python, GraphQL, AWS, and system architecture. My experience spans the exact technical challenges you're tackling - from extracting and parsing data from millions of sources to building robust CRM integrations (I built CRM software at Affinitiv with secure third-party integrations over various protocols). I also bring strong database experience with SQL and have architected scalable systems using microservices, load testing, and cloud infrastructure optimization.
+
+What particularly excites me about Pursuit is the opportunity to join as a founding engineer where I can make substantial product and engineering contributions while working directly with customers to solve real problems. I thrive in ambiguous, early-stage environments - I joined Stationhead pre-launch, helped them pivot to find product-market fit, and then scaled their infrastructure to handle exponential growth. At Kyra Health, I'm currently working at a pre-launch healthcare startup where I've enhanced dev environments to support concurrent AI code generation threads, demonstrating my ability to innovate with LLMs while building scalable systems. My experience leading teams (10+ developers at Enterprise Mobility), architecting complex systems, and working closely with stakeholders makes me well-equipped to collaborate effectively with your CEO and CTO while taking complete ownership of foundational engineering decisions that will shape Pursuit's future.
+
+
+Best,
+
+Andrew DeFranco

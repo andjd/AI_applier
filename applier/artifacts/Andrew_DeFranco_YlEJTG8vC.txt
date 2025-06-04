@@ -1,0 +1,12 @@
+2025-06-02
+
+Dear Hiring Manager,
+
+I'm excited to apply for the Senior Software Engineer position at Office Hours, as your mission to unlock the value of human knowledge through technology deeply resonates with my experience building scalable platforms that connect people and facilitate meaningful interactions. Your marketplace approach reminds me of my work at Stationhead, where I helped architect systems connecting musicians with their fandoms, and I'm particularly drawn to the complex engineering challenges you've outlined around search, discovery, and data platform optimization.
+
+My background aligns exceptionally well with your technical needs and startup environment. I have extensive experience with your core tech stack, including Typescript, Elasticsearch, AWS, Kubernetes, Docker, and AMQP (equivalent to RabbitMQ), gained through architecting scalable systems at fast-growing startups like Stationhead, where I built ETL pipelines and database infrastructure for high availability. At Neeva, I launched AI-powered search experiences with LLM integration, directly relevant to your search and recommendation challenges, while my recent work at Kyra Health involved building data-intensive healthcare platforms with complex compliance requirements. Having started at Stationhead pre-launch and helped scale them through exponential growth, I understand the unique challenges of building robust, extensible systems in a fast-paced startup environment where balancing technical debt with rapid feature development is crucial.
+
+
+Best,
+
+Andrew DeFranco
