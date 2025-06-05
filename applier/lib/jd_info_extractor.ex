@@ -4,7 +4,7 @@ defmodule JDInfoExtractor do
   """
 
   def extract_text_from_url(url) do
-    case Playwright.launch(:chromium, %{headless: true}) do
+    case Playwright.launch(:chromium, %{headless: false}) do
       {:ok, browser} ->
         try do
           extract_with_playwright(browser, url)
@@ -21,11 +21,10 @@ defmodule JDInfoExtractor do
     page = Playwright.Browser.new_page(browser)
     try do
       Playwright.Page.goto(page, url)
-      # Playwright.Page.wait_for_load_state(page, "networkidle")
       Process.sleep(2000)
 
       with {:ok, text} <- extract_visible_text(page),
-           {:ok, questions} <- Scraper.Greenhouse.extract_questions(page)
+           {:ok, questions} <- Scraper.extract_questions(page)
       do
         {:ok, text, questions}
       else

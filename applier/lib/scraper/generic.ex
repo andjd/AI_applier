@@ -1,4 +1,4 @@
-defmodule Scrapers.Greenhouse do
+defmodule Scraper.Generic do
   def extract_questions(page) do
     input_selectors = [
       "input",

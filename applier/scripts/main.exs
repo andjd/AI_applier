@@ -47,7 +47,7 @@ defmodule Main do
     sqids = Sqids.new!()
     short_id = Sqids.encode!(sqids, hash_numbers)
 
-    resume_data = File.read!("assets/resume.yaml")
+    resume = File.read!("assets/resume.yaml")
     filename = "artifacts/Andrew_DeFranco_#{short_id}"
     pdf_filename = "#{filename}.pdf"
     txt_filename = "#{filename}.txt"
@@ -58,33 +58,42 @@ defmodule Main do
     end
     IO.puts("Job ID: #{short_id}")
 
-    with {:ok, job_description} <- (
+    with {:ok, job_description, questions} <- (
           case input_source do
             :url ->
               (IO.puts("Step 1: Extracting job description from URL...");
-              JdInfoExtractor.extract_text_from_url(input_value))
+              JDInfoExtractor.extract_text_from_url(input_value))
             :text ->
               (IO.puts("Step 1: Using job description text from stdin...");
-              {:ok, input_value})
+              {:ok, input_value, []})
           end),
         _ <- IO.puts("✓ Successfully obtained job description"),
-        {:safe, _} <-
-            (IO.puts("Step 2: Validating extracted text for safety...");
-            TextValidator.validate_text(job_description)),
-        _ <- IO.puts("✓ Text validation passed - content is safe"),
-        {:ok, cover_letter} <-
-            (IO.puts("Step 3: Generating cover letter...");
-            CoverLetter.generate(resume_data, job_description)),
-        _ <- IO.puts("✓ Successfully generated cover letter"),
-        {:ok, pdf} <-
-            (IO.puts("Step 4: Rendering cover letter to PDF...");
-            CoverLetter.render(cover_letter)),
-        :ok <- File.write(pdf_filename, pdf),
-        _ <- IO.puts("✓ Cover letter PDF saved as #{pdf_filename}"),
-        {:ok, text} <- (IO.puts("Step 5: Saving text version..."); CoverLetter.to_text(cover_letter)),
-        :ok <- File.write(txt_filename, text),
-        _ <- IO.puts("✓ Cover letter text saved as #{txt_filename}") do
-      IO.puts("Process completed successfully!")
+        # {:safe, _} <-
+        #     (IO.puts("Step 2: Validating extracted text for safety...");
+        #     TextValidator.validate_text(job_description <>
+        #       Enum.map(questions, fn q -> Map.get(q, :label, "") end)
+        #       |> Enum.join("\n"))),
+        # _ <- IO.puts("✓ Text validation passed - content is safe"),
+        # {:ok, cover_letter} <-
+        #     (IO.puts("Step 3: Generating cover letter...");
+        #     CoverLetter.generate(resume, job_description)),
+        # _ <- IO.puts("✓ Successfully generated cover letter"),
+        # {:ok, pdf} <-
+        #     (IO.puts("Step 4: Rendering cover letter to PDF...");
+        #     CoverLetter.render(cover_letter)),
+        # :ok <- File.write(pdf_filename, pdf),
+        # _ <- IO.puts("✓ Cover letter PDF saved as #{pdf_filename}"),
+        # {:ok, text} <- (IO.puts("Step 5: Saving text version..."); CoverLetter.to_text(cover_letter)),
+        # :ok <- File.write(txt_filename, text),
+        # _ <- IO.puts("✓ Cover letter text saved as #{txt_filename}"),
+        {:ok, responses} <- (if is_nil(questions) do
+          {:ok, nil}
+        else
+          Questions.answer(resume, questions)
+        end) do
+          IO.puts("✓ Questions answered")
+          IO.inspect(responses)
+          IO.puts("Process completed successfully!")
     else
       {:error, reason} ->
         IO.puts("✗ Failed to extract job description: #{reason}")
@@ -103,6 +112,7 @@ defmodule Main do
         System.halt(1)
     end
   end
+
 end
 
 Main.run()
