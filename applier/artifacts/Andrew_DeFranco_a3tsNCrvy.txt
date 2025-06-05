@@ -1,0 +1,12 @@
+2025-06-04
+
+Dear Hiring Manager,
+
+I'm excited to apply for the Senior Software Engineer position on Lower's Mortgage Pricing & Eligibility Engine Team. With 9+ years of full-stack development experience and a proven track record of building scalable financial systems, I'm eager to help automate the mortgage lending process and drive down costs for homebuyers. My experience architecting complex payment systems at Stationhead, including cryptographically signed transactions and integrations with financial providers, directly translates to the pricing and underwriting algorithms you're building. Additionally, my work with TypeScript, React, AWS, and SQL databases aligns perfectly with your tech stack, while my Python and Elixir backend experience provides equivalent expertise to Node microservices development.
+
+What particularly draws me to this role is the opportunity to tackle complex financial mathematics and translate mortgage industry concepts into efficient code. At Kyra Health, I built HIPAA-compliant systems handling sensitive healthcare data with strict regulatory requirements, similar to the compliance challenges in mortgage lending. My leadership experience includes heading a 10-developer team at Enterprise on a greenfield mobile app rebuild and founding the Android development team at Stationhead, where I reduced bugs by 80% through custom frameworks and mentored developers through complex technical challenges. I'm excited to bring this combination of technical expertise, financial system experience, and team leadership to help Lower continue revolutionizing the home-buying process.
+
+
+Best,
+
+Andrew DeFranco
