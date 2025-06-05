@@ -3,35 +3,13 @@ defmodule JDInfoExtractor do
   Module for extracting job description information from web pages using Playwright.
   """
 
-  def extract_text_from_url(url) do
-    case Playwright.launch(:chromium, %{headless: false}) do
-      {:ok, browser} ->
-        try do
-          extract_with_playwright(browser, url)
-        after
-          Playwright.Browser.close(browser)
-        end
-
-      {:error, reason} ->
-        {:error, "Failed to start Playwright: #{inspect(reason)}"}
-    end
-  end
-
-  defp extract_with_playwright(browser, url) do
-    page = Playwright.Browser.new_page(browser)
-    try do
-      Playwright.Page.goto(page, url)
-      Process.sleep(2000)
-
-      with {:ok, text} <- extract_visible_text(page),
-           {:ok, questions} <- Scraper.extract_questions(page)
-      do
-        {:ok, text, questions}
-      else
-        {:error, reason} -> {:error, reason}
-      end
-    after
-      Playwright.Page.close(page)
+  def extract_text(page) do
+    with {:ok, text} <- extract_visible_text(page),
+         {:ok, questions} <- Scraper.extract_questions(page)
+    do
+      {:ok, text, questions}
+    else
+      {:error, reason} -> {:error, reason}
     end
   end
 

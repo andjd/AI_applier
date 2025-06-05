@@ -58,45 +58,100 @@ defmodule Main do
     end
     IO.puts("Job ID: #{short_id}")
 
-    with {:ok, job_description, questions} <- (
-          case input_source do
-            :url ->
-              (IO.puts("Step 1: Extracting job description from URL...");
-              JDInfoExtractor.extract_text_from_url(input_value))
-            :text ->
-              (IO.puts("Step 1: Using job description text from stdin...");
-              {:ok, input_value, []})
-          end),
+    case input_source do
+      :url ->
+        IO.puts("Step 1: Launching browser and extracting job description from URL...")
+        case Helpers.Browser.launch_and_navigate(input_value) do
+          {:ok, browser, page} ->
+            try do
+              process_with_browser(browser, page, input_value, resume, filename, pdf_filename, txt_filename)
+            after
+              Helpers.Browser.close_page(page)
+              Helpers.Browser.close_browser(browser)
+            end
+          {:error, reason} ->
+            IO.puts("✗ Failed to launch browser: #{reason}")
+            System.halt(1)
+        end
+      :text ->
+        IO.puts("Step 1: Using job description text from stdin...")
+        process_without_browser(input_value, resume, filename, pdf_filename, txt_filename)
+    end
+  end
+
+  defp process_with_browser(browser, page, input_value, resume, filename, pdf_filename, txt_filename) do
+    with {:ok, job_description, questions} <- JDInfoExtractor.extract_text(page),
         _ <- IO.puts("✓ Successfully obtained job description"),
-        # {:safe, _} <-
-        #     (IO.puts("Step 2: Validating extracted text for safety...");
-        #     TextValidator.validate_text(job_description <>
-        #       Enum.map(questions, fn q -> Map.get(q, :label, "") end)
-        #       |> Enum.join("\n"))),
-        # _ <- IO.puts("✓ Text validation passed - content is safe"),
-        # {:ok, cover_letter} <-
-        #     (IO.puts("Step 3: Generating cover letter...");
-        #     CoverLetter.generate(resume, job_description)),
-        # _ <- IO.puts("✓ Successfully generated cover letter"),
-        # {:ok, pdf} <-
-        #     (IO.puts("Step 4: Rendering cover letter to PDF...");
-        #     CoverLetter.render(cover_letter)),
-        # :ok <- File.write(pdf_filename, pdf),
-        # _ <- IO.puts("✓ Cover letter PDF saved as #{pdf_filename}"),
-        # {:ok, text} <- (IO.puts("Step 5: Saving text version..."); CoverLetter.to_text(cover_letter)),
-        # :ok <- File.write(txt_filename, text),
-        # _ <- IO.puts("✓ Cover letter text saved as #{txt_filename}"),
+        {:safe, _} <-
+            (IO.puts("Step 2: Validating extracted text for safety...");
+            TextValidator.validate_text(job_description <>
+              (Enum.map(questions, fn q -> Map.get(q, :label, "") end)
+              |> Enum.join("\n")))),
+        _ <- IO.puts("✓ Text validation passed - content is safe"),
+        {:ok, cover_letter} <-
+            (IO.puts("Step 3: Generating cover letter...");
+            CoverLetter.generate(resume, job_description)),
+        _ <- IO.puts("✓ Successfully generated cover letter"),
+        {:ok, pdf} <-
+            (IO.puts("Step 4: Rendering cover letter to PDF...");
+            CoverLetter.render(cover_letter)),
+        :ok <- File.write(pdf_filename, pdf),
+        _ <- IO.puts("✓ Cover letter PDF saved as #{pdf_filename}"),
+        {:ok, text} <- (IO.puts("Step 5: Saving text version..."); CoverLetter.to_text(cover_letter)),
+        :ok <- File.write(txt_filename, text),
+        _ <- IO.puts("✓ Cover letter text saved as #{txt_filename}"),
         {:ok, responses} <- (if is_nil(questions) do
+          IO.puts("No Questions")
           {:ok, nil}
         else
+          IO.puts("Answering Form Questions")
           Questions.answer(resume, questions)
         end) do
-          IO.puts("✓ Questions answered")
-          IO.inspect(responses)
+          IO.inspect(questions)
+          IO.puts("Filling Form")
+          Filler.Greenhouse.fill_form(page, responses, resume, File.read!(txt_filename))
+          Process.sleep(60_000)
           IO.puts("Process completed successfully!")
     else
       {:error, reason} ->
         IO.puts("✗ Failed to extract job description: #{reason}")
+        System.halt(1)
+
+      {:dangerous, _} ->
+        IO.puts("✗ Text validation failed - content contains potentially dangerous content")
+        System.halt(1)
+
+      {:manual, _} ->
+        IO.puts("⚠ Text validation requires manual review - please check the content manually")
+        System.halt(1)
+
+      error ->
+        IO.puts("✗ Unexpected error: #{inspect(error)}")
+        System.halt(1)
+    end
+  end
+
+  defp process_without_browser(job_description, resume, filename, pdf_filename, txt_filename) do
+    with {:safe, _} <-
+            (IO.puts("Step 2: Validating extracted text for safety...");
+            TextValidator.validate_text(job_description)),
+        _ <- IO.puts("✓ Text validation passed - content is safe"),
+        {:ok, cover_letter} <-
+            (IO.puts("Step 3: Generating cover letter...");
+            CoverLetter.generate(resume, job_description)),
+        _ <- IO.puts("✓ Successfully generated cover letter"),
+        {:ok, pdf} <-
+            (IO.puts("Step 4: Rendering cover letter to PDF...");
+            CoverLetter.render(cover_letter)),
+        :ok <- File.write(pdf_filename, pdf),
+        _ <- IO.puts("✓ Cover letter PDF saved as #{pdf_filename}"),
+        {:ok, text} <- (IO.puts("Step 5: Saving text version..."); CoverLetter.to_text(cover_letter)),
+        :ok <- File.write(txt_filename, text),
+        _ <- IO.puts("✓ Cover letter text saved as #{txt_filename}") do
+          IO.puts("Process completed successfully!")
+    else
+      {:error, reason} ->
+        IO.puts("✗ Failed to process: #{reason}")
         System.halt(1)
 
       {:dangerous, _} ->
