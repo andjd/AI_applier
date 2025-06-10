@@ -7,9 +7,13 @@ defmodule Scraper.Generic do
     ]
 
     questions = Enum.flat_map(input_selectors, fn selector ->
-      selector = Playwright.Page.locator(page, selector)
-      IO.inspect(selector)
-      elements = Playwright.Locator.all(selector)
+      locator = Playwright.Page.locator(page, selector)
+      IO.inspect(locator)
+      elements = if Playwright.Locator.count(locator) > 0 do
+        Playwright.Locator.all(locator)
+      else
+        []
+      end
 
       IO.puts("element length: #{length(elements)}")
       Enum.map(elements, fn element ->
@@ -113,7 +117,12 @@ defmodule Scraper.Generic do
   defp get_field_options(page, element, type) do
     cond do
       type == "select" ->
-        options = Playwright.Locator.locator(element, "option") |> Playwright.Locator.all()
+        option_locator = Playwright.Locator.locator(element, "option")
+        options = if Playwright.Locator.count(option_locator) > 0 do
+          Playwright.Locator.all(option_locator)
+        else
+          []
+        end
         option_values = Enum.map(options, fn option ->
           text = Playwright.Locator.inner_text(option)
           if text, do: String.trim(text), else: ""
@@ -123,7 +132,12 @@ defmodule Scraper.Generic do
       type == "radio" ->
         name = Playwright.Locator.get_attribute(element, "name")
         if name && String.length(name) > 0 do
-          radio_elements = Playwright.Page.locator(page, "input[name='#{name}']") |> Playwright.Locator.all()
+          radio_locator = Playwright.Page.locator(page, "input[name='#{name}']")
+          radio_elements = if Playwright.Locator.count(radio_locator) > 0 do
+            Playwright.Locator.all(radio_locator)
+          else
+            []
+          end
           radio_values = Enum.map(radio_elements, fn radio ->
             value = Playwright.Locator.get_attribute(radio, "value")
             if value, do: value, else: ""

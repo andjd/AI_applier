@@ -5,8 +5,11 @@ defmodule Scraper.Greenhouse do
 
     # Handle regular form elements
     selector = Playwright.Page.locator(page, greenhouse_selector)
-    IO.inspect(selector)
-    elements = Playwright.Locator.all(selector)
+    elements = if Playwright.Locator.count(selector) > 0 do
+      Playwright.Locator.all(selector)
+    else
+      []
+    end
 
     IO.puts("element length: #{length(elements)}")
     regular_questions = Enum.map(elements, fn element ->
@@ -30,7 +33,6 @@ defmodule Scraper.Greenhouse do
     id = Playwright.Locator.get_attribute(element, "id")
     name = Playwright.Locator.get_attribute(element, "name")
     type = get_field_type(element)
-    IO.puts(type)
 
     # Skip fields with captcha in name or id
     if captcha_field?(id, name) do
@@ -90,9 +92,7 @@ defmodule Scraper.Greenhouse do
   end
 
   defp get_field_label(page, element) do
-    IO.inspect(element)
     id = Playwright.Locator.get_attribute(element, "id")
-    IO.inspect(id)
 
     # Try Greenhouse-specific label pattern first
     label_text = if id && String.length(id) > 0 do
@@ -129,7 +129,12 @@ defmodule Scraper.Greenhouse do
   defp get_field_options(page, element, type) do
     cond do
       type == "select" ->
-        options = Playwright.Locator.locator(element, "option") |> Playwright.Locator.all()
+        option_locator = Playwright.Locator.locator(element, "option")
+        options = if Playwright.Locator.count(option_locator) > 0 do
+          Playwright.Locator.all(option_locator)
+        else
+          []
+        end
         option_values = Enum.map(options, fn option ->
           text = Playwright.Locator.inner_text(option)
           if text, do: String.trim(text), else: ""
@@ -139,7 +144,12 @@ defmodule Scraper.Greenhouse do
       type == "radio" ->
         name = Playwright.Locator.get_attribute(element, "name")
         if name && String.length(name) > 0 do
-          radio_elements = Playwright.Page.locator(page, "input[name='#{name}']") |> Playwright.Locator.all()
+          radio_locator = Playwright.Page.locator(page, "input[name='#{name}']")
+          radio_elements = if Playwright.Locator.count(radio_locator) > 0 do
+            Playwright.Locator.all(radio_locator)
+          else
+            []
+          end
           radio_values = Enum.map(radio_elements, fn radio ->
             value = Playwright.Locator.get_attribute(radio, "value")
             if value, do: value, else: ""
@@ -159,13 +169,17 @@ defmodule Scraper.Greenhouse do
 
   defp captcha_in_string?(nil), do: false
   defp captcha_in_string?(str) when is_binary(str) do
-    IO.puts("checking for captcha: " <> str)
     String.downcase(str) |> String.contains?("captcha")
   end
 
   defp extract_greenhouse_selects(page) do
     # Find Greenhouse custom select elements
-    select_containers = Playwright.Page.locator(page, ".select__container") |> Playwright.Locator.all()
+    container_locator = Playwright.Page.locator(page, ".select__container")
+    select_containers = if Playwright.Locator.count(container_locator) > 0 do
+      Playwright.Locator.all(container_locator)
+    else
+      []
+    end
 
     IO.puts("Found #{length(select_containers)} Greenhouse select elements")
 
@@ -185,7 +199,7 @@ defmodule Scraper.Greenhouse do
          id <- Playwright.Locator.get_attribute(input_element, "id"),
          label <- get_greenhouse_select_label(page, id),
          required <- is_greenhouse_select_required(input_element),
-         options <- get_greenhouse_select_options(page, input_element, id)
+         options <- get_greenhouse_select_options(container, input_element, id)
     do
       %{
         id: id || "",
@@ -234,25 +248,33 @@ defmodule Scraper.Greenhouse do
     end
   end
 
-  defp get_greenhouse_select_options(page, input_element, id) do
+  defp get_greenhouse_select_options(container, input_element, id) do
     # Skip option extraction for location fields
     if is_location_field?(id) do
       IO.puts("Skipping options extraction for location field: #{id}")
       []
     else
-      # Click on the select to reveal options
+      IO.puts("Finding options for question #{id}")
+
       IO.puts("Clicking select to reveal options...")
 
       Playwright.Locator.click(input_element)
-      Playwright.Page.wait_for_selector(page, ".select__option")
-      extract_visible_options(page)
+      Playwright.Frame.wait_for_selector(container.frame, ".select__option")
+      extract_visible_options_from_control(container)
     end
   end
 
-  defp extract_visible_options(page) do
-    # Look for the options menu that appears after clicking
-    options_selector = ".select__option"
-    options = Playwright.Page.locator(page, options_selector) |> Playwright.Locator.all()
+  defp extract_visible_options_from_control(container) do
+    # Look for the options menu within this specific select control
+    IO.puts("Looking For Visible Options")
+    IO.puts(Playwright.Locator.get_attribute(container, :id))
+    IO.inspect(Playwright.Locator.inner_html(container))
+    locator = Playwright.Locator.locator(container, ".select__option")
+    options = if Playwright.Locator.count(locator) > 0 do
+      Playwright.Locator.all(locator)
+    else
+      []
+    end
 
     IO.puts("Found #{length(options)} options")
 
@@ -288,13 +310,17 @@ defmodule Scraper.Greenhouse do
       0 -> false
       _ ->
         # Check if the element is contained within the demographic section
-        element_inside_demo = Playwright.Locator.locator(demographic_section, "*")
-        |> Playwright.Locator.all()
-        |> Enum.any?(fn demo_element ->
+        demo_locator = Playwright.Locator.locator(demographic_section, "*")
+        element_inside_demo = if Playwright.Locator.count(demo_locator) > 0 do
+          Playwright.Locator.all(demo_locator)
+          |> Enum.any?(fn demo_element ->
           element_id = Playwright.Locator.get_attribute(element, "id")
           demo_id = Playwright.Locator.get_attribute(demo_element, "id")
-          element_id && demo_id && element_id == demo_id
-        end)
+            element_id && demo_id && element_id == demo_id
+          end)
+        else
+          false
+        end
         element_inside_demo
     end
   end
@@ -306,14 +332,18 @@ defmodule Scraper.Greenhouse do
       0 -> false
       _ ->
         # Check if the container is contained within the demographic section
-        containers_inside_demo = Playwright.Locator.locator(demographic_section, ".select__container")
-        |> Playwright.Locator.all()
-        |> Enum.any?(fn demo_container ->
+        demo_container_locator = Playwright.Locator.locator(demographic_section, ".select__container")
+        containers_inside_demo = if Playwright.Locator.count(demo_container_locator) > 0 do
+          Playwright.Locator.all(demo_container_locator)
+          |> Enum.any?(fn demo_container ->
           # Compare by checking if they're the same element (simplified check)
           container_html = Playwright.Locator.inner_html(container)
           demo_html = Playwright.Locator.inner_html(demo_container)
-          container_html == demo_html
-        end)
+            container_html == demo_html
+          end)
+        else
+          false
+        end
         containers_inside_demo
     end
   end

@@ -19,11 +19,16 @@ Keep your responses concice. Directly answer the question.
 
 Answer in JSON format like so: 
 
-[
-    {
-        "id": ___,
+{
+    {question_id}: {
+        "id": {question_id},
         "label": ___,
         "response": ___,
+    },
+    {second_question_id}: {
+        ...
     }
     ...
-]
+}
+
+Do not wrap the JSON of your response in a code block.  Your output should be machine-readable JSON without modification.

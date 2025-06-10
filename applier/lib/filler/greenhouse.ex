@@ -3,18 +3,18 @@ defmodule Filler.Greenhouse do
 
   @doc """
   Fills a Greenhouse form with the provided responses.
-  
+
   ## Parameters
   - page: Playwright page object
   - responses: List of maps with "id", "label", and "response" keys
   - resume_text: Resume content as text (optional)
   - cover_letter_text: Cover letter content as text (optional)
-  
+
   ## Returns
   {:ok, :form_filled} on success
   {:error, reason} on failure
   """
-  def fill_form(page, responses, resume_text \\ nil, cover_letter_text \\ nil) when is_list(responses) do
+  def fill_form(page, responses, resume_text \\ nil, cover_letter_text \\ nil) when is_map(responses) do
     with :ok <- (Logger.info("Starting form fill process..."); :ok),
          {:ok, :form_filled} <- fill_all_fields(page, responses),
          {:ok, :documents_uploaded} <- handle_document_uploads(page, resume_text, cover_letter_text),
@@ -29,10 +29,10 @@ defmodule Filler.Greenhouse do
   end
 
   defp fill_all_fields(page, responses) do
-    results = Enum.map(responses, fn response ->
+    results = Enum.map(Map.values(responses), fn response ->
       fill_single_field(page, response)
     end)
-    
+
     # Check if any field failed to fill
     case Enum.find(results, fn result -> match?({:error, _}, result) end) do
       nil -> {:ok, :form_filled}
@@ -40,17 +40,17 @@ defmodule Filler.Greenhouse do
     end
   end
 
-  defp fill_single_field(page, %{"id" => id, "label" => label, "response" => response}) 
+  defp fill_single_field(page, %{"id" => id, "label" => label, "response" => response})
        when is_binary(id) and response != "" do
     Logger.info("Filling field '#{label}' (#{id}) with: #{response}")
-    
+
     cond do
       is_greenhouse_select?(page, id) ->
         fill_greenhouse_select(page, id, response)
-      
+
       is_regular_input?(page, id) ->
         fill_regular_input(page, id, response)
-      
+
       true ->
         Logger.warning("Field #{id} not found or unsupported")
         {:ok, :skipped}
@@ -95,7 +95,7 @@ defmodule Filler.Greenhouse do
   defp find_greenhouse_select_input(page, id) do
     selector = ".select__container input[id='#{id}']"
     input = Playwright.Page.locator(page, selector)
-    
+
     case Playwright.Locator.count(input) do
       0 -> {:error, "Greenhouse select input not found for id: #{id}"}
       _ -> {:ok, input}
@@ -108,20 +108,28 @@ defmodule Filler.Greenhouse do
       Playwright.Page.wait_for_selector(page, ".select__option", %{timeout: 5000})
       :ok
     rescue
-      error -> 
+      error ->
         {:error, "Failed to open select options: #{inspect(error)}"}
     end
   end
 
   defp find_matching_option(page, value) do
-    options = Playwright.Page.locator(page, ".select__option") |> Playwright.Locator.all()
-    
+    options_locator = Playwright.Page.locator(page, ".select__option")
+    options = if Playwright.Locator.count(options_locator) > 0 do
+      Playwright.Locator.all(options_locator)
+    else
+      []
+    end
+
+    IO.puts(length(options))
+
     matching_option = Enum.find(options, fn option ->
+      IO.puts(Playwright.Locator.inner_text(option))
       text = Playwright.Locator.inner_text(option) |> String.trim()
       String.contains?(String.downcase(text), String.downcase(value)) or
       String.contains?(String.downcase(value), String.downcase(text))
     end)
-    
+
     case matching_option do
       nil -> {:error, "No matching option found for value: #{value}"}
       option -> {:ok, option}
@@ -141,12 +149,12 @@ defmodule Filler.Greenhouse do
   defp fill_regular_input(page, id, value) do
     selector = "input[id='#{id}'], textarea[id='#{id}'], select[id='#{id}']"
     element = Playwright.Page.locator(page, selector)
-    
+
     case Playwright.Locator.count(element) do
       0 ->
         Logger.warning("Regular input not found for id: #{id}")
         {:ok, :skipped}
-      
+
       _ ->
         try do
           # Clear existing content and fill with new value
@@ -179,7 +187,7 @@ defmodule Filler.Greenhouse do
 
   defp handle_resume_upload(page, resume_text) when is_binary(resume_text) and resume_text != "" do
     Logger.info("Handling resume upload via 'enter manually'")
-    
+
     with {:ok, enter_button} <- find_resume_enter_manually_button(page),
          :ok <- click_enter_manually_button(enter_button),
          {:ok, textarea} <- find_resume_textarea(page),
@@ -206,7 +214,7 @@ defmodule Filler.Greenhouse do
 
   defp handle_cover_letter_upload(page, cover_letter_text) when is_binary(cover_letter_text) and cover_letter_text != "" do
     Logger.info("Handling cover letter upload via 'enter manually'")
-    
+
     with {:ok, enter_button} <- find_cover_letter_enter_manually_button(page),
          :ok <- click_enter_manually_button(enter_button),
          {:ok, textarea} <- find_cover_letter_textarea(page),
@@ -230,7 +238,7 @@ defmodule Filler.Greenhouse do
     # Look for the "Enter manually" button in the resume section
     selector = "[data-testid='resume-text'], button:has-text('Enter manually')"
     button = Playwright.Page.locator(page, selector).first()
-    
+
     case Playwright.Locator.count(button) do
       0 -> {:error, "Resume 'Enter manually' button not found"}
       _ -> {:ok, button}
@@ -241,7 +249,7 @@ defmodule Filler.Greenhouse do
     # Look for the "Enter manually" button in the cover letter section
     selector = "[data-testid='cover_letter-text'], button:has-text('Enter manually')"
     button = Playwright.Page.locator(page, selector).first()
-    
+
     case Playwright.Locator.count(button) do
       0 -> {:error, "Cover letter 'Enter manually' button not found"}
       _ -> {:ok, button}
@@ -263,7 +271,7 @@ defmodule Filler.Greenhouse do
   defp find_resume_textarea(page) do
     selector = "textarea[id='resume_text']"
     textarea = Playwright.Page.locator(page, selector)
-    
+
     case Playwright.Locator.count(textarea) do
       0 -> {:error, "Resume textarea not found after clicking 'Enter manually'"}
       _ -> {:ok, textarea}
@@ -273,7 +281,7 @@ defmodule Filler.Greenhouse do
   defp find_cover_letter_textarea(page) do
     selector = "textarea[id='cover_letter_text']"
     textarea = Playwright.Page.locator(page, selector)
-    
+
     case Playwright.Locator.count(textarea) do
       0 -> {:error, "Cover letter textarea not found after clicking 'Enter manually'"}
       _ -> {:ok, textarea}

@@ -100,20 +100,23 @@ defmodule Main do
         {:ok, text} <- (IO.puts("Step 5: Saving text version..."); CoverLetter.to_text(cover_letter)),
         :ok <- File.write(txt_filename, text),
         _ <- IO.puts("✓ Cover letter text saved as #{txt_filename}"),
+        _ <- IO.inspect(questions),
         {:ok, responses} <- (if is_nil(questions) do
           IO.puts("No Questions")
           {:ok, nil}
         else
           IO.puts("Answering Form Questions")
           Questions.answer(resume, questions)
-        end) do
+        end),
+        :ok <- Questions.validate_responses(questions, responses) do
           IO.inspect(questions)
           IO.puts("Filling Form")
           Filler.Greenhouse.fill_form(page, responses, resume, File.read!(txt_filename))
-          Process.sleep(60_000)
+          Process.sleep(600_000)
           IO.puts("Process completed successfully!")
     else
       {:error, reason} ->
+        IO.inspect reason
         IO.puts("✗ Failed to extract job description: #{reason}")
         System.halt(1)
 

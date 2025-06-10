@@ -1,0 +1,12 @@
+2025-06-10
+
+Dear Hiring Manager,
+
+I'm excited to apply for the Senior Android Engineer position at Calm Health, where I can combine my passion for mobile development with meaningful healthcare impact. My experience leading a 10-developer team in the greenfield rebuild of Enterprise Rent-a-car's mobile apps in React Native, coupled with my Android development work at Stationhead where I founded and grew the Android team, aligns perfectly with your need for an autonomous Android expert who can own development end-to-end. At Stationhead, I created a custom reactive state-management framework that reduced bugs by 80+%, demonstrating the kind of architectural thinking and quality focus that would translate well to Jetpack Compose and MVVM patterns. My proficiency with Kotlin, REST APIs, and CI/CD workflows, combined with my experience scaling mobile applications for millions of users, positions me well to architect robust features using your tech stack.
+
+What particularly excites me about this opportunity is the chance to apply my HIPAA-compliant development experience from Kyra Health, where I built LLM-powered healthcare tools, to Calm Health's mission of expanding mental health access. My startup experience across Kyra Health, Neeva, and Stationhead has taught me to balance product velocity with technical excellence while working closely with cross-functional teams—exactly the collaborative, product-focused mindset you're seeking. I thrive in environments where I can be the go-to mobile expert while contributing to broader platform standards, and I'm eager to help Calm Health deliver delightful, accessible experiences that make a real difference in users' mental health journeys.
+
+
+Best,
+
+Andrew DeFranco

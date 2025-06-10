@@ -56,4 +56,36 @@ defmodule Helpers.LLM do
     System.get_env("ANTHROPIC_API_KEY") ||
       raise "ANTHROPIC_API_KEY environment variable not set"
   end
+
+  def decode_json(llm_response) do
+    case Jason.decode(llm_response) do
+      {:ok, json} ->
+        {:ok, json}
+      {:error, _} ->
+        try_extract_from_code_block(llm_response)
+    end
+  end
+
+  defp try_extract_from_code_block(text) do
+    cond do
+      # Try to match ```json ... ``` pattern
+      json_match = Regex.run(~r/```json\s*\n(.*?)\n```/s, text) ->
+        [_, json_content] = json_match
+        case Jason.decode(json_content) do
+          {:ok, json} -> {:ok, json}
+          {:error, _} -> {:error, "Failed to decode JSON from code block. Full LLM response: #{text}"}
+        end
+
+      # Try to match ``` ... ``` pattern (generic code block)
+      code_match = Regex.run(~r/```\s*\n(.*?)\n```/s, text) ->
+        [_, code_content] = code_match
+        case Jason.decode(code_content) do
+          {:ok, json} -> {:ok, json}
+          {:error, _} -> {:error, "Failed to decode JSON from code block. Full LLM response: #{text}"}
+        end
+
+      true ->
+        {:error, "No valid JSON found in LLM response. Full LLM response: #{text}"}
+    end
+  end
 end
