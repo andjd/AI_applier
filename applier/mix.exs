@@ -28,6 +28,7 @@ defmodule Applier.MixProject do
       {:playwright, "~> 1.49"},
       {:iona, "~> 0.4"},
       {:sqids, "~> 0.2"},
+      {:eximap, "~> 0.1.2-dev"},
     ]
   end
 end
