@@ -14,7 +14,8 @@ defmodule Applier.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger, :yaml_elixir]
+      extra_applications: [:logger, :yaml_elixir],
+      mod: {Applier.Application, []}
     ]
   end
 

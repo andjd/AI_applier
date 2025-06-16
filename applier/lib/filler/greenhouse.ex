@@ -207,7 +207,7 @@ defmodule Filler.Greenhouse do
     {:ok, :resume_handled}
   end
 
-  defp handle_cover_letter_upload(page, nil) do
+  defp handle_cover_letter_upload(_page, nil) do
     Logger.info("No cover letter text provided, skipping cover letter upload")
     {:ok, :cover_letter_handled}
   end
