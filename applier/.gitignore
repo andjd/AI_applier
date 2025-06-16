@@ -28,3 +28,7 @@ node_modules/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+**/.cache/
+
+.DS_Store

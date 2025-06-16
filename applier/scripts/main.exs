@@ -8,7 +8,7 @@ defmodule Main do
   end
 
   def read_stdin() do
-    case IO.read(:stdio, :all) do
+    case IO.read(:stdio, :eof) do
       :eof ->
         IO.puts("Error: No input provided")
         put_help()
@@ -49,8 +49,6 @@ defmodule Main do
 
     resume = File.read!("assets/resume.yaml")
     filename = "artifacts/Andrew_DeFranco_#{short_id}"
-    pdf_filename = "#{filename}.pdf"
-    txt_filename = "#{filename}.txt"
 
     case input_source do
       :url -> IO.puts("Starting cover letter generation process for: #{input_value}")
@@ -64,7 +62,7 @@ defmodule Main do
         case Helpers.Browser.launch_and_navigate(input_value) do
           {:ok, browser, page} ->
             try do
-              process_with_browser(browser, page, input_value, resume, filename, pdf_filename, txt_filename)
+              process_with_browser(page, resume, filename)
             after
               Helpers.Browser.close_page(page)
               Helpers.Browser.close_browser(browser)
@@ -75,11 +73,11 @@ defmodule Main do
         end
       :text ->
         IO.puts("Step 1: Using job description text from stdin...")
-        process_without_browser(input_value, resume, filename, pdf_filename, txt_filename)
+        process_without_browser(input_value, resume, filename)
     end
   end
 
-  defp process_with_browser(browser, page, input_value, resume, filename, pdf_filename, txt_filename) do
+  defp process_with_browser(page, resume, filename) do
     with {:ok, job_description, questions} <- JDInfoExtractor.extract_text(page),
         _ <- IO.puts("✓ Successfully obtained job description"),
         {:safe, _} <-
@@ -95,11 +93,11 @@ defmodule Main do
         {:ok, pdf} <-
             (IO.puts("Step 4: Rendering cover letter to PDF...");
             CoverLetter.render(cover_letter)),
-        :ok <- File.write(pdf_filename, pdf),
-        _ <- IO.puts("✓ Cover letter PDF saved as #{pdf_filename}"),
+        :ok <- File.write(pdf_filename(filename), pdf),
+        _ <- IO.puts("✓ Cover letter PDF saved as #{pdf_filename(filename)}"),
         {:ok, text} <- (IO.puts("Step 5: Saving text version..."); CoverLetter.to_text(cover_letter)),
-        :ok <- File.write(txt_filename, text),
-        _ <- IO.puts("✓ Cover letter text saved as #{txt_filename}"),
+        :ok <- File.write(txt_filename(filename), text),
+        _ <- IO.puts("✓ Cover letter text saved as #{txt_filename(filename)}"),
         _ <- IO.inspect(questions),
         {:ok, responses} <- (if is_nil(questions) do
           IO.puts("No Questions")
@@ -111,13 +109,12 @@ defmodule Main do
         :ok <- Questions.validate_responses(questions, responses) do
           IO.inspect(questions)
           IO.puts("Filling Form")
-          Filler.Greenhouse.fill_form(page, responses, resume, File.read!(txt_filename))
+          Filler.Greenhouse.fill_form(page, responses, resume, File.read!(txt_filename(filename)))
           Process.sleep(600_000)
           IO.puts("Process completed successfully!")
     else
       {:error, reason} ->
-        IO.inspect reason
-        IO.puts("✗ Failed to extract job description: #{reason}")
+        IO.puts("✗ Failed to extract job description: #{inspect(reason)}")
         System.halt(1)
 
       {:dangerous, _} ->
@@ -134,7 +131,7 @@ defmodule Main do
     end
   end
 
-  defp process_without_browser(job_description, resume, filename, pdf_filename, txt_filename) do
+  defp process_without_browser(job_description, resume, filename) do
     with {:safe, _} <-
             (IO.puts("Step 2: Validating extracted text for safety...");
             TextValidator.validate_text(job_description)),
@@ -146,11 +143,11 @@ defmodule Main do
         {:ok, pdf} <-
             (IO.puts("Step 4: Rendering cover letter to PDF...");
             CoverLetter.render(cover_letter)),
-        :ok <- File.write(pdf_filename, pdf),
-        _ <- IO.puts("✓ Cover letter PDF saved as #{pdf_filename}"),
+        :ok <- File.write(pdf_filename(filename), pdf),
+        _ <- IO.puts("✓ Cover letter PDF saved as #{pdf_filename(filename)}"),
         {:ok, text} <- (IO.puts("Step 5: Saving text version..."); CoverLetter.to_text(cover_letter)),
-        :ok <- File.write(txt_filename, text),
-        _ <- IO.puts("✓ Cover letter text saved as #{txt_filename}") do
+        :ok <- File.write(txt_filename(filename), text),
+        _ <- IO.puts("✓ Cover letter text saved as #{txt_filename(filename)}") do
           IO.puts("Process completed successfully!")
     else
       {:error, reason} ->
@@ -171,6 +168,13 @@ defmodule Main do
     end
   end
 
-end
+  defp pdf_filename(root) do
+    "#{root}.pdf"
+  end
+
+  defp txt_filename(root) do
+    "#{root}.txt"
+  end
+  end
 
 Main.run()

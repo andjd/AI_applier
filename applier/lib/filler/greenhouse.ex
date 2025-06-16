@@ -180,7 +180,7 @@ defmodule Filler.Greenhouse do
     end
   end
 
-  defp handle_resume_upload(page, nil) do
+  defp handle_resume_upload(_page, nil) do
     Logger.info("No resume text provided, skipping resume upload")
     {:ok, :resume_handled}
   end
