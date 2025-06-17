@@ -14,7 +14,8 @@ defmodule Applier.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger, :yaml_elixir]
+      extra_applications: [:logger, :yaml_elixir],
+      mod: {Applier.Application, []}
     ]
   end
 
@@ -23,12 +24,12 @@ defmodule Applier.MixProject do
     [
       {:yaml_elixir, "~> 2.11"},
       {:req, "~> 0.3"},
-      {:jason, "~> 1.4"},
       {:dotenv, "~> 3.0.0", only: [:dev, :test]},
       {:playwright, "~> 1.49"},
       {:iona, "~> 0.4"},
       {:sqids, "~> 0.2"},
-      {:eximap, "~> 0.1.2-dev"},
+      {:yugo, "~> 1.0"},
+      {:mail, "~> 0.4"}
     ]
   end
 end

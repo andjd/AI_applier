@@ -13,3 +13,5 @@ else
     {:error, reason}
 end
 ```
+
+Use the built-in JSON module instead of Jason lib for JSON parsing and encoding.

@@ -11,8 +11,8 @@ defmodule Helpers.Browser do
         Process.sleep(2000)
         {:ok, browser, page}
 
-      {:error, reason} ->
-        {:error, "Failed to start Playwright: #{inspect(reason)}"}
+      other_response ->
+        {:error, "Failed to start Playwright: #{inspect(other_response)}"}
     end
   end
 
