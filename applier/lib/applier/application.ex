@@ -10,6 +10,15 @@ defmodule Applier.Application do
       {DynamicSupervisor, name: :yugo_supervisor, strategy: :one_for_one}
     ]
 
+    # Add Bandit web server in dev environment
+    children = if Mix.env() == :dev do
+      children ++ [
+        {Bandit, scheme: :http, plug: Applier.Web.Router, port: 4000, ip: {127, 0, 0, 1}}
+      ]
+    else
+      children
+    end
+
     opts = [strategy: :one_for_one, name: Applier.Supervisor]
     Supervisor.start_link(children, opts)
   end

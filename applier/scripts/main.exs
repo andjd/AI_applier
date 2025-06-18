@@ -27,7 +27,7 @@ defmodule Main do
   end
 
   def parse_input() do
-    case System.argv() do
+    case System.argv() d
       [] -> {:text, read_stdin()}
       [url | _] -> {:url, url}
     end

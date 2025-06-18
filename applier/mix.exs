@@ -32,7 +32,10 @@ defmodule Applier.MixProject do
       {:mail, "~> 0.4"},
       {:ecto, "~> 3.12"},
       {:ecto_sql, "~> 3.12"},
-      {:ecto_sqlite3, "~> 0.17"}
+      {:ecto_sqlite3, "~> 0.17"},
+      {:plug, "~> 1.16"},
+      {:bandit, "~> 1.7"},
+      {:phoenix_html, "~> 4.1"}
     ]
   end
 end
