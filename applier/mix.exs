@@ -29,7 +29,10 @@ defmodule Applier.MixProject do
       {:iona, "~> 0.4"},
       {:sqids, "~> 0.2"},
       {:yugo, "~> 1.0"},
-      {:mail, "~> 0.4"}
+      {:mail, "~> 0.4"},
+      {:ecto, "~> 3.12"},
+      {:ecto_sql, "~> 3.12"},
+      {:ecto_sqlite3, "~> 0.17"}
     ]
   end
 end

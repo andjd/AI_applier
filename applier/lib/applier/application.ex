@@ -6,6 +6,7 @@ defmodule Applier.Application do
   @impl true
   def start(_type, _args) do
     children = [
+      Applier.Repo,
       {DynamicSupervisor, name: :yugo_supervisor, strategy: :one_for_one}
     ]
 
