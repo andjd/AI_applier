@@ -35,7 +35,9 @@ defmodule Applier.MixProject do
       {:ecto_sqlite3, "~> 0.17"},
       {:plug, "~> 1.16"},
       {:bandit, "~> 1.7"},
-      {:phoenix_html, "~> 4.1"}
+      {:phoenix_html, "~> 4.1"},
+      {:temple, "~> 0.14"},
+      {:exsync, "~> 0.4", only: :dev}
     ]
   end
 end
