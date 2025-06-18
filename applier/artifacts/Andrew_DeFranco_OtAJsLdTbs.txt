@@ -1,0 +1,12 @@
+2025-06-17
+
+Dear Hiring Manager,
+
+I'm excited to apply for the Lead Software Engineer position at Kyros Recovery, where I can combine my passion for healthcare technology with my extensive full-stack development experience. Having recently built HIPAA-compliant systems at Kyra Health, I understand the unique challenges of developing secure, scalable healthcare platforms. My experience spans the full technology stack you're seeking: building mobile-responsive applications with React and TypeScript, developing backend services with REST APIs (using Python which translates directly to Node.js/Express patterns), and implementing robust database solutions with SQL including schema design and performance optimization. At Stationhead, I architected secure authentication systems and deployed cloud infrastructure on AWS using Terraform, while at Enterprise I led a 10-developer team rebuilding mobile applications, demonstrating the technical leadership and team-building capabilities essential for growing your engineering organization.
+
+Your need for a solo engineer who can establish best-in-class practices while scaling the team resonates strongly with my startup experience. I joined Stationhead pre-launch, helped pivot to find product-market fit, then architected systems to handle exponential growth while maintaining security standards crucial for your HIPAA-compliant environment. My experience implementing automated testing frameworks, CI/CD pipelines, and observability systems positions me well to establish the operational excellence and security-first culture that Kyros Recovery requires. The opportunity to contribute to substance use disorder recovery through technology is personally meaningful, and I'm eager to bring my proven track record of building scalable, secure healthcare platforms to support your mission of providing centralized access to recovery resources and peer support services.
+
+
+Best,
+
+Andrew DeFranco

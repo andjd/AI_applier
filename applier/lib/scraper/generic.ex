@@ -31,8 +31,8 @@ defmodule Scraper.Generic do
     type = get_field_type(element)
     IO.puts(type)
 
-    # Skip fields with captcha in name or id
-    if captcha_field?(id, name) do
+    # Skip fields with captcha in name or id, or hidden input fields
+    if captcha_field?(id, name) or Playwright.Locator.get_attribute(element, "type") == "hidden" do
       nil
     else
       required = is_field_required(element)
@@ -88,15 +88,20 @@ defmodule Scraper.Generic do
   end
 
   defp get_field_label(page, element) do
-    IO.inspect(element)
     id = Playwright.Locator.get_attribute(element, "id")
     IO.inspect(id)
     if id && String.length(id) > 0 do
-      label_text = Playwright.Page.locator(page, "label[for='#{id}']") |> Playwright.Locator.inner_text()
-      if label_text && String.length(label_text) > 0 do
-        String.trim(label_text)
-      else
-        get_placeholder_or_name_as_label(element)
+      label_locator = Playwright.Page.locator(page, "label[for='#{id}']")
+      case Playwright.Locator.count(label_locator) do
+        0 ->
+          get_placeholder_or_name_as_label(element)
+        _ ->
+          label_text = Playwright.Locator.inner_text(label_locator)
+          if label_text && String.length(label_text) > 0 do
+            String.trim(label_text)
+          else
+            get_placeholder_or_name_as_label(element)
+          end
       end
     else
       get_placeholder_or_name_as_label(element)

@@ -109,7 +109,7 @@ defmodule Main do
         :ok <- Questions.validate_responses(questions, responses) do
           IO.inspect(questions)
           IO.puts("Filling Form")
-          Filler.Greenhouse.fill_form(page, responses, resume, File.read!(txt_filename(filename)))
+          Filler.fill_form(page, responses, resume, File.read!(txt_filename(filename)))
           Process.sleep(600_000)
           IO.puts("Process completed successfully!")
     else
