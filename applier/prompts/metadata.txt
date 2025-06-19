@@ -1,0 +1,14 @@
+What follows is a job description.  Extract the following metadata from the prompt.  If you cannot find the metadata in the job description, enter null as the value. Do not guess.
+
+{
+    "company_name": ___,
+    "job_title": ___,
+    "salary_range_min: ___,
+    "salary_range_max: ___,
+    "salary_period: "year" | "hour", | ...
+    "office_location: ___,
+    "office_attendance": "remote" | "in-person" | "hybrid"
+}
+
+
+Do not wrap the JSON of your response in a code block.  Your output should be machine-readable JSON without modification.
