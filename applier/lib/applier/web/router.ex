@@ -1,5 +1,7 @@
 defmodule Applier.Web.Router do
   use Plug.Router
+  import Phoenix.HTML
+  alias ElixirLS.LanguageServer.Plugins.Phoenix
   alias Applier.Web.Templates.Applications
 
   plug Plug.Static, at: "/", from: :applier
@@ -9,20 +11,20 @@ defmodule Applier.Web.Router do
 
   get "/" do
     applications = Applier.Applications.list_applications()
-    
+
     html = Applications.index(%{applications: applications})
-    
+    IO.inspect(safe_to_string(html))
     conn
     |> put_resp_content_type("text/html")
-    |> send_resp(200, html)
+    |> send_resp(200, safe_to_string(html))
   end
 
   get "/add" do
     html = Applications.add(%{})
-    
+
     conn
     |> put_resp_content_type("text/html")
-    |> send_resp(200, html)
+    |> send_resp(200, safe_to_string(html))
   end
 
   post "/add" do
@@ -31,17 +33,17 @@ defmodule Applier.Web.Router do
         conn
         |> put_resp_header("location", "/")
         |> send_resp(302, "")
-      
+
       {:error, changeset} ->
         errors = Enum.map(changeset.errors, fn {field, {message, _}} ->
           "#{field}: #{message}"
         end) |> Enum.join(", ")
-        
+
         html = Applications.error(%{errors: errors})
-        
+
         conn
         |> put_resp_content_type("text/html")
-        |> send_resp(400, html)
+        |> send_resp(400, safe_to_string(html))
     end
   end
 

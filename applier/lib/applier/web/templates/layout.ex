@@ -1,15 +1,15 @@
 defmodule Applier.Web.Templates.Layout do
+  alias ElixirLS.LanguageServer.Plugins.Phoenix
   use Temple.Component
 
   def app(assigns) do
-    page_title = Map.get(assigns, :title, "Job Applications")
-    
+
     temple do
       "<!DOCTYPE html>"
       html do
         head do
           title do
-            page_title
+            @title
           end
           style do
             """
@@ -24,20 +24,20 @@ defmodule Applier.Web.Templates.Layout do
             .nav a:hover { text-decoration: underline; }
             .form-group { margin-bottom: 15px; }
             label { display: block; margin-bottom: 5px; font-weight: bold; }
-            input[type="text"], input[type="url"], textarea { 
-                width: 100%; 
-                padding: 8px; 
-                border: 1px solid #ddd; 
-                border-radius: 4px; 
+            input[type="text"], input[type="url"], textarea {
+                width: 100%;
+                padding: 8px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
                 font-size: 14px;
             }
             textarea { height: 150px; resize: vertical; }
-            button { 
-                background-color: #007cba; 
-                color: white; 
-                padding: 10px 20px; 
-                border: none; 
-                border-radius: 4px; 
+            button {
+                background-color: #007cba;
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 4px;
                 cursor: pointer;
                 font-size: 14px;
             }
@@ -52,8 +52,8 @@ defmodule Applier.Web.Templates.Layout do
             a href: "/", do: "Applications"
             a href: "/add", do: "Add Application"
           end
-          
-          slot :default
+
+          slot @inner_block
         end
       end
     end
