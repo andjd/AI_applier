@@ -23,4 +23,5 @@ defmodule Helpers.Browser do
   def close_page(page) do
     Playwright.Page.close(page)
   end
+
 end

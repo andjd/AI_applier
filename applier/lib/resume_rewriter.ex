@@ -13,14 +13,11 @@ defmodule ResumeRewriter do
   end
 
   defp parse_yaml(yaml_string) do
-      IO.puts(yaml_string)
       parsed = YamlElixir.read_from_string!(yaml_string)
-      IO.inspect(parsed)
       {:ok, parsed}
   end
 
   defp generate_latex(resume_data, template) do
-  IO.inspect(resume_data)
     try do
       # Convert the template to an EEx template and evaluate it
       latex_output = EEx.eval_file(template, assigns: [

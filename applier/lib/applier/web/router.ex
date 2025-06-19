@@ -13,7 +13,6 @@ defmodule Applier.Web.Router do
     applications = Applier.Applications.list_applications()
 
     html = Applications.index(%{applications: applications})
-    IO.inspect(safe_to_string(html))
     conn
     |> put_resp_content_type("text/html")
     |> send_resp(200, safe_to_string(html))

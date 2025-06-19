@@ -14,6 +14,9 @@ defmodule Applier.Web.Templates.Applications do
               th do: "ID"
               th do: "Company"
               th do: "Job Title"
+              th do: "Salary Range"
+              th do: "Location"
+              th do: "Attendance"
               th do: "Source"
               th do: "Parsed"
               th do: "Approved"
@@ -26,7 +29,6 @@ defmodule Applier.Web.Templates.Applications do
           end
           tbody do
             for app <- @applications do
-              _=IO.inspect(app)
               application_row(app)
             end
           end
@@ -69,20 +71,22 @@ defmodule Applier.Web.Templates.Applications do
   def error(assigns) do
     temple do
       c &Layout.app/1, title: {:safe, "Error - Add Job Application"} do
-        h1 "Error Creating Application"
+        h1 do: raw "Error Creating Application"
         div class: "error", do: @errors
-        a href: "/add", do: "Try again"
+        a href: "/add", do: raw "Try again"
       end
     end
   end
 
   def application_row(app) do
-    IO.inspect(app)
     temple do
       tr do
         td do: app.id
         td do: app.company_name || raw "-"
         td do: app.job_title || raw "-"
+        td do: format_salary_range(app)
+        td do: app.office_location || raw "-"
+        td do: app.office_attendance || raw "-"
         td do
           format_source(app)
         end
@@ -114,6 +118,40 @@ defmodule Applier.Web.Templates.Applications do
         td do: app.errors || raw "-"
         td do: format_datetime(app.inserted_at)
       end
+    end
+  end
+
+  defp format_salary_range(app) do
+    cond do
+      app.salary_range_min && app.salary_range_max && app.salary_period ->
+        min_formatted = format_number(app.salary_range_min)
+        max_formatted = format_number(app.salary_range_max)
+        range = "#{min_formatted} - #{max_formatted}"
+        period = format_salary_period(app.salary_period)
+        html_escape("#{range}#{period}")
+      app.salary_range_min && app.salary_period ->
+        min_formatted = format_number(app.salary_range_min)
+        period = format_salary_period(app.salary_period)
+        html_escape("#{min_formatted}#{period}")
+      true -> raw "-"
+    end
+  end
+
+  defp format_number(number) when is_integer(number) do
+    number
+    |> Integer.to_string()
+    |> String.reverse()
+    |> String.replace(~r/(\d{3})(?=\d)/, "\\1,")
+    |> String.reverse()
+  end
+  defp format_number(value), do: to_string(value)
+
+  defp format_salary_period(period) do
+    case period do
+      "yearly" -> "/year"
+      "monthly" -> "/month"
+      "hourly" -> "/hour"
+      _ -> ""
     end
   end
 

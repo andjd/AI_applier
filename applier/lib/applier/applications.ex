@@ -22,6 +22,16 @@ defmodule Applier.Applications do
   end
 
   @doc """
+  Gets a single application by id, returns {:ok, application} or {:error, :not_found}.
+  """
+  def get_application(id) do
+    case Repo.get(ApplicationRecord, id) do
+      nil -> {:error, :not_found}
+      application -> {:ok, application}
+    end
+  end
+
+  @doc """
   Creates a new application.
   """
   def create_application(attrs \\ %{}) do
@@ -30,9 +40,14 @@ defmodule Applier.Applications do
 
     attrs = Map.put(attrs, "id", Helpers.Hash.generate(id_base))
 
-    %ApplicationRecord{}
-    |> ApplicationRecord.changeset(attrs)
-    |> Repo.insert()
+    with {:ok, application} <- %ApplicationRecord{}
+                              |> ApplicationRecord.changeset(attrs)
+                              |> Repo.insert()
+    do
+      # Trigger background metadata extraction
+      Applier.MetadataExtractor.extract_metadata_async(application.id)
+      {:ok, application}
+    end
   end
 
   @doc """
@@ -42,6 +57,13 @@ defmodule Applier.Applications do
     application
     |> ApplicationRecord.changeset(attrs)
     |> Repo.update()
+  end
+
+  def update_application(id, attrs) when is_binary(id) do
+    case get_application(id) do
+      {:ok, application} -> update_application(application, attrs)
+      error -> error
+    end
   end
 
   @doc """

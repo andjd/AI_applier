@@ -230,8 +230,6 @@ defmodule Scraper.Greenhouse do
   defp extract_visible_options_from_control(container) do
     # Look for the options menu within this specific select control
     IO.puts("Looking For Visible Options")
-    IO.puts(Playwright.Locator.get_attribute(container, :id))
-    IO.inspect(Playwright.Locator.inner_html(container))
     locator = Playwright.Locator.locator(container, ".select__option")
     options = if Playwright.Locator.count(locator) > 0 do
       Playwright.Locator.all(locator)

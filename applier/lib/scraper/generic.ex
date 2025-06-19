@@ -8,7 +8,6 @@ defmodule Scraper.Generic do
 
     questions = Enum.flat_map(input_selectors, fn selector ->
       locator = Playwright.Page.locator(page, selector)
-      IO.inspect(locator)
       elements = if Playwright.Locator.count(locator) > 0 do
         Playwright.Locator.all(locator)
       else
@@ -55,8 +54,6 @@ defmodule Scraper.Generic do
     case Playwright.Locator.get_attribute(element, "nodeName") do
       tag_name when is_binary(tag_name) ->
         tag = String.downcase(tag_name)
-        IO.inspect(tag_name)
-        IO.inspect(tag)
         case tag do
           "select" -> "select"
           "textarea" -> "textarea"
@@ -89,7 +86,6 @@ defmodule Scraper.Generic do
 
   defp get_field_label(page, element) do
     id = Playwright.Locator.get_attribute(element, "id")
-    IO.inspect(id)
     if id && String.length(id) > 0 do
       label_locator = Playwright.Page.locator(page, "label[for='#{id}']")
       case Playwright.Locator.count(label_locator) do

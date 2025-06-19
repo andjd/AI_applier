@@ -3,6 +3,20 @@ defmodule JDInfoExtractor do
   Module for extracting job description information from web pages using Playwright.
   """
 
+  def extract_text(url) when is_binary(url) do
+    with {:ok, browser, page} <- Helpers.Browser.launch_and_navigate(url),
+        {:ok, text, questions} <- extract_text(page),
+        _ <- Helpers.Browser.close_page(page),
+        _ <- Helpers.Browser.close_browser(browser)
+      do
+        {:ok, text, questions}
+      else
+        {:error, reason} -> {:error, reason}
+      end
+  end
+
+
+
   def extract_text(page) do
     with {:ok, text} <- extract_visible_text(page),
          {:ok, questions} <- Scraper.extract_questions(page)
@@ -13,11 +27,13 @@ defmodule JDInfoExtractor do
     end
   end
 
+
+
   def extract_metadata(text) do
     system_prompt = File.read!("prompts/metadata.txt")
     options = %{
       system: system_prompt,
-      model: "claude-haiku-3-20240307"
+      model: "claude-3-haiku-20240307"
     }
 
     with {:ok, response} <- (IO.puts("Extracting metadata from job description..."); Helpers.LLM.ask(text, options)),
@@ -50,7 +66,7 @@ defmodule JDInfoExtractor do
   defp validate_and_filter_metadata(metadata) when is_map(metadata) do
     required_fields = [
       "company_name",
-      "job_title", 
+      "job_title",
       "salary_range_min",
       "salary_range_max",
       "salary_period",
@@ -59,12 +75,12 @@ defmodule JDInfoExtractor do
     ]
 
     missing_fields = required_fields -- Map.keys(metadata)
-    
+
     case missing_fields do
-      [] -> 
+      [] ->
         filtered_metadata = Map.take(metadata, required_fields)
         {:ok, filtered_metadata}
-      _ -> 
+      _ ->
         {:error, "Missing required fields: #{Enum.join(missing_fields, ", ")}"}
     end
   end
