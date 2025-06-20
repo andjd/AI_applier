@@ -3,19 +3,22 @@ defmodule Applier.MetadataExtractor do
 
   alias Applier.{Applications, ApplicationRecord}
 
-  defp perform_metadata_extraction(job_text, application_id) do
+  def process(job_text, application_id) do
     with {:ok, metadata} <- JDInfoExtractor.extract_metadata(job_text, application_id),
          {:ok, _updated_app} <- update_application_with_metadata(application, metadata)
     do
       IO.puts("Successfully extracted metadata for application #{application_id}")
+      {:ok, metadata}
     else
       {:error, reason} ->
         Logger.error("Failed to extract metadata for application #{application_id}: #{inspect(reason)}")
         Applications.update_application(application_id, %{errors: "Metadata extraction failed: #{inspect(reason)}"})
+        {:error, reason}
 
       error ->
         Logger.error("Unexpected error extracting metadata for application #{application_id}: #{inspect(error)}")
         Applications.update_application(application_id, %{errors: "Unexpected metadata extraction error"})
+        {:error, error}
     end
   end
 

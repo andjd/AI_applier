@@ -62,7 +62,7 @@ defmodule Applier.ProcessApplication do
     Logger.info("Parsing metadata for application #{id}")
 
     with job_text <- get_job_text(application),
-      {:ok, metadata} <- Applier.MetadataExtractor.perform_metadata_extraction(job_text, application.id),
+      {:ok, metadata} <- Applier.MetadataExtractor.prodess(job_text, application.id),
         {:ok, updated_app} <- update_with_metadata(application, metadata)
     do
       {:ok, updated_app}
