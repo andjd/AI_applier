@@ -45,6 +45,9 @@ defmodule Filler.Greenhouse do
     Logger.info("Filling field '#{label}' (#{id}) with: #{response}")
 
     cond do
+      is_location_field?(id) ->
+        fill_location_field(page, id, response)
+
       is_greenhouse_select?(page, id) ->
         fill_greenhouse_select(page, id, response)
 
@@ -63,6 +66,10 @@ defmodule Filler.Greenhouse do
 
   defp fill_single_field(_page, _response) do
     {:ok, :skipped}
+  end
+
+  defp is_location_field?(id) do
+    String.contains?(String.downcase(id), "location")
   end
 
   defp is_greenhouse_select?(page, id) do
@@ -143,6 +150,56 @@ defmodule Filler.Greenhouse do
     rescue
       error ->
         {:error, "Failed to click option: #{inspect(error)}"}
+    end
+  end
+
+  defp fill_location_field(page, id, value) do
+    with {:ok, input} <- find_location_input(page, id),
+         :ok <- type_location_and_wait(page, input, value),
+         {:ok, option} <- find_first_location_option(page),
+         :ok <- select_option(option)
+    do
+      Logger.info("Successfully filled location field #{id}")
+      {:ok, :filled}
+    else
+      {:error, reason} ->
+        Logger.error("Failed to fill location field #{id}: #{reason}")
+        {:error, reason}
+    end
+  end
+
+  defp find_location_input(page, id) do
+    selector = ".select__container input[id='#{id}']"
+    input = Playwright.Page.locator(page, selector)
+
+    case Playwright.Locator.count(input) do
+      0 -> {:error, "Location input not found for id: #{id}"}
+      _ -> {:ok, input}
+    end
+  end
+
+  defp type_location_and_wait(page, input, value) do
+    try do
+      # Clear and type the location value
+      Playwright.Locator.clear(input)
+      Playwright.Locator.fill(input, value)
+      
+      # Wait for options to populate
+      :timer.sleep(1000)
+      Playwright.Page.wait_for_selector(page, ".select__option", %{timeout: 5000})
+      :ok
+    rescue
+      error ->
+        {:error, "Failed to type location and wait for options: #{inspect(error)}"}
+    end
+  end
+
+  defp find_first_location_option(page) do
+    options_locator = Playwright.Page.locator(page, ".select__option")
+    
+    case Playwright.Locator.count(options_locator) do
+      0 -> {:error, "No location options found"}
+      _ -> {:ok, Playwright.Locator.first(options_locator)}
     end
   end
 
@@ -236,23 +293,23 @@ defmodule Filler.Greenhouse do
 
   defp find_resume_enter_manually_button(page) do
     # Look for the "Enter manually" button in the resume section
-    selector = "[data-testid='resume-text'], button:has-text('Enter manually')"
-    button = Playwright.Page.locator(page, selector).first()
+    selector = "[data-testid='resume-text']"
+    button = Playwright.Page.locator(page, selector)
 
     case Playwright.Locator.count(button) do
       0 -> {:error, "Resume 'Enter manually' button not found"}
-      _ -> {:ok, button}
+      _ -> {:ok, Playwright.Locator.first(button)}
     end
   end
 
   defp find_cover_letter_enter_manually_button(page) do
     # Look for the "Enter manually" button in the cover letter section
-    selector = "[data-testid='cover_letter-text'], button:has-text('Enter manually')"
-    button = Playwright.Page.locator(page, selector).first()
+    selector = "[data-testid='cover_letter-text']"
+    button = Playwright.Page.locator(page, selector)
 
     case Playwright.Locator.count(button) do
       0 -> {:error, "Cover letter 'Enter manually' button not found"}
-      _ -> {:ok, button}
+      _ -> {:ok, Playwright.Locator.first(button)}
     end
   end
 
@@ -274,7 +331,7 @@ defmodule Filler.Greenhouse do
 
     case Playwright.Locator.count(textarea) do
       0 -> {:error, "Resume textarea not found after clicking 'Enter manually'"}
-      _ -> {:ok, textarea}
+      _ -> {:ok, Playwright.Locator.first(textarea)}
     end
   end
 

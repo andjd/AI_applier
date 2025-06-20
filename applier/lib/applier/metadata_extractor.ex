@@ -5,7 +5,7 @@ defmodule Applier.MetadataExtractor do
 
   def process(job_text, application_id) do
     with {:ok, metadata} <- JDInfoExtractor.extract_metadata(job_text, application_id),
-         {:ok, _updated_app} <- update_application_with_metadata(application, metadata)
+         {:ok, _updated_app} <- update_application_with_metadata(application_id, metadata)
     do
       IO.puts("Successfully extracted metadata for application #{application_id}")
       {:ok, metadata}
@@ -23,7 +23,7 @@ defmodule Applier.MetadataExtractor do
   end
 
 
-  defp update_application_with_metadata(application, metadata) do
+  defp update_application_with_metadata(id, metadata) do
     attrs = %{
       company_name: metadata["company_name"],
       job_title: metadata["job_title"],
@@ -35,7 +35,7 @@ defmodule Applier.MetadataExtractor do
       parsed: true
     }
 
-    Applications.update_application(application.id, attrs)
+    Applications.update_application(id, attrs)
   end
 
   defp cast_salary_value(nil), do: nil

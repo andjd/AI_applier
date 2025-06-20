@@ -3,7 +3,9 @@ defmodule JDInfoExtractor do
   Module for extracting job description information from web pages using Playwright.
   """
 
-  def extract_text(url, application_id \\ nil) when is_binary(url) do
+  def extract_text(url_or_page, application_id \\ nil)
+
+  def extract_text(url, application_id) when is_binary(url) do
     with {:ok, browser, page} <- Helpers.Browser.launch_and_navigate(url),
         {:ok, text, questions} <- extract_text(page, application_id),
         _ <- Helpers.Browser.close_page(page),
@@ -15,9 +17,7 @@ defmodule JDInfoExtractor do
       end
   end
 
-
-
-  def extract_text(page, application_id \\ nil) do
+  def extract_text(page, application_id) do
     with {:ok, text} <- extract_visible_text(page),
          {:ok, questions} <- Scraper.extract_questions(page, application_id)
     do

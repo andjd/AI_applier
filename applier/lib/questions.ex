@@ -1,10 +1,14 @@
 defmodule Questions do
   def answer(resume, questions, application_id \\ nil) do
     system_prompt = File.read!("prompts/questions.txt")
+    standard_questions = File.read!("assets/standard_questions.txt")
 
     user_prompt = """
     Resume:
     #{resume}
+
+    Standard Questions & Answers:
+    #{standard_questions}
 
     Questions:
     #{JSON.encode!(questions)}

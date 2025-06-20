@@ -2,4 +2,4 @@
 "LinkedIn Profile": https://linkedin.com/in/andjd
 "Github Profile", portfolio: https://github.com/andjd/AI_applier
 "Do you require accomoditaions in the interview process": No
-"candidate-location", "Location (City)": Columbus, OH
+"candidate-location", "Location (City)": Columbus, Ohio
