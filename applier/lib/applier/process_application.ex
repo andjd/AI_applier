@@ -93,7 +93,7 @@ defmodule Applier.ProcessApplication do
 
     with job_text <- get_job_text(application),
          {:ok, short_id} <- get_short_id(application),
-         {:ok, _cover_letter} <- generate_cover_letter_if_needed(job_text, short_id),
+         {:ok, _cover_letter} <- generate_cover_letter_if_needed(job_text, short_id, id),
          {:ok, updated_app} <- Applications.update_application(id, %{docs_generated: true})
     do
       Logger.info("Successfully generated documents for application #{id}")
@@ -121,7 +121,7 @@ defmodule Applier.ProcessApplication do
 
     with job_text <- get_job_text(application),
          {:ok, short_id} <- get_short_id(application),
-         {:ok, _result} <- fill_application_form(form_url, job_text, short_id),
+         {:ok, _result} <- fill_application_form(form_url, job_text, short_id, id),
          {:ok, updated_app} <- Applications.update_application(id, %{form_filled: true})
     do
       Logger.info("Successfully filled form for application #{id}")
@@ -156,8 +156,8 @@ defmodule Applier.ProcessApplication do
 
   # Helper functions
   defp get_job_text(%ApplicationRecord{source_text: text}) when not is_nil(text), do: text
-  defp get_job_text(%ApplicationRecord{source_url: url}) when not is_nil(url) do
-    case JDInfoExtractor.extract_text(url) do
+  defp get_job_text(%ApplicationRecord{source_url: url, id: id}) when not is_nil(url) do
+    case JDInfoExtractor.extract_text(url, id) do
       {:ok, text, _questions} -> text
       {:error, _reason} -> ""
     end
@@ -202,7 +202,7 @@ defmodule Applier.ProcessApplication do
   end
   defp cast_salary_value(_), do: nil
 
-  defp generate_cover_letter_if_needed(job_text, short_id) do
+  defp generate_cover_letter_if_needed(job_text, short_id, application_id) do
     pdf_path = "artifacts/Andrew_DeFranco_#{short_id}.pdf"
     txt_path = "artifacts/Andrew_DeFranco_#{short_id}.txt"
 
@@ -215,8 +215,8 @@ defmodule Applier.ProcessApplication do
         Logger.info("Generating new cover letter for #{short_id}")
         resume = File.read!("assets/resume.yaml")
 
-        with {:safe, _} <- validate_job_text(job_text),
-             {:ok, cover_letter} <- CoverLetter.generate(resume, job_text),
+        with {:safe, _} <- validate_job_text(job_text, application_id),
+             {:ok, cover_letter} <- CoverLetter.generate(resume, job_text, application_id),
              {:ok, pdf} <- CoverLetter.render(cover_letter),
              {:ok, text} <- CoverLetter.to_text(cover_letter),
              :ok <- ensure_artifacts_dir(),
@@ -229,18 +229,18 @@ defmodule Applier.ProcessApplication do
     end
   end
 
-  defp fill_application_form(form_url, _job_text, short_id) do
+  defp fill_application_form(form_url, _job_text, short_id, application_id) do
     Logger.info("Starting form filling process for #{short_id}")
     resume = File.read!("assets/resume.yaml")
 
     with {:ok, browser, page} <- Helpers.Browser.launch_and_navigate(form_url),
-         {:ok, _text, questions} <- JDInfoExtractor.extract_text(page),
+         {:ok, _text, questions} <- JDInfoExtractor.extract_text(page, application_id),
          {:ok, responses} <- (if is_nil(questions) do
            Logger.info("No questions found for form")
            {:ok, nil}
          else
            Logger.info("Answering form questions")
-           Questions.answer(resume, questions)
+           Questions.answer(resume, questions, application_id)
          end),
          :ok <- Questions.validate_responses(questions, responses),
          :ok <- Filler.fill_form(page, responses, resume, get_cover_letter_text(short_id)),
@@ -272,8 +272,8 @@ defmodule Applier.ProcessApplication do
     end
   end
 
-  defp validate_job_text(job_text) do
-    case TextValidator.validate_text(job_text) do
+  defp validate_job_text(job_text, application_id) do
+    case TextValidator.validate_text(job_text, application_id) do
       {:safe, _} = result -> result
       {:dangerous, _} -> {:error, "Text validation failed - content contains potentially dangerous content"}
       {:manual, _} -> {:error, "Text validation requires manual review"}
