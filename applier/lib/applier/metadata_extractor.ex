@@ -3,16 +3,8 @@ defmodule Applier.MetadataExtractor do
 
   alias Applier.{Applications, ApplicationRecord}
 
-  def extract_metadata_async(application_id) do
-    Task.start(fn ->
-      perform_metadata_extraction(application_id)
-    end)
-  end
-
-  defp perform_metadata_extraction(application_id) do
-    with {:ok, application} <- Applications.get_application(application_id),
-         job_text <- get_job_text(application),
-         {:ok, metadata} <- JDInfoExtractor.extract_metadata(job_text),
+  defp perform_metadata_extraction(job_text, application_id) do
+    with {:ok, metadata} <- JDInfoExtractor.extract_metadata(job_text, application_id),
          {:ok, _updated_app} <- update_application_with_metadata(application, metadata)
     do
       IO.puts("Successfully extracted metadata for application #{application_id}")
@@ -27,14 +19,6 @@ defmodule Applier.MetadataExtractor do
     end
   end
 
-  defp get_job_text(%ApplicationRecord{source_text: text}) when not is_nil(text), do: text
-  defp get_job_text(%ApplicationRecord{source_url: url}) when not is_nil(url) do
-    case JDInfoExtractor.extract_text(url) do
-      {:ok, text, _questions} -> text
-      {:error, reason} -> {:error, reason}
-    end
-  end
-  defp get_job_text(_), do: {:error, "No source."}
 
   defp update_application_with_metadata(application, metadata) do
     attrs = %{

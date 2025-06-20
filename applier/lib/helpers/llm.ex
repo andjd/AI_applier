@@ -6,7 +6,7 @@ defmodule Helpers.LLM do
   @api_url "https://api.anthropic.com/v1/messages"
   @cache_dir ".cache"
 
-  def ask(prompt, options \\ %{}) do
+  def ask(prompt, application_id \\ nil, options \\ %{}) do
     default_options = %{
       model: "claude-sonnet-4-20250514",
       max_tokens: 3000,
@@ -15,17 +15,21 @@ defmodule Helpers.LLM do
     }
 
     merged_options = Map.merge(default_options, options)
-    cache_key = generate_cache_key(prompt, merged_options)
-
-    case read_cache(cache_key) do
-      {:ok, cached_result} ->
-        {:ok, cached_result}
-      :miss ->
-        make_api_request_and_cache(prompt, merged_options, cache_key)
+    
+    case application_id do
+      nil ->
+        make_api_request_without_cache(prompt, merged_options)
+      app_id ->
+        case read_cache(app_id) do
+          {:ok, cached_result} ->
+            {:ok, cached_result}
+          :miss ->
+            make_api_request_and_cache(prompt, merged_options, app_id)
+        end
     end
   end
 
-  defp make_api_request_and_cache(prompt, options, cache_key) do
+  defp make_api_request_and_cache(prompt, options, application_id) do
     payload = build_payload(prompt, options)
 
     case Req.post(@api_url,
@@ -37,7 +41,7 @@ defmodule Helpers.LLM do
              receive_timeout: options.receive_timeout
            ) do
       {:ok, %Req.Response{status: 200, body: %{"content" => [%{"text" => text}]}}} ->
-        write_cache(cache_key, text)
+        write_cache(application_id, text)
         {:ok, text}
       {:ok, %Req.Response{status: status_code, body: body}} ->
         {:error, "API request failed with status #{status_code}: #{inspect(body)}"}
@@ -101,14 +105,24 @@ defmodule Helpers.LLM do
     end
   end
 
-  defp generate_cache_key(prompt, options) do
-    cache_data = Map.put(options, :prompt, prompt)
+  defp make_api_request_without_cache(prompt, options) do
+    payload = build_payload(prompt, options)
 
-    cache_data
-    |> JSON.encode!()
-    |> then(&:crypto.hash(:sha256, &1))
-    |> String.slice(0..8)
-    |> Base.encode16(case: :lower)
+    case Req.post(@api_url,
+             json: payload,
+             headers: [
+               {"x-api-key", get_api_key()},
+               {"anthropic-version", "2023-06-01"}
+             ],
+             receive_timeout: options.receive_timeout
+           ) do
+      {:ok, %Req.Response{status: 200, body: %{"content" => [%{"text" => text}]}}} ->
+        {:ok, text}
+      {:ok, %Req.Response{status: status_code, body: body}} ->
+        {:error, "API request failed with status #{status_code}: #{inspect(body)}"}
+      {:error, reason} ->
+        {:error, "HTTP request failed: #{inspect(reason)}"}
+    end
   end
 
   defp ensure_cache_dir do
@@ -118,12 +132,12 @@ defmodule Helpers.LLM do
     end
   end
 
-  defp get_cache_file_path(cache_key) do
-    Path.join(@cache_dir, "llm_cache_#{cache_key}.json")
+  defp get_cache_file_path(application_id) do
+    Path.join(@cache_dir, "llm_cache_#{application_id}.json")
   end
 
-  defp read_cache(cache_key) do
-    cache_file = get_cache_file_path(cache_key)
+  defp read_cache(application_id) do
+    cache_file = get_cache_file_path(application_id)
 
     case File.read(cache_file) do
       {:ok, content} ->
@@ -135,15 +149,15 @@ defmodule Helpers.LLM do
     end
   end
 
-  defp write_cache(cache_key, result) do
+  defp write_cache(application_id, result) do
     with :ok <- ensure_cache_dir(),
          cache_data = %{
            timestamp: DateTime.utc_now() |> DateTime.to_iso8601(),
-           request_hash: cache_key,
+           application_id: application_id,
            result: result
          },
          json <- JSON.encode!(cache_data),
-         cache_file = get_cache_file_path(cache_key),
+         cache_file = get_cache_file_path(application_id),
          :ok <- File.write(cache_file, json) do
       :ok
     else

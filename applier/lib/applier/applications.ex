@@ -47,7 +47,7 @@ defmodule Applier.Applications do
                               |> Repo.insert()
     do
       # Trigger background metadata extraction
-      Applier.MetadataExtractor.extract_metadata_async(application.id)
+      Applier.ProcessApplication.process_async(application.id)
       {:ok, application}
     end
   end

@@ -3,11 +3,11 @@ defmodule TextValidator do
   Module for validating text using LLM-based prompt injection screening.
   """
 
-  def validate_text(text) do
+  def validate_text(text, application_id \\ nil) do
     system_prompt = File.read!("prompts/prompt_injection_screen.txt")
     user_prompt = "%%%Commencer%%%\n#{text}"
 
-    case Helpers.LLM.ask(user_prompt, %{system: system_prompt}) do
+    case Helpers.LLM.ask(user_prompt, application_id, %{system: system_prompt}) do
       {:ok, response} ->
         case classify_response(response) do
           {:error, message} -> {:error, message}

@@ -3,9 +3,9 @@ defmodule JDInfoExtractor do
   Module for extracting job description information from web pages using Playwright.
   """
 
-  def extract_text(url) when is_binary(url) do
+  def extract_text(url, application_id \\ nil) when is_binary(url) do
     with {:ok, browser, page} <- Helpers.Browser.launch_and_navigate(url),
-        {:ok, text, questions} <- extract_text(page),
+        {:ok, text, questions} <- extract_text(page, application_id),
         _ <- Helpers.Browser.close_page(page),
         _ <- Helpers.Browser.close_browser(browser)
       do
@@ -17,9 +17,9 @@ defmodule JDInfoExtractor do
 
 
 
-  def extract_text(page) do
+  def extract_text(page, application_id \\ nil) do
     with {:ok, text} <- extract_visible_text(page),
-         {:ok, questions} <- Scraper.extract_questions(page)
+         {:ok, questions} <- Scraper.extract_questions(page, application_id)
     do
       {:ok, text, questions}
     else
@@ -29,14 +29,14 @@ defmodule JDInfoExtractor do
 
 
 
-  def extract_metadata(text) do
+  def extract_metadata(text, application_id \\ nil) do
     system_prompt = File.read!("prompts/metadata.txt")
     options = %{
       system: system_prompt,
       model: "claude-3-haiku-20240307"
     }
 
-    with {:ok, response} <- (IO.puts("Extracting metadata from job description..."); Helpers.LLM.ask(text, options)),
+    with {:ok, response} <- (IO.puts("Extracting metadata from job description..."); Helpers.LLM.ask(text, application_id, options)),
          {:ok, metadata} <- (IO.puts("Parsing metadata JSON..."); parse_metadata_json(response))
     do
       IO.puts("Metadata extraction completed successfully!")

@@ -4,7 +4,7 @@ defmodule CoverLetter do
   """
 
 
-  def generate(resume, job_description) do
+  def generate(resume, job_description, application_id \\ nil) do
     system_prompt = File.read!("prompts/cover_letter.txt")
 
     user_prompt = """
@@ -17,7 +17,7 @@ defmodule CoverLetter do
 
     options = %{system: system_prompt}
 
-    case Helpers.LLM.ask(user_prompt, options) do
+    case Helpers.LLM.ask(user_prompt, application_id, options) do
       {:ok, text} ->
         extract_cover_letter(text)
       {:error, reason} ->

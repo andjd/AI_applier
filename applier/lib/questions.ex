@@ -1,5 +1,5 @@
 defmodule Questions do
-  def answer(resume, questions) do
+  def answer(resume, questions, application_id \\ nil) do
     system_prompt = File.read!("prompts/questions.txt")
 
     user_prompt = """
@@ -12,7 +12,7 @@ defmodule Questions do
 
     options = %{system: system_prompt}
 
-    case Helpers.LLM.ask(user_prompt, options) do
+    case Helpers.LLM.ask(user_prompt, application_id, options) do
       {:ok, text} ->
         IO.inspect text
         Helpers.LLM.decode_json(text)
