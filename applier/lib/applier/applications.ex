@@ -38,7 +38,9 @@ defmodule Applier.Applications do
 
     id_base = Map.get(attrs, "source_url") || Map.get(attrs, "source_text") || inspect(:calendar.local_time())
 
-    attrs = Map.put(attrs, "id", Helpers.Hash.generate(id_base))
+    attrs = attrs
+      |> Map.put("id", Helpers.Hash.generate(id_base))
+      |> Map.put("approved", true)
 
     with {:ok, application} <- %ApplicationRecord{}
                               |> ApplicationRecord.changeset(attrs)
