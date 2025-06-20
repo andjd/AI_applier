@@ -25,6 +25,7 @@ defmodule Applier.Web.Templates.Applications do
               th do: "Submitted"
               th do: "Errors"
               th do: "Created"
+              th do: "Actions"
             end
           end
           tbody do
@@ -117,6 +118,7 @@ defmodule Applier.Web.Templates.Applications do
         end
         td do: app.errors || raw "-"
         td do: format_datetime(app.inserted_at)
+        td do: action_button(app)
       end
     end
   end
@@ -167,5 +169,63 @@ defmodule Applier.Web.Templates.Applications do
 
   defp format_datetime(datetime) do
     html_escape "#{datetime.month}/#{datetime.day}/#{datetime.year}"
+  end
+
+  defp action_button(app) do
+    temple do
+      cond do
+        !app.parsed ->
+          button disabled: true, class: "btn btn-disabled" do
+            "Processing..."
+          end
+        
+        !app.approved ->
+          form action: "/applications/#{app.id}/approve", method: "post", style: "display: inline;" do
+            button type: "submit", class: "btn btn-primary" do
+              "Approve"
+            end
+          end
+        
+        app.approved && !app.docs_generated ->
+          form action: "/applications/#{app.id}/retry", method: "post", style: "display: inline;" do
+            button type: "submit", class: "btn btn-secondary" do
+              "Generate Docs"
+            end
+          end
+        
+        app.docs_generated && !app.form_filled ->
+          form action: "/applications/#{app.id}/retry", method: "post", style: "display: inline;" do
+            button type: "submit", class: "btn btn-secondary" do
+              "Fill Form"
+            end
+          end
+        
+        app.form_filled && !app.submitted ->
+          form action: "/applications/#{app.id}/retry", method: "post", style: "display: inline;" do
+            button type: "submit", class: "btn btn-secondary" do
+              "Submit"
+            end
+          end
+        
+        app.submitted ->
+          button disabled: true, class: "btn btn-success" do
+            "Complete"
+          end
+        
+        app.errors ->
+          form action: "/applications/#{app.id}/retry", method: "post", style: "display: inline;" do
+            button type: "submit", class: "btn btn-warning" do
+              "Retry"
+            end
+          end
+        
+        true ->
+          form action: "/applications/#{app.id}/retry", method: "post", style: "display: inline;" do
+            button type: "submit", class: "btn btn-secondary" do
+              "Continue"
+            end
+          end
+      end
+    end
   end
 end

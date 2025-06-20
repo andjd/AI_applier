@@ -46,6 +46,34 @@ defmodule Applier.Web.Router do
     end
   end
 
+  post "/applications/:id/approve" do
+    case Applier.Applications.approve_application(id) do
+      {:ok, _application} ->
+        conn
+        |> put_resp_header("location", "/")
+        |> send_resp(302, "")
+
+      {:error, reason} ->
+        conn
+        |> put_resp_content_type("text/plain")
+        |> send_resp(400, "Failed to approve application: #{inspect(reason)}")
+    end
+  end
+
+  post "/applications/:id/retry" do
+    case Applier.Applications.retry_application(id) do
+      {:ok, _application} ->
+        conn
+        |> put_resp_header("location", "/")
+        |> send_resp(302, "")
+
+      {:error, reason} ->
+        conn
+        |> put_resp_content_type("text/plain")
+        |> send_resp(400, "Failed to retry application: #{inspect(reason)}")
+    end
+  end
+
   match _ do
     send_resp(conn, 404, "Not found")
   end

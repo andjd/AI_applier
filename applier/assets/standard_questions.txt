@@ -1,0 +1,5 @@
+"preferred_name", "Preferred First Name",  "What's the name you'd prefer us to use throughout the interview process?" : Andrew
+"LinkedIn Profile": https://linkedin.com/in/andjd
+"Github Profile", portfolio: https://github.com/andjd/AI_applier
+"Do you require accomoditaions in the interview process": No
+"candidate-location", "Location (City)": Columbus, OH

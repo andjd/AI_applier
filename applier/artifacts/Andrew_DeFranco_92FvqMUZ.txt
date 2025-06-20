@@ -1,0 +1,12 @@
+2025-06-20
+
+Dear Hiring Manager,
+
+I'm excited to apply for the Backend Engineer position in Security Insights at GitLab. Your mission to enable everyone to contribute to software development resonates deeply with my experience building scalable systems that empower developers and security professionals. While I don't have direct Ruby on Rails experience, I bring extensive backend development expertise with Python, TypeScript, and Elixir that translates directly to Rails environments, combined with strong SQL database experience that aligns perfectly with your PostgreSQL requirements. My recent work at Kyra Health involved building HIPAA-compliant, LLM-powered tools for healthcare applications, demonstrating my ability to develop secure, well-tested systems that handle sensitive data - directly relevant to vulnerability management workflows.
+
+Throughout my career leading teams at Enterprise Mobility, Stationhead, and other organizations, I've consistently owned projects from concept to production while maintaining high standards for performance and security. At Stationhead, I architected scalable microservices, implemented cryptographically signed payloads to harden against security attacks, and built load-testing infrastructure to handle high-scale scenarios - experience that directly applies to GitLab's need for vulnerability management systems that scale effectively. My leadership experience managing a 10-developer team at Enterprise and founding the Android team at Stationhead has developed the strong communication and collaboration skills essential for working with product managers, designers, and cross-functional stakeholders in GitLab's agile environment.
+
+
+Best,
+
+Andrew DeFranco

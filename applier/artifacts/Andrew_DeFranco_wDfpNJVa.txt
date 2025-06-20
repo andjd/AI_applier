@@ -1,0 +1,12 @@
+2025-06-20
+
+Dear Hiring Manager,
+
+I'm excited to apply for the Staff Software Engineer position at Orum, where I can leverage my 9+ years of full-stack development experience to help accelerate sales teams through meaningful conversations. Your mission to make work more human resonates deeply with my experience building products that connect people, particularly from my time at Stationhead where I helped create a social network that brought musicians and fans together through live conversations and real-time interactions.
+
+My background aligns perfectly with Orum's technical needs and leadership requirements. I have extensive experience with your core stack including NodeJS, TypeScript, PostgreSQL, and React, along with proven expertise in performance optimization of NodeJS applications and cloud infrastructure on AWS. At Stationhead, I architected real-time features using WebSockets and event-based systems similar to your SIP Softswitch routing, while at Enterprise I led a 10-developer team through a greenfield mobile app rebuild. My experience spans the full product lifecycle from conception to deployment, including building scalable microservices, optimizing database performance, and implementing CI/CD pipelines. Having worked at multiple startups including Kyra Health and Neeva, I understand the pace and adaptability required to drive significant impact while mentoring team members and establishing engineering best practices.
+
+
+Best,
+
+Andrew DeFranco

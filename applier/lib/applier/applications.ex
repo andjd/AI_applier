@@ -79,4 +79,28 @@ defmodule Applier.Applications do
   def change_application(%ApplicationRecord{} = application, attrs \\ %{}) do
     ApplicationRecord.changeset(application, attrs)
   end
+
+  @doc """
+  Approves an application by setting approved to true and triggering processing.
+  """
+  def approve_application(id) when is_binary(id) do
+    with {:ok, application} <- update_application(id, %{approved: true, errors: nil})
+    do
+      # Trigger background processing
+      Applier.ProcessApplication.process_async(id)
+      {:ok, application}
+    end
+  end
+
+  @doc """
+  Retries an application by resetting error state and continuing pipeline.
+  """
+  def retry_application(id) when is_binary(id) do
+    with {:ok, application} <- update_application(id, %{errors: nil})
+    do
+      # Trigger background processing
+      Applier.ProcessApplication.process_async(id)
+      {:ok, application}
+    end
+  end
 end

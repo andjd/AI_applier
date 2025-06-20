@@ -265,7 +265,11 @@ defmodule Scraper.Greenhouse do
   defp is_location_field?(_), do: false
 
   defp is_demographic_field?(page, element) do
-    # Check if the element is inside the demographic section
+    # Check if the element is inside the demographic section (either by ID or class)
+    is_in_demographic_id_section(page, element) || is_in_eeoc_container(page, element)
+  end
+
+  defp is_in_demographic_id_section(page, element) do
     demographic_section = Playwright.Page.locator(page, "#demographic-section")
     case Playwright.Locator.count(demographic_section) do
       0 -> false
@@ -286,8 +290,35 @@ defmodule Scraper.Greenhouse do
     end
   end
 
+  defp is_in_eeoc_container(page, element) do
+    eeoc_containers = Playwright.Page.locator(page, ".eeoc__container")
+    case Playwright.Locator.count(eeoc_containers) do
+      0 -> false
+      _ ->
+        # Check if the element is contained within any EEOC container
+        Playwright.Locator.all(eeoc_containers)
+        |> Enum.any?(fn eeoc_container ->
+          eeoc_locator = Playwright.Locator.locator(eeoc_container, "*")
+          if Playwright.Locator.count(eeoc_locator) > 0 do
+            Playwright.Locator.all(eeoc_locator)
+            |> Enum.any?(fn eeoc_element ->
+              element_id = Playwright.Locator.get_attribute(element, "id")
+              eeoc_id = Playwright.Locator.get_attribute(eeoc_element, "id")
+              element_id && eeoc_id && element_id == eeoc_id
+            end)
+          else
+            false
+          end
+        end)
+    end
+  end
+
   defp is_demographic_container?(page, container) do
-    # Check if the container is inside the demographic section
+    # Check if the container is inside the demographic section (either by ID or class)
+    is_container_in_demographic_id_section(page, container) || is_container_in_eeoc_container(page, container)
+  end
+
+  defp is_container_in_demographic_id_section(page, container) do
     demographic_section = Playwright.Page.locator(page, "#demographic-section")
     case Playwright.Locator.count(demographic_section) do
       0 -> false
@@ -306,6 +337,30 @@ defmodule Scraper.Greenhouse do
           false
         end
         containers_inside_demo
+    end
+  end
+
+  defp is_container_in_eeoc_container(page, container) do
+    eeoc_containers = Playwright.Page.locator(page, ".eeoc__container")
+    case Playwright.Locator.count(eeoc_containers) do
+      0 -> false
+      _ ->
+        # Check if the container is contained within any EEOC container
+        Playwright.Locator.all(eeoc_containers)
+        |> Enum.any?(fn eeoc_container ->
+          eeoc_select_locator = Playwright.Locator.locator(eeoc_container, ".select__container")
+          if Playwright.Locator.count(eeoc_select_locator) > 0 do
+            Playwright.Locator.all(eeoc_select_locator)
+            |> Enum.any?(fn eeoc_select_container ->
+              # Compare by checking if they're the same element (simplified check)
+              container_html = Playwright.Locator.inner_html(container)
+              eeoc_html = Playwright.Locator.inner_html(eeoc_select_container)
+              container_html == eeoc_html
+            end)
+          else
+            false
+          end
+        end)
     end
   end
 
