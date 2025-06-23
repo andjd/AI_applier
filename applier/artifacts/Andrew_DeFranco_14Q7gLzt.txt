@@ -1,0 +1,12 @@
+2025-06-20
+
+Dear Hiring Manager,
+
+I'm excited to apply for the Senior Technical Program Manager role at GitLab, where I can leverage my 9+ years of technical leadership experience to help build your R&D PMO from "zero to one." My background as a product-focused full-stack developer who has led cross-functional initiatives at both enterprise scale (Enterprise Mobility's market-leading rental car platform) and high-growth startups (Neeva, Stationhead, Kyra Health) directly aligns with your need for someone who can manage complex technical programs while collaborating across engineering, product, and business stakeholders. At Enterprise, I headed a 10-developer team in a greenfield rebuild of mobile applications, while at Stationhead I architected their first microservice - planning end-to-end delivery that included payments integrations, security hardening, database infrastructure, and API design using REST and WebSockets.
+
+Your emphasis on AI-powered DevSecOps particularly resonates with my recent experience building HIPAA-compliant LLM-powered tools at Kyra Health and launching AI-powered mobile search experiences at Neeva. I've consistently driven operational excellence and process improvement throughout my career, from creating reactive state-management frameworks that reduced bugs by 80% to optimizing autoscaling infrastructure on AWS and building load-testing systems for high-scale scenarios. My experience spans the full technical stack including Python, TypeScript, cloud architecture, and modern development practices, giving me the technical depth to effectively collaborate with GitLab's engineering teams while translating complex technical initiatives into strategic business outcomes.
+
+
+Best,
+
+Andrew DeFranco

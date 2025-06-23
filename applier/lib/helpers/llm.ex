@@ -6,6 +6,12 @@ defmodule Helpers.LLM do
   @api_url "https://api.anthropic.com/v1/messages"
   @cache_dir ".cache"
 
+  defp generate_prompt_hash(prompt, options) do
+    # Create a hash of the prompt and relevant options to ensure cache uniqueness
+    hash_input = "#{prompt}#{options[:system]}#{options[:model]}"
+    :crypto.hash(:sha256, hash_input) |> Base.encode16(case: :lower) |> String.slice(0, 8)
+  end
+
   def ask(prompt, application_id \\ nil, options \\ %{}) do
     default_options = %{
       model: "claude-sonnet-4-20250514",
@@ -20,16 +26,17 @@ defmodule Helpers.LLM do
       nil ->
         make_api_request_without_cache(prompt, merged_options)
       app_id ->
-        case read_cache(app_id) do
+        prompt_hash = generate_prompt_hash(prompt, merged_options)
+        case read_cache(app_id, prompt_hash) do
           {:ok, cached_result} ->
             {:ok, cached_result}
           :miss ->
-            make_api_request_and_cache(prompt, merged_options, app_id)
+            make_api_request_and_cache(prompt, merged_options, app_id, prompt_hash)
         end
     end
   end
 
-  defp make_api_request_and_cache(prompt, options, application_id) do
+  defp make_api_request_and_cache(prompt, options, application_id, prompt_hash) do
     payload = build_payload(prompt, options)
 
     case Req.post(@api_url,
@@ -41,7 +48,7 @@ defmodule Helpers.LLM do
              receive_timeout: options.receive_timeout
            ) do
       {:ok, %Req.Response{status: 200, body: %{"content" => [%{"text" => text}]}}} ->
-        write_cache(application_id, text)
+        write_cache(application_id, prompt_hash, text)
         {:ok, text}
       {:ok, %Req.Response{status: status_code, body: body}} ->
         {:error, "API request failed with status #{status_code}: #{inspect(body)}"}
@@ -132,12 +139,12 @@ defmodule Helpers.LLM do
     end
   end
 
-  defp get_cache_file_path(application_id) do
-    Path.join(@cache_dir, "llm_cache_#{application_id}.json")
+  defp get_cache_file_path(application_id, prompt_hash) do
+    Path.join(@cache_dir, "llm_cache_#{application_id}_#{prompt_hash}.json")
   end
 
-  defp read_cache(application_id) do
-    cache_file = get_cache_file_path(application_id)
+  defp read_cache(application_id, prompt_hash) do
+    cache_file = get_cache_file_path(application_id, prompt_hash)
 
     case File.read(cache_file) do
       {:ok, content} ->
@@ -149,7 +156,7 @@ defmodule Helpers.LLM do
     end
   end
 
-  defp write_cache(application_id, result) do
+  defp write_cache(application_id, prompt_hash, result) do
     with :ok <- ensure_cache_dir(),
          cache_data = %{
            timestamp: DateTime.utc_now() |> DateTime.to_iso8601(),
@@ -157,7 +164,7 @@ defmodule Helpers.LLM do
            result: result
          },
          json <- JSON.encode!(cache_data),
-         cache_file = get_cache_file_path(application_id),
+         cache_file = get_cache_file_path(application_id, prompt_hash),
          :ok <- File.write(cache_file, json) do
       :ok
     else
