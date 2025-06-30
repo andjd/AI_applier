@@ -207,15 +207,26 @@ defmodule Applier.Web.Templates.Applications do
           end
 
         app.form_filled && !app.submitted ->
-          form action: "/applications/#{app.id}/retry", method: "post", style: "display: inline;" do
-            button type: "submit", class: "btn btn-secondary" do
-              "Submit"
+          # Show both "Fill Form" and "Mark Complete" buttons
+          div style: "display: flex; gap: 5px;" do
+            form action: "/applications/#{app.id}/retry", method: "post", style: "display: inline;" do
+              button type: "submit", class: "btn btn-secondary" do
+                "Fill Form"
+              end
+            end
+            form action: "/applications/#{app.id}/complete", method: "post", style: "display: inline;" do
+              button type: "submit", class: "btn btn-success" do
+                "Mark Complete"
+              end
             end
           end
 
         app.submitted ->
-          button disabled: true, class: "btn btn-success" do
-            "Complete"
+          # Show "Fill Form" button even when complete
+          form action: "/applications/#{app.id}/retry", method: "post", style: "display: inline;" do
+            button type: "submit", class: "btn btn-secondary" do
+              "Fill Form"
+            end
           end
 
         app.errors ->

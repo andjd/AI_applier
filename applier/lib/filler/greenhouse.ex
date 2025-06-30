@@ -253,19 +253,27 @@ defmodule Filler.Greenhouse do
   end
 
   defp handle_resume_upload(page, resume_text) when is_binary(resume_text) and resume_text != "" do
-    Logger.info("Handling resume upload via 'enter manually'")
+    # First check if the form has resume upload fields
+    case form_has_resume_fields?(page) do
+      false ->
+        Logger.info("Form does not request resume upload, skipping")
+        {:ok, :resume_handled}
+      
+      true ->
+        Logger.info("Form requests resume upload, handling via 'enter manually'")
 
-    with {:ok, enter_button} <- find_resume_enter_manually_button(page),
-         :ok <- click_enter_manually_button(enter_button),
-         {:ok, textarea} <- find_resume_textarea(page),
-         :ok <- fill_resume_textarea(textarea, resume_text)
-    do
-      Logger.info("Successfully uploaded resume via text entry")
-      {:ok, :resume_handled}
-    else
-      {:error, reason} ->
-        Logger.error("Failed to handle resume upload: #{reason}")
-        {:error, reason}
+        with {:ok, enter_button} <- find_resume_enter_manually_button(page),
+             :ok <- click_enter_manually_button(enter_button),
+             {:ok, textarea} <- find_resume_textarea(page),
+             :ok <- fill_resume_textarea(textarea, resume_text)
+        do
+          Logger.info("Successfully uploaded resume via text entry")
+          {:ok, :resume_handled}
+        else
+          {:error, reason} ->
+            Logger.error("Failed to handle resume upload: #{reason}")
+            {:error, reason}
+        end
     end
   end
 
@@ -280,25 +288,65 @@ defmodule Filler.Greenhouse do
   end
 
   defp handle_cover_letter_upload(page, cover_letter_text) when is_binary(cover_letter_text) and cover_letter_text != "" do
-    Logger.info("Handling cover letter upload via 'enter manually'")
+    # First check if the form has cover letter upload fields
+    case form_has_cover_letter_fields?(page) do
+      false ->
+        Logger.info("Form does not request cover letter upload, skipping")
+        {:ok, :cover_letter_handled}
+      
+      true ->
+        Logger.info("Form requests cover letter upload, handling via 'enter manually'")
 
-    with {:ok, enter_button} <- find_cover_letter_enter_manually_button(page),
-         :ok <- click_enter_manually_button(enter_button),
-         {:ok, textarea} <- find_cover_letter_textarea(page),
-         :ok <- fill_cover_letter_textarea(textarea, cover_letter_text)
-    do
-      Logger.info("Successfully uploaded cover letter via text entry")
-      {:ok, :cover_letter_handled}
-    else
-      {:error, reason} ->
-        Logger.error("Failed to handle cover letter upload: #{reason}")
-        {:error, reason}
+        with {:ok, enter_button} <- find_cover_letter_enter_manually_button(page),
+             :ok <- click_enter_manually_button(enter_button),
+             {:ok, textarea} <- find_cover_letter_textarea(page),
+             :ok <- fill_cover_letter_textarea(textarea, cover_letter_text)
+        do
+          Logger.info("Successfully uploaded cover letter via text entry")
+          {:ok, :cover_letter_handled}
+        else
+          {:error, reason} ->
+            Logger.error("Failed to handle cover letter upload: #{reason}")
+            {:error, reason}
+        end
     end
   end
 
   defp handle_cover_letter_upload(_page, _cover_letter_text) do
     Logger.info("Invalid cover letter text, skipping cover letter upload")
     {:ok, :cover_letter_handled}
+  end
+
+  # Check if the form has resume upload fields
+  defp form_has_resume_fields?(page) do
+    resume_selectors = [
+      "[data-testid='resume-text']",
+      "[data-testid*='resume']",
+      "input[type='file'][name*='resume']",
+      "textarea[name*='resume']",
+      "*[id*='resume']"
+    ]
+
+    Enum.any?(resume_selectors, fn selector ->
+      element = Playwright.Page.locator(page, selector)
+      Playwright.Locator.count(element) > 0
+    end)
+  end
+
+  # Check if the form has cover letter upload fields
+  defp form_has_cover_letter_fields?(page) do
+    cover_letter_selectors = [
+      "[data-testid='cover_letter-text']",
+      "[data-testid*='cover']",
+      "input[type='file'][name*='cover']",
+      "textarea[name*='cover']",
+      "*[id*='cover']"
+    ]
+
+    Enum.any?(cover_letter_selectors, fn selector ->
+      element = Playwright.Page.locator(page, selector)
+      Playwright.Locator.count(element) > 0
+    end)
   end
 
   defp find_resume_enter_manually_button(page) do

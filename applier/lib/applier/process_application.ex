@@ -20,7 +20,30 @@ defmodule Applier.ProcessApplication do
   def process_async(application_id) do
     Task.start(fn ->
       process_application(application_id)
+      :timer.sleep(:infinity)
     end)
+  end
+
+  @doc """
+  Manually marks an application as complete (submitted).
+  This is called when the user manually submits the form.
+  """
+  def mark_complete(application_id) do
+    Logger.info("Manually marking application #{application_id} as complete")
+    broadcast_update(application_id, "completing", "Marking application as complete")
+
+    with {:ok, application} <- Applications.get_application(application_id),
+         {:ok, updated_app} <- Applications.update_application(application_id, %{submitted: true})
+    do
+      Logger.info("Successfully marked application #{application_id} as complete")
+      broadcast_update(application_id, "completed", "Application marked as complete")
+      {:ok, updated_app}
+    else
+      error ->
+        Logger.error("Failed to mark application #{application_id} as complete: #{inspect(error)}")
+        broadcast_update(application_id, "error", "Failed to mark as complete")
+        {:error, error}
+    end
   end
 
   @doc """
@@ -33,11 +56,10 @@ defmodule Applier.ProcessApplication do
          {:ok, application} <- ensure_parsed(application),
          {:ok, application} <- ensure_approved(application),
          {:ok, application} <- generate_documents(application),
-         {:ok, application} <- fill_form(application),
-         {:ok, application} <- submit_application(application)
+         {:ok, application} <- fill_form(application)
     do
-      Logger.info("Successfully processed application #{application_id}")
-      broadcast_update(application_id, "completed", "Application processing completed successfully")
+      Logger.info("Successfully processed application #{application_id} through form filling")
+      broadcast_update(application_id, "form_filled", "Form filled successfully - ready for manual review and submission")
       {:ok, application}
     else
       {:error, :not_approved} ->
@@ -117,10 +139,10 @@ defmodule Applier.ProcessApplication do
     end
   end
 
-  # Step 4: Fill application form
+  # Step 4: Fill application form (allow re-filling even if previously filled)
   defp fill_form(%ApplicationRecord{form_filled: true} = application) do
-    Logger.info("Form already filled for application #{application.id}")
-    {:ok, application}
+    Logger.info("Form previously filled for application #{application.id}, re-filling...")
+    fill_form_process(application)
   end
 
   defp fill_form(%ApplicationRecord{id: id, source_url: nil}) do
@@ -128,7 +150,11 @@ defmodule Applier.ProcessApplication do
     Applications.update_application(id, %{form_filled: true})
   end
 
-  defp fill_form(%ApplicationRecord{id: id, source_url: form_url} = application) do
+  defp fill_form(%ApplicationRecord{} = application) do
+    fill_form_process(application)
+  end
+
+  defp fill_form_process(%ApplicationRecord{id: id, source_url: form_url} = application) do
     Logger.info("Filling form for application #{id}")
     broadcast_update(id, "filling_form", "Filling out application form")
 
@@ -148,29 +174,6 @@ defmodule Applier.ProcessApplication do
     end
   end
 
-  # Step 5: Submit application
-  defp submit_application(%ApplicationRecord{submitted: true} = application) do
-    Logger.info("Application #{application.id} already submitted")
-    {:ok, application}
-  end
-
-  defp submit_application(%ApplicationRecord{id: id} = _application) do
-    Logger.info("Submitting application #{id}")
-    broadcast_update(id, "submitting", "Submitting application")
-
-    # For now, just mark as submitted - actual submission logic can be added later
-    with {:ok, updated_app} <- Applications.update_application(id, %{submitted: true})
-    do
-      Logger.info("Successfully submitted application #{id}")
-      broadcast_update(id, "submitted", "Application submitted successfully")
-      {:ok, updated_app}
-    else
-      error ->
-        Logger.error("Failed to submit application #{id}: #{inspect(error)}")
-        broadcast_update(id, "error", "Submission failed")
-        {:error, "Submission failed"}
-    end
-  end
 
   # Helper functions
   defp get_job_text(%ApplicationRecord{source_text: text}) when not is_nil(text), do: text
@@ -263,16 +266,17 @@ defmodule Applier.ProcessApplication do
                  Questions.answer(resume, questions, application_id)
                end),
                :ok <- Questions.validate_responses(questions, responses),
-               :ok <- Filler.fill_form(page, responses, resume, get_cover_letter_text(short_id))
+               {:ok, :form_filled} <- Filler.fill_form(page, responses, resume, get_cover_letter_text(short_id))
           do
-            Helpers.Browser.close_managed_page(page)
             Logger.info("Successfully filled form for #{short_id}")
-            {:ok, "form_filled"}
+            Logger.info("Leaving page open for manual review and submission. Page will remain open indefinitely.")
+            Logger.info("Please review the form values and submit manually when ready.")
+            {:ok, :form_filled}
           else
-            error ->
-              Logger.error("Form filling failed: #{inspect(error)}")
-              Helpers.Browser.close_managed_page(page)
-              error
+            {:error, message} ->
+              Logger.error("Form filling failed: #{inspect(message)}")
+              # Helpers.Browser.close_managed_page(page)
+              {:error, message}
           end
         rescue
           exception ->
