@@ -1,0 +1,12 @@
+2025-06-24
+
+Dear Hiring Manager,
+
+I'm excited to apply for the Senior Software Engineer position on Babylist's Registry team. With over 9 years of full-stack development experience, I've built scalable consumer-facing products that directly drive business growth. While my backend experience centers on Python rather than Ruby on Rails, the principles of building robust web applications translate seamlessly, and I'm eager to leverage my React expertise alongside learning Rails to enhance Babylist's registry experience. My work at Stationhead architecting payment systems and third-party integrations aligns perfectly with your registry's needs for product recommendations and order tracking, and my recent LLM-powered health plan discovery tool at Kyra Health demonstrates my ability to use data and technology to solve complex recommendation problems for users.
+
+My leadership experience heading a 10-developer team at Enterprise during a greenfield mobile app rebuild, combined with my track record of mentoring developers and founding the Android team at Stationhead, positions me well to provide the thought leadership and architectural guidance your team values. I've consistently improved existing systems while building new features—from optimizing AWS infrastructure and implementing comprehensive testing frameworks to designing APIs and database schemas that scale with user growth. The opportunity to impact millions of parents' lives through better registry experiences, while working with a supportive remote-first team that values sustainable work practices, makes this role particularly compelling to me.
+
+
+Best,
+
+Andrew DeFranco

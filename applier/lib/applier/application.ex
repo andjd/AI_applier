@@ -8,7 +8,9 @@ defmodule Applier.Application do
 
     children = [
       Applier.Repo,
-      {DynamicSupervisor, name: :yugo_supervisor, strategy: :one_for_one}
+      {Phoenix.PubSub, name: Applier.PubSub},
+      {DynamicSupervisor, name: :yugo_supervisor, strategy: :one_for_one},
+      Helpers.BrowserManager
     ]
 
     # Add Bandit web server in dev environment

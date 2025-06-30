@@ -132,9 +132,10 @@ defmodule Filler.Greenhouse do
 
     matching_option = Enum.find(options, fn option ->
       IO.puts(Playwright.Locator.inner_text(option))
-      text = Playwright.Locator.inner_text(option) |> String.trim()
-      String.contains?(String.downcase(text), String.downcase(value)) or
-      String.contains?(String.downcase(value), String.downcase(text))
+      normalized_text = Playwright.Locator.inner_text(option) |> normalize_text()
+      normalized_vaule = normalize_text(value)
+      String.contains?(String.downcase(normalized_text), String.downcase(normalized_vaule)) or
+      String.contains?(String.downcase(normalized_vaule), String.downcase(normalized_text))
     end)
 
     case matching_option do
@@ -142,6 +143,15 @@ defmodule Filler.Greenhouse do
       option -> {:ok, option}
     end
   end
+
+  defp normalize_text(value) do
+    value
+    |> AnyAscii.transliterate()
+    |> IO.iodata_to_binary()
+    |> String.replace(~r/[^a-zA-Z0-9\s]/, "")
+    |> String.downcase()
+  end
+
 
   defp select_option(option) do
     try do
@@ -183,7 +193,7 @@ defmodule Filler.Greenhouse do
       # Clear and type the location value
       Playwright.Locator.clear(input)
       Playwright.Locator.fill(input, value)
-      
+
       # Wait for options to populate
       :timer.sleep(1000)
       Playwright.Page.wait_for_selector(page, ".select__option", %{timeout: 5000})
@@ -196,7 +206,7 @@ defmodule Filler.Greenhouse do
 
   defp find_first_location_option(page) do
     options_locator = Playwright.Page.locator(page, ".select__option")
-    
+
     case Playwright.Locator.count(options_locator) do
       0 -> {:error, "No location options found"}
       _ -> {:ok, Playwright.Locator.first(options_locator)}

@@ -9,6 +9,11 @@ defmodule Applier.Web.Router do
   plug Plug.Parsers, parsers: [:urlencoded, :multipart]
   plug :dispatch
 
+  get "/ws" do
+    conn
+    |> WebSockAdapter.upgrade(Applier.Web.WebSocketHandler, %{}, timeout: 60_000)
+  end
+
   get "/" do
     applications = Applier.Applications.list_applications()
 

@@ -6,20 +6,30 @@ defmodule JDInfoExtractor do
   def extract_text(url_or_page, application_id \\ nil)
 
   def extract_text(url, application_id) when is_binary(url) do
-    with {:ok, browser, page} <- Helpers.Browser.launch_and_navigate(url),
-        {:ok, text, questions} <- extract_text(page, application_id),
-        _ <- Helpers.Browser.close_page(page),
-        _ <- Helpers.Browser.close_browser(browser)
-      do
-        {:ok, text, questions}
-      else
-        {:error, reason} -> {:error, reason}
-      end
+    case Helpers.Browser.get_page_and_navigate(url) do
+      {:ok, page} ->
+        try do
+          case extract_text(page, application_id) do
+            {:ok, text, questions} -> 
+              Helpers.Browser.close_managed_page(page)
+              {:ok, text, questions}
+            {:error, reason} -> 
+              Helpers.Browser.close_managed_page(page)
+              {:error, reason}
+          end
+        rescue
+          error ->
+            Helpers.Browser.close_managed_page(page)
+            {:error, "Exception during extraction: #{inspect(error)}"}
+        end
+      {:error, reason} ->
+        {:error, reason}
+    end
   end
 
-  def extract_text(page, application_id) do
+  def extract_text(page, _application_id) do
     with {:ok, text} <- extract_visible_text(page),
-         {:ok, questions} <- Scraper.extract_questions(page, application_id)
+         {:ok, questions} <- Scraper.extract_questions(page)
     do
       {:ok, text, questions}
     else

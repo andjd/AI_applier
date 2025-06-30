@@ -44,6 +44,77 @@ defmodule Applier.Web.Templates.Layout do
             button:hover { background-color: #005a87; }
             .help { color: #666; font-size: 12px; margin-top: 5px; }
             .error { color: red; margin-bottom: 20px; padding: 10px; border: 1px solid red; background-color: #ffe6e6; }
+            .status-indicator { 
+              display: inline-block; 
+              width: 10px; 
+              height: 10px; 
+              border-radius: 50%; 
+              margin-right: 5px; 
+            }
+            .status-processing { background-color: #ffa500; }
+            .status-completed { background-color: #28a745; }
+            .status-error { background-color: #dc3545; }
+            .status-waiting_approval { background-color: #6c757d; }
+            .live-status { font-size: 12px; color: #666; margin-left: 5px; }
+            """
+          end
+          script do
+            """
+            // WebSocket connection for live updates
+            let ws = null;
+            let reconnectTimer = null;
+            
+            function connect() {
+              const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+              const wsUrl = `${protocol}//${window.location.host}/ws`;
+              
+              ws = new WebSocket(wsUrl);
+              
+              ws.onopen = function() {
+                console.log('WebSocket connected');
+                clearTimeout(reconnectTimer);
+              };
+              
+              ws.onmessage = function(event) {
+                try {
+                  const data = JSON.parse(event.data);
+                  if (data.type === 'application_update') {
+                    updateApplicationStatus(data.application_id, data.status, data.message);
+                  }
+                } catch (e) {
+                  console.error('Error parsing WebSocket message:', e);
+                }
+              };
+              
+              ws.onclose = function() {
+                console.log('WebSocket disconnected, attempting to reconnect...');
+                reconnectTimer = setTimeout(connect, 3000);
+              };
+              
+              ws.onerror = function(error) {
+                console.error('WebSocket error:', error);
+              };
+            }
+            
+            function updateApplicationStatus(applicationId, status, message) {
+              const rows = document.querySelectorAll('tr[data-app-id="' + applicationId + '"]');
+              rows.forEach(row => {
+                const statusCell = row.querySelector('.live-status-cell');
+                if (statusCell) {
+                  statusCell.innerHTML = `
+                    <span class="status-indicator status-${status}"></span>
+                    <span class="live-status">${message}</span>
+                  `;
+                }
+              });
+            }
+            
+            // Connect when page loads
+            if (document.readyState === 'loading') {
+              document.addEventListener('DOMContentLoaded', connect);
+            } else {
+              connect();
+            }
             """
           end
         end

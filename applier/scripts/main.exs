@@ -27,11 +27,27 @@ defmodule Main do
   end
 
   def parse_input() do
-    case System.argv() d
+    case System.argv() do
       [] -> {:text, read_stdin()}
       [url | _] -> {:url, url}
     end
   end
+
+  defp get_page_and_navigate(url) do
+    # For scripts, ensure the application and BrowserManager are started
+    case Application.ensure_all_started(:applier) do
+      {:ok, _} ->
+        case Helpers.Browser.get_page_and_navigate(url) do
+          {:ok, page} ->
+            {:ok, page}
+          {:error, reason} ->
+            {:error, reason}
+        end
+      {:error, reason} ->
+        {:error, "Failed to start application: #{inspect(reason)}"}
+    end
+  end
+
   def run do
     {input_source, input_value} = parse_input()
     Mix.Task.run("loadconfig")
@@ -58,17 +74,16 @@ defmodule Main do
 
     case input_source do
       :url ->
-        IO.puts("Step 1: Launching browser and extracting job description from URL...")
-        case Helpers.Browser.launch_and_navigate(input_value) do
-          {:ok, browser, page} ->
+        IO.puts("Step 1: Starting browser and extracting job description from URL...")
+        case get_page_and_navigate(input_value) do
+          {:ok, page} ->
             try do
               process_with_browser(page, resume, filename)
             after
-              Helpers.Browser.close_page(page)
-              Helpers.Browser.close_browser(browser)
+              Helpers.Browser.close_managed_page(page)
             end
           {:error, reason} ->
-            IO.puts("✗ Failed to launch browser: #{reason}")
+            IO.puts("✗ Failed to get page and navigate: #{reason}")
             System.halt(1)
         end
       :text ->

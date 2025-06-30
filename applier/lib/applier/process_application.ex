@@ -27,6 +27,8 @@ defmodule Applier.ProcessApplication do
   Synchronously processes an application through the pipeline.
   """
   def process_application(application_id) do
+    broadcast_update(application_id, "processing", "Starting application processing")
+
     with {:ok, application} <- Applications.get_application(application_id),
          {:ok, application} <- ensure_parsed(application),
          {:ok, application} <- ensure_approved(application),
@@ -35,19 +37,23 @@ defmodule Applier.ProcessApplication do
          {:ok, application} <- submit_application(application)
     do
       Logger.info("Successfully processed application #{application_id}")
+      broadcast_update(application_id, "completed", "Application processing completed successfully")
       {:ok, application}
     else
       {:error, :not_approved} ->
         Logger.info("Application #{application_id} is waiting for approval")
+        broadcast_update(application_id, "waiting_approval", "Waiting for approval")
         {:ok, :waiting_for_approval}
 
       {:error, reason} ->
         Logger.error("Failed to process application #{application_id}: #{inspect(reason)}")
+        broadcast_update(application_id, "error", "Processing failed: #{inspect(reason)}")
         Applications.update_application(application_id, %{errors: "Processing failed: #{inspect(reason)}"})
         {:error, reason}
 
       error ->
         Logger.error("Unexpected error processing application #{application_id}: #{inspect(error)}")
+        broadcast_update(application_id, "error", "Unexpected processing error")
         Applications.update_application(application_id, %{errors: "Unexpected processing error"})
         {:error, error}
     end
@@ -60,15 +66,18 @@ defmodule Applier.ProcessApplication do
 
   defp ensure_parsed(%ApplicationRecord{id: id} = application) do
     Logger.info("Parsing metadata for application #{id}")
+    broadcast_update(id, "parsing", "Parsing job description metadata")
 
     with job_text <- get_job_text(application),
       {:ok, metadata} <- Applier.MetadataExtractor.process(job_text, application.id),
         {:ok, updated_app} <- update_with_metadata(application, metadata)
     do
+      broadcast_update(id, "parsed", "Metadata parsing completed")
       {:ok, updated_app}
     else
       error ->
         Logger.error("Failed to parse metadata for application #{id}: #{inspect(error)}")
+        broadcast_update(id, "error", "Metadata parsing failed")
         {:error, "Metadata parsing failed"}
     end
   end
@@ -90,6 +99,7 @@ defmodule Applier.ProcessApplication do
 
   defp generate_documents(%ApplicationRecord{id: id} = application) do
     Logger.info("Generating documents for application #{id}")
+    broadcast_update(id, "generating_docs", "Generating cover letter and documents")
 
     with job_text <- get_job_text(application),
          {:ok, short_id} <- get_short_id(application),
@@ -97,10 +107,12 @@ defmodule Applier.ProcessApplication do
          {:ok, updated_app} <- Applications.update_application(id, %{docs_generated: true})
     do
       Logger.info("Successfully generated documents for application #{id}")
+      broadcast_update(id, "docs_generated", "Documents generated successfully")
       {:ok, updated_app}
     else
       error ->
         Logger.error("Failed to generate documents for application #{id}: #{inspect(error)}")
+        broadcast_update(id, "error", "Document generation failed")
         {:error, "Document generation failed"}
     end
   end
@@ -118,6 +130,7 @@ defmodule Applier.ProcessApplication do
 
   defp fill_form(%ApplicationRecord{id: id, source_url: form_url} = application) do
     Logger.info("Filling form for application #{id}")
+    broadcast_update(id, "filling_form", "Filling out application form")
 
     with job_text <- get_job_text(application),
          {:ok, short_id} <- get_short_id(application),
@@ -125,10 +138,12 @@ defmodule Applier.ProcessApplication do
          {:ok, updated_app} <- Applications.update_application(id, %{form_filled: true})
     do
       Logger.info("Successfully filled form for application #{id}")
+      broadcast_update(id, "form_filled", "Application form filled successfully")
       {:ok, updated_app}
     else
       error ->
         Logger.error("Failed to fill form for application #{id}: #{inspect(error)}")
+        broadcast_update(id, "error", "Form filling failed")
         {:error, "Form filling failed"}
     end
   end
@@ -141,15 +156,18 @@ defmodule Applier.ProcessApplication do
 
   defp submit_application(%ApplicationRecord{id: id} = _application) do
     Logger.info("Submitting application #{id}")
+    broadcast_update(id, "submitting", "Submitting application")
 
     # For now, just mark as submitted - actual submission logic can be added later
     with {:ok, updated_app} <- Applications.update_application(id, %{submitted: true})
     do
       Logger.info("Successfully submitted application #{id}")
+      broadcast_update(id, "submitted", "Application submitted successfully")
       {:ok, updated_app}
     else
       error ->
         Logger.error("Failed to submit application #{id}: #{inspect(error)}")
+        broadcast_update(id, "error", "Submission failed")
         {:error, "Submission failed"}
     end
   end
@@ -233,26 +251,38 @@ defmodule Applier.ProcessApplication do
     Logger.info("Starting form filling process for #{short_id}")
     resume = File.read!("assets/resume.yaml")
 
-    with {:ok, browser, page} <- Helpers.Browser.launch_and_navigate(form_url),
-         {:ok, _text, questions} <- JDInfoExtractor.extract_text(page, application_id),
-         {:ok, responses} <- (if is_nil(questions) do
-           Logger.info("No questions found for form")
-           {:ok, nil}
-         else
-           Logger.info("Answering form questions")
-           Questions.answer(resume, questions, application_id)
-         end),
-         :ok <- Questions.validate_responses(questions, responses),
-         :ok <- Filler.fill_form(page, responses, resume, get_cover_letter_text(short_id)),
-         _ <- Helpers.Browser.close_page(page),
-         _ <- Helpers.Browser.close_browser(browser)
-    do
-      Logger.info("Successfully filled form for #{short_id}")
-      {:ok, "form_filled"}
-    else
-      error ->
-        Logger.error("Form filling failed: #{inspect(error)}")
-        error
+    case Helpers.Browser.get_page_and_navigate(form_url) do
+      {:ok, page} ->
+        try do
+          with {:ok, _text, questions} <- JDInfoExtractor.extract_text(page, application_id),
+               {:ok, responses} <- (if is_nil(questions) do
+                 Logger.info("No questions found for form")
+                 {:ok, nil}
+               else
+                 Logger.info("Answering form questions")
+                 Questions.answer(resume, questions, application_id)
+               end),
+               :ok <- Questions.validate_responses(questions, responses),
+               :ok <- Filler.fill_form(page, responses, resume, get_cover_letter_text(short_id))
+          do
+            Helpers.Browser.close_managed_page(page)
+            Logger.info("Successfully filled form for #{short_id}")
+            {:ok, "form_filled"}
+          else
+            error ->
+              Logger.error("Form filling failed: #{inspect(error)}")
+              Helpers.Browser.close_managed_page(page)
+              error
+          end
+        rescue
+          exception ->
+            Logger.error("Exception during form filling: #{inspect(exception)}")
+            # Helpers.Browser.close_managed_page(page)
+            reraise exception, __STACKTRACE__
+        end
+      {:error, reason} ->
+        Logger.error("Failed to get page and navigate: #{inspect(reason)}")
+        {:error, reason}
     end
   end
 
@@ -279,5 +309,10 @@ defmodule Applier.ProcessApplication do
       {:manual, _} -> {:error, "Text validation requires manual review"}
       error -> {:error, "Text validation error: #{inspect(error)}"}
     end
+  end
+
+  defp broadcast_update(application_id, status, message) do
+    Phoenix.PubSub.broadcast(Applier.PubSub, "application_updates",
+      {:application_update, application_id, status, message})
   end
 end

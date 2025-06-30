@@ -37,7 +37,10 @@ defmodule Applier.MixProject do
       {:bandit, "~> 1.7"},
       {:phoenix_html, "~> 4.1"},
       {:temple, "~> 0.14"},
-      {:exsync, "~> 0.4", only: :dev}
+      {:websock_adapter, "~> 0.5"},
+      {:phoenix_pubsub, "~> 2.1"},
+      {:exsync, "~> 0.4", only: :dev},
+      {:any_ascii, "~> 0.3"},
     ]
   end
 end
