@@ -1,0 +1,230 @@
+{
+    "size": 100,
+    "page": 0,
+    "searchState": {
+      "locations": [
+        {
+          "id": "9Bk1yZQBoEtHp_8UuL4W",
+          "types": [
+            "locality"
+          ],
+          "address_components": [
+            {
+              "long_name": "Upper Arlington",
+              "short_name": "Upper Arlington",
+              "types": [
+                "locality"
+              ]
+            },
+            {
+              "long_name": "Ohio",
+              "short_name": "OH",
+              "types": [
+                "administrative_area_level_1"
+              ]
+            },
+            {
+              "long_name": "United States",
+              "short_name": "US",
+              "types": [
+                "country"
+              ]
+            }
+          ],
+          "geometry": {
+            "location": {
+              "lat": 39.99451,
+              "lon": -83.06241
+            }
+          },
+          "formatted_address": "Upper Arlington, OH, US",
+          "population": 34907,
+          "workplace_types": [
+            "Remote",
+            "Hybrid",
+            "Onsite"
+          ],
+          "options": {
+            "radius": 15,
+            "radius_unit": "miles",
+            "ignore_radius": false,
+            "flexible_regions": [
+              "anywhere_in_administrative_area_level_1",
+              "anywhere_in_country",
+              "anywhere_in_continent"
+            ]
+          }
+        }
+      ],
+      "workplaceTypes": [
+        "Remote",
+        "Hybrid",
+        "Onsite"
+      ],
+      "defaultToUserLocation": true,
+      "userLocation": null,
+      "physicalEnvironments": [
+        "Office",
+        "Outdoor",
+        "Vehicle",
+        "Industrial",
+        "Customer-Facing"
+      ],
+      "physicalLaborIntensity": [
+        "Low",
+        "Medium",
+        "High"
+      ],
+      "physicalPositions": [
+        "Sitting",
+        "Standing"
+      ],
+      "oralCommunicationLevels": [
+        "Low",
+        "Medium",
+        "High"
+      ],
+      "computerUsageLevels": [
+        "Low",
+        "Medium",
+        "High"
+      ],
+      "cognitiveDemandLevels": [
+        "Low",
+        "Medium",
+        "High"
+      ],
+      "currency": {
+        "label": "usd",
+        "value": "usd"
+      },
+      "frequency": {
+        "label": "Any",
+        "value": null
+      },
+      "minCompensationLowEnd": null,
+      "minCompensationHighEnd": null,
+      "maxCompensationLowEnd": "150000",
+      "maxCompensationHighEnd": null,
+      "restrictJobsToTransparentSalaries": true,
+      "calcFrequency": "Yearly",
+      "commitmentTypes": [
+        "Full Time",
+        "Part Time",
+        "Contract",
+        "Temporary"
+      ],
+      "jobTitleQuery": "",
+      "jobDescriptionQuery": "",
+      "associatesDegreeFieldsOfStudy": [],
+      "excludedAssociatesDegreeFieldsOfStudy": [],
+      "bachelorsDegreeFieldsOfStudy": [],
+      "excludedBachelorsDegreeFieldsOfStudy": [],
+      "mastersDegreeFieldsOfStudy": [],
+      "excludedMastersDegreeFieldsOfStudy": [],
+      "doctorateDegreeFieldsOfStudy": [],
+      "excludedDoctorateDegreeFieldsOfStudy": [],
+      "associatesDegreeRequirements": [],
+      "bachelorsDegreeRequirements": [],
+      "mastersDegreeRequirements": [],
+      "doctorateDegreeRequirements": [],
+      "licensesAndCertifications": [],
+      "excludedLicensesAndCertifications": [],
+      "excludeAllLicensesAndCertifications": false,
+      "seniorityLevel": [
+        "Mid Level",
+        "Senior Level"
+      ],
+      "roleTypes": [
+        "Individual Contributor",
+        "People Manager"
+      ],
+      "roleYoeRange": [
+        3,
+        20
+      ],
+      "excludeIfRoleYoeIsNotSpecified": false,
+      "managementYoeRange": [
+        0,
+        5
+      ],
+      "excludeIfManagementYoeIsNotSpecified": false,
+      "securityClearances": [
+        "None",
+        "Confidential",
+        "Secret",
+        "Top Secret",
+        "Top Secret/SCI",
+        "Public Trust",
+        "Interim Clearances",
+        "Other"
+      ],
+      "languageRequirements": [],
+      "excludedLanguageRequirements": [],
+      "languageRequirementsOperator": "OR",
+      "excludeJobsWithAdditionalLanguageRequirements": false,
+      "airTravelRequirement": [
+        "None",
+        "Minimal",
+        "Moderate",
+        "Extensive"
+      ],
+      "landTravelRequirement": [
+        "None",
+        "Minimal",
+        "Moderate",
+        "Extensive"
+      ],
+      "morningShiftWork": [],
+      "eveningShiftWork": [],
+      "overnightShiftWork": [],
+      "weekendAvailabilityRequired": "Doesn't Matter",
+      "holidayAvailabilityRequired": "Doesn't Matter",
+      "overtimeRequired": "Doesn't Matter",
+      "onCallRequirements": [
+        "None",
+        "Occasional (once a month or less)",
+        "Regular (once a week or more)"
+      ],
+      "benefitsAndPerks": [],
+      "applicationFormEase": [],
+      "companyNames": [],
+      "excludedCompanyNames": [],
+      "usaGovPref": null,
+      "industries": [],
+      "excludedIndustries": [],
+      "companyKeywords": [],
+      "companyKeywordsBooleanOperator": "OR",
+      "excludedCompanyKeywords": [],
+      "hideJobTypes": [],
+      "encouragedToApply": [],
+      "searchQuery": "",
+      "dateFetchedPastNDays": 2,
+      "hiddenCompanies": [],
+      "user": null,
+      "searchModeSelectedCompany": null,
+      "departments": [
+        "Software Development"
+      ],
+      "restrictedSearchAttributes": [],
+      "sortBy": "default",
+      "technologyKeywordsQuery": "python OR javascript OR typescript OR Elixir OR Ruby OR \"ruby on rails\" OR PHP OR Laravel OR Kotlin\n",
+      "requirementsKeywordsQuery": "",
+      "companyPublicOrPrivate": "all",
+      "latestInvestmentYearRange": [
+        null,
+        null
+      ],
+      "latestInvestmentSeries": [],
+      "latestInvestmentAmount": null,
+      "latestInvestmentCurrency": [],
+      "investors": [],
+      "excludedInvestors": [],
+      "isNonProfit": "all",
+      "companySizeRanges": [],
+      "minYearFounded": null,
+      "maxYearFounded": null,
+      "excludedLatestInvestmentSeries": [],
+      "userId": "tDWOCPEH70RpEL1HdcOc7Xjoq6v1"
+    }
+  }
