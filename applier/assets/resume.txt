@@ -87,6 +87,8 @@ skills:
     - Python
     - Kotlin
     - Elixir
+    - Ruby
+    - Laravel
   ai:
     - LLMs
     - RAG

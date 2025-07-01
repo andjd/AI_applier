@@ -1,0 +1,12 @@
+2025-06-30
+
+Dear Hiring Manager,
+
+I'm excited to apply for the Staff Software Engineer position at Loop, as your focus on building scalable systems aligns perfectly with my experience leading technical initiatives across high-growth startups and enterprise environments. My background includes leading a 10-developer team at Enterprise Mobility for a greenfield React Native mobile app rebuild, architecting microservices to break apart monolithic systems at Stationhead, and building HIPAA-compliant LLM-powered tools at Kyra Health. I have extensive experience with monolithic repository architectures, particularly from my time at Stationhead where I planned and implemented our first microservice to create a scalable framework for decomposing our monolith, while also building load-testing systems to handle exponential user growth and stampeding herd scenarios.
+
+What excites me most about Loop is the opportunity to apply my full-stack expertise in Typescript, Python, React, and cloud infrastructure (AWS, Kubernetes, Docker) to solve complex technical challenges at scale. My experience spans the entire technology stack from mobile development (React Native, iOS/Android) to backend systems (REST, GraphQL, WebSockets, SQL, Elasticsearch), and I've consistently focused on building systems that can handle rapid growth while maintaining strong technical foundations. The combination of my startup experience at companies like Neeva and Stationhead, where I helped navigate pivots and scale from pre-launch to handling massive user bases, along with my enterprise experience leading large development teams, positions me well to contribute to Loop's technical leadership and drive impactful solutions for your engineering challenges.
+
+
+Best,
+
+Andrew DeFranco

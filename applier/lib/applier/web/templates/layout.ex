@@ -42,6 +42,26 @@ defmodule Applier.Web.Templates.Layout do
                 font-size: 14px;
             }
             button:hover { background-color: #005a87; }
+            .btn { 
+                padding: 6px 12px; 
+                font-size: 12px; 
+                margin-right: 5px; 
+                border: none; 
+                border-radius: 3px; 
+                cursor: pointer; 
+                text-decoration: none; 
+                display: inline-block; 
+            }
+            .btn-primary { background-color: #007cba; color: white; }
+            .btn-primary:hover { background-color: #005a87; }
+            .btn-secondary { background-color: #6c757d; color: white; }
+            .btn-secondary:hover { background-color: #545b62; }
+            .btn-success { background-color: #28a745; color: white; }
+            .btn-success:hover { background-color: #218838; }
+            .btn-warning { background-color: #ffc107; color: #212529; }
+            .btn-warning:hover { background-color: #e0a800; }
+            .btn-danger { background-color: #dc3545; color: white; }
+            .btn-danger:hover { background-color: #c82333; }
             .help { color: #666; font-size: 12px; margin-top: 5px; }
             .error { color: red; margin-bottom: 20px; padding: 10px; border: 1px solid red; background-color: #ffe6e6; }
             .status-indicator { 
@@ -114,6 +134,20 @@ defmodule Applier.Web.Templates.Layout do
               document.addEventListener('DOMContentLoaded', connect);
             } else {
               connect();
+            }
+            
+            // Confirmation dialog for delete actions
+            function confirmDelete(companyName, jobTitle) {
+              let message = `Are you sure you want to delete the application`;
+              if (companyName && companyName !== 'this application') {
+                message += ` for ${companyName}`;
+                if (jobTitle) {
+                  message += ` (${jobTitle})`;
+                }
+              }
+              message += `?\\n\\nThis action cannot be undone.`;
+              
+              return confirm(message);
             }
             """
           end

@@ -177,38 +177,38 @@ defmodule Applier.Web.Templates.Applications do
 
   defp action_button(app) do
     temple do
-      cond do
-        !app.parsed ->
-          form action: "/applications/#{app.id}/retry", method: "post", style: "display: inline;" do
-            button type: "submit", class: "btn btn-secondary" do
-              "Processing..."
+      div style: "display: flex; gap: 5px;" do
+        cond do
+          !app.parsed ->
+            form action: "/applications/#{app.id}/retry", method: "post", style: "display: inline;" do
+              button type: "submit", class: "btn btn-secondary" do
+                "Processing..."
+              end
             end
-          end
 
-        !app.approved ->
-          form action: "/applications/#{app.id}/approve", method: "post", style: "display: inline;" do
-            button type: "submit", class: "btn btn-primary" do
-              "Approve"
+          !app.approved ->
+            form action: "/applications/#{app.id}/approve", method: "post", style: "display: inline;" do
+              button type: "submit", class: "btn btn-primary" do
+                "Approve"
+              end
             end
-          end
 
-        app.approved && !app.docs_generated ->
-          form action: "/applications/#{app.id}/retry", method: "post", style: "display: inline;" do
-            button type: "submit", class: "btn btn-secondary" do
-              "Generate Docs"
+          app.approved && !app.docs_generated ->
+            form action: "/applications/#{app.id}/retry", method: "post", style: "display: inline;" do
+              button type: "submit", class: "btn btn-secondary" do
+                "Generate Docs"
+              end
             end
-          end
 
-        app.docs_generated && !app.form_filled ->
-          form action: "/applications/#{app.id}/retry", method: "post", style: "display: inline;" do
-            button type: "submit", class: "btn btn-secondary" do
-              "Fill Form"
+          app.docs_generated && !app.form_filled ->
+            form action: "/applications/#{app.id}/retry", method: "post", style: "display: inline;" do
+              button type: "submit", class: "btn btn-secondary" do
+                "Fill Form"
+              end
             end
-          end
 
-        app.form_filled && !app.submitted ->
-          # Show both "Fill Form" and "Mark Complete" buttons
-          div style: "display: flex; gap: 5px;" do
+          app.form_filled && !app.submitted ->
+            # Show both "Fill Form" and "Mark Complete" buttons
             form action: "/applications/#{app.id}/retry", method: "post", style: "display: inline;" do
               button type: "submit", class: "btn btn-secondary" do
                 "Fill Form"
@@ -219,29 +219,36 @@ defmodule Applier.Web.Templates.Applications do
                 "Mark Complete"
               end
             end
-          end
 
-        app.submitted ->
-          # Show "Fill Form" button even when complete
-          form action: "/applications/#{app.id}/retry", method: "post", style: "display: inline;" do
-            button type: "submit", class: "btn btn-secondary" do
-              "Fill Form"
+          app.submitted ->
+            # Show "Fill Form" button even when complete
+            form action: "/applications/#{app.id}/retry", method: "post", style: "display: inline;" do
+              button type: "submit", class: "btn btn-secondary" do
+                "Fill Form"
+              end
             end
-          end
 
-        app.errors ->
-          form action: "/applications/#{app.id}/retry", method: "post", style: "display: inline;" do
-            button type: "submit", class: "btn btn-warning" do
-              "Retry"
+          app.errors ->
+            form action: "/applications/#{app.id}/retry", method: "post", style: "display: inline;" do
+              button type: "submit", class: "btn btn-warning" do
+                "Retry"
+              end
             end
-          end
 
-        true ->
-          form action: "/applications/#{app.id}/retry", method: "post", style: "display: inline;" do
-            button type: "submit", class: "btn btn-secondary" do
-              "Continue"
+          true ->
+            form action: "/applications/#{app.id}/retry", method: "post", style: "display: inline;" do
+              button type: "submit", class: "btn btn-secondary" do
+                "Continue"
+              end
             end
+        end
+
+        # Delete button - always show
+        form action: "/applications/#{app.id}/delete", method: "post", style: "display: inline;", onsubmit: "return confirmDelete('#{app.company_name || "this application"}', '#{app.job_title || ""}');" do
+          button type: "submit", class: "btn btn-danger" do
+            "Delete"
           end
+        end
       end
     end
   end

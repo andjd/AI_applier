@@ -93,6 +93,28 @@ defmodule Applier.Web.Router do
     end
   end
 
+  post "/applications/:id/delete" do
+    case Applier.Applications.get_application(id) do
+      {:ok, application} ->
+        case Applier.Applications.delete_application(application) do
+          {:ok, _deleted_application} ->
+            conn
+            |> put_resp_header("location", "/")
+            |> send_resp(302, "")
+
+          {:error, reason} ->
+            conn
+            |> put_resp_content_type("text/plain")
+            |> send_resp(400, "Failed to delete application: #{inspect(reason)}")
+        end
+
+      {:error, :not_found} ->
+        conn
+        |> put_resp_content_type("text/plain")
+        |> send_resp(404, "Application not found")
+    end
+  end
+
   match _ do
     send_resp(conn, 404, "Not found")
   end
