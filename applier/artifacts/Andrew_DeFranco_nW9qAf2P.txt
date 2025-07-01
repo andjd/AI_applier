@@ -1,0 +1,12 @@
+2025-07-01
+
+Dear Hiring Manager,
+
+I'm excited to apply for the Software Engineer position on Upstart's Consumer Platform team. Your mission of enabling access to effortless credit based on true risk resonates deeply with me, and I'm energized by the opportunity to build scalable, multi-product platforms that treat consumers as individuals. My 9+ years of full-stack development experience, combined with hands-on expertise in your current technology stack including AWS, Kafka, React, and Next.js, positions me perfectly to contribute to your platform engineering initiatives from day one.
+
+My background demonstrates exactly the kind of strategic, platform-focused thinking your team values. At Stationhead, I architected our first microservice and created a scalable framework that became the blueprint for breaking apart our monolith, directly paralleling your need for resilient services that serve internal product teams. I have extensive experience with Kotlin and modern JavaScript frameworks like React, plus I've built reusable frontend components and designed APIs using REST and WebSockets. My work at startups like Kyra Health, Neeva, and Stationhead has taught me to think long-term about scalability while maintaining data accuracy and freshness. Whether leading a 10-developer team at Enterprise or founding the Android team at Stationhead, I consistently take initiative beyond assigned tasks and drive end-to-end ownership of technical initiatives that elevate both product and code quality.
+
+
+Best,
+
+Andrew DeFranco

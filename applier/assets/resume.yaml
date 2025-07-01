@@ -6,51 +6,6 @@ personal_info:
 
 summary: Product-focused full-stack developer with 9+ years experience building scalable systems, developing delightful web and mobile experiences, and leading high-performing teams
 
-education:
-  - institution: The Ohio State University
-    location: Columbus, OH
-    degree: J.D.
-    year: 2012
-  - institution: Oberlin College
-    location: Oberlin, OH
-    degree: B.A.
-    year: 2008
-
-skills:
-  languages:
-    - Typescript
-    - Python
-    - Kotlin
-    - Elixir
-  ai:
-    - LLMs
-    - RAG
-  networking:
-    - REST
-    - GraphQL
-    - gRPC
-    - Websockets
-    - AMQP
-    - Kafka
-  databases:
-    - SQL
-    - Elasticsearch
-  cloud:
-    - Systems Architecture
-    - AWS
-    - Serverless
-    - Docker
-    - Kubernetes
-  web_mobile:
-    - React & Redux
-    - iOS + Android
-  tooling:
-    - Git
-    - Continuous Integration
-    - Agile
-    - TDD
-    - Claude Code
-
 experience:
   - title: Senior Developer
     company: Kyra Health
@@ -114,3 +69,49 @@ experience:
       - Updated product to a modern and responsive web app written in React and Python and hosted on AWS
       - Built secure third party integrations over HTTPS, SOAP, and AMQP
       - Modernized 25-year old SQL database while maintaining backwards compatibility
+
+skills:
+  languages:
+    - Typescript
+    - Python
+    - Kotlin
+    - Elixir
+    - Ruby
+  ai:
+    - LLMs
+    - RAG
+  networking:
+    - REST
+    - GraphQL
+    - gRPC
+    - Websockets
+    - AMQP
+    - Kafka
+  databases:
+    - SQL
+    - Elasticsearch
+  cloud:
+    - Systems Architecture
+    - AWS
+    - Serverless
+    - Docker
+    - Kubernetes
+  web_mobile:
+    - React & Redux
+    - iOS + Android
+  tooling:
+    - Git
+    - Continuous Integration
+    - Agile
+    - TDD
+    - Claude Code
+
+education:
+  - institution: The Ohio State University
+    location: Columbus, OH
+    degree: J.D.
+    year: 2012
+  - institution: Oberlin College
+    location: Oberlin, OH
+    degree: B.A.
+    year: 2008
