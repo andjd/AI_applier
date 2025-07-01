@@ -115,6 +115,27 @@ defmodule Applier.Web.Router do
     end
   end
 
+  post "/fetch-jobs" do
+    case Applier.HiringCafeAPI.fetch_jobs() do
+      {:ok, result} ->
+        conn
+        |> put_resp_content_type("application/json")
+        |> send_resp(200, JSON.encode!(%{
+          success: true,
+          message: "Successfully fetched #{result.total_jobs} jobs. #{result.successful} processed successfully, #{result.failed} failed.",
+          data: result
+        }))
+
+      {:error, reason} ->
+        conn
+        |> put_resp_content_type("application/json")
+        |> send_resp(500, JSON.encode!(%{
+          success: false,
+          message: "Failed to fetch jobs: #{inspect(reason)}"
+        }))
+    end
+  end
+
   match _ do
     send_resp(conn, 404, "Not found")
   end

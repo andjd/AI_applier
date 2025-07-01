@@ -8,6 +8,14 @@ defmodule Applier.Web.Templates.Applications do
       c &Layout.app/1, title: "Job Applications" do
         h1 do: "Job Applications"
 
+        div style: "margin-bottom: 20px;" do
+          form action: "/fetch-jobs", method: "post", style: "display: inline;" do
+            button type: "submit", class: "btn btn-primary", onclick: "this.disabled=true; this.innerText='Fetching...'; this.form.submit();" do
+              "Fetch New Jobs"
+            end
+          end
+        end
+
         table do
           thead do
             tr do
