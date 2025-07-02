@@ -4,6 +4,8 @@ defmodule Applier.HiringCafeAPI do
   """
 
   require Logger
+  alias Applier.Repo
+  alias Applier.ApplicationRecord
 
   @api_url "https://hiring.cafe/api/search-jobs"
   @payload_file "assets/hiring_cafe_payload.json"
@@ -15,7 +17,7 @@ defmodule Applier.HiringCafeAPI do
     {successes, failures} = make_api_request()
       |> Map.get("results")
       |> Enum.map(&process_job/1)
-      Enum.split_with(fn {status, _} -> status == :ok end)
+      |> Enum.split_with(fn {status, _} -> status == :ok end)
 
       Logger.info("Processed #{length(successes)} jobs successfully, #{length(failures)} failed")
 
@@ -24,10 +26,6 @@ defmodule Applier.HiringCafeAPI do
         successful: length(successes),
         failed: length(failures),
       }}
-    else
-      {:error, reason} ->
-        Logger.error("Failed to fetch jobs from hiringCafe API: #{inspect(reason)}")
-        {:error, reason}
   end
 
   defp make_api_request() do
@@ -57,7 +55,7 @@ defmodule Applier.HiringCafeAPI do
 
   defp process_job(job) do
     with {:ok, application} <- create_application(job),
-         {:ok, job_description_file} <- cache_job_description(application, job) do
+         {:ok, _} <- cache_job_description(application, job) do
       {:ok, application}
     else
       error -> error
@@ -65,7 +63,7 @@ defmodule Applier.HiringCafeAPI do
   end
 
   defp cache_job_description(application, job) do
-    if job.job_description do
+    if job["job_description"] do
       cache_filename = "job_description_#{application.id}.html"
       cache_path = Path.join(@cache_dir, cache_filename)
 
@@ -102,10 +100,13 @@ defmodule Applier.HiringCafeAPI do
       "parsed" => false
     }
 
-    case Applier.Applications.create_application(attrs) do
-      {:ok, application} ->
-        Logger.info("Created application #{application.id} for #{attrs.company_name} - #{attrs.job_title}")
+    with {:ok, application} <- (%ApplicationRecord{}
+      |> ApplicationRecord.changeset(attrs)
+      |> Repo.insert()) do
+
+        Logger.info("Created application #{application.id} for #{attrs["company_name"]} - #{attrs["job_title"]}")
         {:ok, application}
+      else
       {:error, changeset} ->
         errors = Enum.map(changeset.errors, fn {field, {message, _}} ->
           "#{field}: #{message}"
