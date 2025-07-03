@@ -16,7 +16,7 @@ defmodule Applier.Application do
     # Add Bandit web server in dev environment
     children = if Mix.env() == :dev do
       children ++ [
-        {Bandit, scheme: :http, plug: Applier.Web.Router, port: 4000, ip: {127, 0, 0, 1}}
+        {Bandit, scheme: :http, plug: Applier.Web.Router, port: 4000, ip: {0, 0, 0, 0}}
       ]
     else
       children
