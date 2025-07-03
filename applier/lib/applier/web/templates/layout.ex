@@ -62,6 +62,31 @@ defmodule Applier.Web.Templates.Layout do
             .btn-warning:hover { background-color: #e0a800; }
             .btn-danger { background-color: #dc3545; color: white; }
             .btn-danger:hover { background-color: #c82333; }
+            .btn-filter { 
+                background-color: #f8f9fa; 
+                color: #6c757d; 
+                border: 1px solid #dee2e6; 
+                text-decoration: none;
+                margin-right: 8px;
+            }
+            .btn-filter:hover { 
+                background-color: #e9ecef; 
+                color: #495057; 
+                text-decoration: none;
+            }
+            .btn-filter-active { 
+                background-color: #007cba; 
+                color: white; 
+                border: 1px solid #007cba;
+            }
+            .controls { 
+                padding: 15px 0; 
+                border-bottom: 1px solid #dee2e6; 
+            }
+            .filter-buttons {
+                display: flex;
+                gap: 0;
+            }
             .help { color: #666; font-size: 12px; margin-top: 5px; }
             .error { color: red; margin-bottom: 20px; padding: 10px; border: 1px solid red; background-color: #ffe6e6; }
             .status-indicator { 
@@ -136,16 +161,16 @@ defmodule Applier.Web.Templates.Layout do
               connect();
             }
             
-            // Confirmation dialog for delete actions
-            function confirmDelete(companyName, jobTitle) {
-              let message = `Are you sure you want to delete the application`;
+            // Confirmation dialog for reject actions
+            function confirmReject(companyName, jobTitle) {
+              let message = `Are you sure you want to reject the application`;
               if (companyName && companyName !== 'this application') {
                 message += ` for ${companyName}`;
                 if (jobTitle) {
                   message += ` (${jobTitle})`;
                 }
               }
-              message += `?\\n\\nThis action cannot be undone.`;
+              message += `?\\n\\nRejected applications will be hidden from the main dashboard but can be viewed in the Rejected filter.`;
               
               return confirm(message);
             }

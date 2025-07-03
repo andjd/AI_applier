@@ -1,0 +1,12 @@
+2025-07-03
+
+Dear Hiring Manager,
+
+I'm thrilled to apply for the AI Developer position at Wiz, where I can leverage my extensive experience building LLM-powered solutions and scalable systems to drive GTM productivity and enablement. At Kyra Health, I developed a HIPAA-compliant LLM-powered tool for health plan discovery and enhanced our development environment to support multiple concurrent threads of AI code generation, directly paralleling the agentic workflows and AI assistant development this role requires. My experience with Python-based frameworks, prompt engineering, and RAG systems at both Kyra Health and Neeva, where I launched proof-of-concept mobile search experiences featuring LLM summaries, positions me perfectly to design and build the intelligent AI workflows and copilots that will enhance your sales, marketing, and customer success teams' effectiveness.
+
+Beyond my AI expertise, I bring the cross-functional leadership and systems thinking essential for this role. Having led a 10-developer team at Enterprise Mobility and founded the Android team at Stationhead, I understand how to collaborate effectively with diverse stakeholders and translate technical solutions into business impact. My experience architecting secure integrations over HTTPS, SOAP, and AMQP at Affinitiv, combined with implementing HIPAA compliance and session security hardening at previous roles, ensures I can deploy AI solutions that meet Wiz's enterprise security standards. Most importantly, my startup experience at Kyra Health, Neeva, and Stationhead, where I helped navigate pivots and scale systems for exponential growth, has taught me to thrive in fast-paced, ambiguous environments where creative problem-solving drives results.
+
+
+Best,
+
+Andrew DeFranco

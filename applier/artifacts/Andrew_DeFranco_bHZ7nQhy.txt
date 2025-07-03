@@ -1,0 +1,12 @@
+2025-07-03
+
+Dear Hiring Manager,
+
+I'm excited to apply for the Senior Software Engineer position at SimSpace, where I can combine my passion for AI development with full-stack engineering to help secure our most critical infrastructure. Your mission to protect healthcare facilities, schools, and financial institutions resonates deeply with my experience building HIPAA-compliant systems and my commitment to creating technology that safeguards what matters most. My background perfectly aligns with SimSpace's needs for AI-powered service development, having built LLM-powered tools at Kyra Health for health plan discovery and launched proof-of-concept mobile experiences featuring LLM summaries at Neeva. I'm particularly drawn to working with the GenAI and AgenticAI platforms you mentioned, as my experience with LLMs, RAG systems, and AI integration positions me to immediately contribute to your AI initiatives.
+
+My 9+ years of full-stack development experience spans the exact technologies SimSpace requires, including Python and TypeScript programming (equivalent to your Kotlin/Java/C# stack), extensive API development with REST and WebSockets, and robust cloud infrastructure experience with AWS, Docker, and Kubernetes. At Stationhead, I architected scalable microservices from the ground up, implemented CI/CD pipelines, and led a team through rapid iteration cycles that took the company from pre-launch to handling exponential growth. My startup experience at Kyra Health, Neeva, and Stationhead has honed my ability to work in agile environments, own the full SDLC, and deliver high-quality software in quick cycles. I'm particularly excited about SimSpace's focus on continuous learning and staying at the forefront of AI advancements, as this aligns perfectly with my approach to technology and my eagerness to dive deeper into the evolving AI landscape.
+
+
+Best,
+
+Andrew DeFranco

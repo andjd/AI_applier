@@ -1,0 +1,12 @@
+2025-07-03
+
+Dear Hiring Manager,
+
+I'm excited to apply for the Senior Full-Stack Engineer position at Forerunner, where I can contribute to building critical climate adaptation tools that help communities prepare for and respond to flooding challenges. With 9+ years of product engineering experience building scalable systems across multiple startups, I'm particularly drawn to the opportunity to work on features that directly impact floodplain managers and help save homes and lives. My experience architecting complex features end-to-end aligns perfectly with your need for someone who can own product features from database design to React components, and my track record of leading technical initiatives without formal authority at companies like Stationhead and Enterprise demonstrates the collaborative leadership style needed for this role.
+
+Your technology stack of TypeScript, React, PostgreSQL, and AWS maps directly to my core expertise, and I'm eager to apply my database design skills and AWS infrastructure experience to help process hundreds of geospatial datasets and build intuitive interfaces for complex government workflows. While I don't have direct PostGIS experience, my extensive work with Elasticsearch for data analysis and complex queries provides equivalent foundations for geospatial analysis. My recent work at Kyra Health building HIPAA-compliant systems demonstrates my ability to navigate regulatory requirements similar to those in government systems, and my experience leading a 10-developer team at Enterprise while delivering a greenfield mobile app rebuild shows I can execute complex projects with minimal supervision while mentoring peers and driving best practices.
+
+
+Best,
+
+Andrew DeFranco

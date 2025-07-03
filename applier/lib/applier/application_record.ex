@@ -20,6 +20,7 @@ defmodule Applier.ApplicationRecord do
     field :docs_generated, :boolean, default: false
     field :form_filled, :boolean, default: false
     field :submitted, :boolean, default: false
+    field :rejected, :boolean, default: false
     field :errors, :string
 
     timestamps()
@@ -32,7 +33,7 @@ defmodule Applier.ApplicationRecord do
     |> cast(attrs, [:id, :source_url, :source_text, :form_url, :company_name, :job_title,
                     :salary_range_min, :salary_range_max, :salary_period, :office_location,
                     :office_attendance, :parsed, :approved, :docs_generated,
-                    :form_filled, :submitted, :errors])
+                    :form_filled, :submitted, :rejected, :errors])
     |> validate_required([:id])
     |> validate_source_present()
     |> unique_constraint(:id)

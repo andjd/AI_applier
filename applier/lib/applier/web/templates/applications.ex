@@ -8,10 +8,20 @@ defmodule Applier.Web.Templates.Applications do
       c &Layout.app/1, title: "Job Applications" do
         h1 do: "Job Applications"
 
-        div style: "margin-bottom: 20px;" do
-          form action: "/fetch-jobs", method: "post", style: "display: inline;" do
-            button type: "submit", class: "btn btn-primary", onclick: "this.disabled=true; this.innerText='Fetching...'; this.form.submit();" do
-              "Fetch New Jobs"
+        div class: "controls", style: "margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;" do
+          div class: "filter-buttons" do
+            filter_button("All", :all, @current_filter)
+            filter_button("Awaiting Approval", :awaiting_approval, @current_filter)
+            filter_button("Approved & Pending", :approved_pending, @current_filter)
+            filter_button("Completed", :completed, @current_filter)
+            filter_button("Rejected", :rejected, @current_filter)
+          end
+
+          div class: "action-buttons" do
+            form action: "/fetch-jobs", method: "post", style: "display: inline;" do
+              button type: "submit", class: "btn btn-primary", onclick: "this.disabled=true; this.innerText='Fetching...'; this.form.submit();" do
+                "Fetch New Jobs"
+              end
             end
           end
         end
@@ -251,11 +261,26 @@ defmodule Applier.Web.Templates.Applications do
             end
         end
 
-        # Delete button - always show
-        form action: "/applications/#{app.id}/delete", method: "post", style: "display: inline;", onsubmit: "return confirmDelete('#{app.company_name || "this application"}', '#{app.job_title || ""}');" do
+        # Reject button - always show
+        form action: "/applications/#{app.id}/reject", method: "post", style: "display: inline;", onsubmit: "return confirmReject('#{app.company_name || "this application"}', '#{app.job_title || ""}');" do
           button type: "submit", class: "btn btn-danger" do
-            "Delete"
+            "Reject"
           end
+        end
+      end
+    end
+  end
+
+  defp filter_button(label, filter_value, current_filter) do
+    temple do
+      if filter_value == current_filter do
+        span class: "btn btn-filter btn-filter-active" do
+          "#{label}"
+        end
+      else
+        href = if filter_value == :all, do: "/", else: "/?filter=#{filter_value}"
+        a href: href, class: "btn btn-filter" do
+          "#{label}"
         end
       end
     end

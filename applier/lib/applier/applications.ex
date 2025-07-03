@@ -8,11 +8,38 @@ defmodule Applier.Applications do
   alias Applier.ApplicationRecord
 
   @doc """
-  Returns all applications.
+  Returns all applications (excluding rejected ones).
   """
   def list_applications do
-    Repo.all(ApplicationRecord)
+    from(a in ApplicationRecord, where: a.rejected == false)
+    |> Repo.all()
   end
+
+  @doc """
+  Returns applications filtered by status.
+  """
+  def list_applications(filter) when filter in [:all, :completed, :awaiting_approval, :approved_pending, :rejected] do
+    query = case filter do
+      :all ->
+        from(a in ApplicationRecord, where: a.rejected == false)
+      
+      :completed ->
+        from(a in ApplicationRecord, where: a.submitted == true and a.rejected == false)
+      
+      :awaiting_approval ->
+        from(a in ApplicationRecord, where: a.approved == false and a.rejected == false)
+      
+      :approved_pending ->
+        from(a in ApplicationRecord, where: a.approved == true and a.submitted == false and a.rejected == false)
+        
+      :rejected ->
+        from(a in ApplicationRecord, where: a.rejected == true)
+    end
+    
+    Repo.all(query)
+  end
+
+  def list_applications(_invalid_filter), do: list_applications(:all)
 
   @doc """
   Gets a single application by id.
@@ -104,5 +131,12 @@ defmodule Applier.Applications do
       Applier.ProcessApplication.process_async(id)
       {:ok, application}
     end
+  end
+
+  @doc """
+  Rejects an application by setting rejected to true.
+  """
+  def reject_application(id) when is_binary(id) do
+    update_application(id, %{rejected: true})
   end
 end

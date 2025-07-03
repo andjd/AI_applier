@@ -1,0 +1,12 @@
+2025-07-03
+
+Dear Hiring Manager,
+
+I am thrilled to apply for the Lead Frontend Engineer position at Casebook PBC, where I can combine my passion for building impactful software with your mission to empower community well-being. With 9+ years of full-stack development experience and a proven track record of leading high-performing teams, I am excited to contribute to the Casebook Platform's continued innovation in human services technology. My experience spans the exact technical requirements you're seeking: extensive React and TypeScript development, GraphQL integration, microservices architecture, and AWS cloud infrastructure. While my backend experience centers on Python with Django and FastAPI (equivalent to Java/Spring Boot), I've successfully architected scalable systems using event-driven patterns with Kafka, managed complex database infrastructures including PostgreSQL, Redis, and Elasticsearch, and designed robust REST APIs following OpenAPI standards.
+
+My leadership experience directly aligns with Casebook's collaborative environment and technical needs. At Enterprise Mobility, I led a 10-developer team in rebuilding mobile applications, while at Stationhead I founded and grew the Android team, architected their first microservice, and implemented enterprise-grade security measures including cryptographically signed payloads and HIPAA-compliant systems at Kyra Health. Having worked across multiple startups and enterprise environments, I understand the unique challenges of SaaS platforms serving diverse client needs from small nonprofits to large government projects. My experience with CI/CD automation, agile methodologies, and cross-functional collaboration with product managers, designers, and stakeholders positions me perfectly to drive technical excellence while ensuring the Casebook Platform continues to make a meaningful difference in the lives of vulnerable populations.
+
+
+Best,
+
+Andrew DeFranco

@@ -15,9 +15,17 @@ defmodule Applier.Web.Router do
   end
 
   get "/" do
-    applications = Applier.Applications.list_applications()
+    filter = case conn.params["filter"] do
+      "completed" -> :completed
+      "awaiting_approval" -> :awaiting_approval
+      "approved_pending" -> :approved_pending
+      "rejected" -> :rejected
+      _ -> :all
+    end
 
-    html = Applications.index(%{applications: applications})
+    applications = Applier.Applications.list_applications(filter)
+
+    html = Applications.index(%{applications: applications, current_filter: filter})
     conn
     |> put_resp_content_type("text/html")
     |> send_resp(200, safe_to_string(html))
@@ -93,25 +101,17 @@ defmodule Applier.Web.Router do
     end
   end
 
-  post "/applications/:id/delete" do
-    case Applier.Applications.get_application(id) do
-      {:ok, application} ->
-        case Applier.Applications.delete_application(application) do
-          {:ok, _deleted_application} ->
-            conn
-            |> put_resp_header("location", "/")
-            |> send_resp(302, "")
+  post "/applications/:id/reject" do
+    case Applier.Applications.reject_application(id) do
+      {:ok, _application} ->
+        conn
+        |> put_resp_header("location", "/")
+        |> send_resp(302, "")
 
-          {:error, reason} ->
-            conn
-            |> put_resp_content_type("text/plain")
-            |> send_resp(400, "Failed to delete application: #{inspect(reason)}")
-        end
-
-      {:error, :not_found} ->
+      {:error, reason} ->
         conn
         |> put_resp_content_type("text/plain")
-        |> send_resp(404, "Application not found")
+        |> send_resp(400, "Failed to reject application: #{inspect(reason)}")
     end
   end
 
