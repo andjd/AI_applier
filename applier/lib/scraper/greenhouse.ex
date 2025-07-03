@@ -1,7 +1,7 @@
 defmodule Scraper.Greenhouse do
   def extract_questions(page) do
     # Target Greenhouse-specific form field wrappers (avoiding duplicates, custom selects, and demographic fields)
-    greenhouse_selector = ".text-input-wrapper input:not([role='combobox']), .input-wrapper input:not([role='combobox'])"
+    greenhouse_selector = ".text-input-wrapper input:not([role='combobox']), .input-wrapper input:not([role='combobox']), .text-input-wrapper textarea, .input-wrapper textarea"
 
     # Handle regular form elements
     selector = Playwright.Page.locator(page, greenhouse_selector)
