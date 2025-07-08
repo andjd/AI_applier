@@ -1,0 +1,12 @@
+2025-07-03
+
+Dear Hiring Manager,
+
+I'm excited to apply for the Senior Android Software Engineer position at Dropbox, where I can contribute to creating exceptional mobile experiences for hundreds of millions of users worldwide. My 9+ years of experience building scalable mobile applications, combined with my passion for elegant consumer interfaces, aligns perfectly with Dropbox's mission to transform how people work. At Enterprise Mobility, I led a 10-developer team in a greenfield rebuild of their market-leading rental car mobile apps using React Native, managing the complexity of serving millions of users while maintaining top-tier performance and security standards. My experience founding and growing the Android App team at Stationhead demonstrates my ability to architect robust solutions for large native codebases, where I created a custom reactive state-management framework that reduced bugs by 80% and successfully scaled the platform through exponential user growth.
+
+What particularly excites me about this role is the opportunity to work on Dropbox's mobile platform that handles over a billion files daily, solving complex technical challenges at enterprise scale while maintaining that startup mindset. My background leading cross-functional teams across multiple startups, from pre-launch Kyra Health to scaling Stationhead through their pivot to product-market fit, has prepared me to drive architectural upgrades and mentor junior engineers in Dropbox's collaborative environment. With proficiency in Kotlin and extensive experience in mobile development, API design, and performance optimization, I'm eager to contribute to Dropbox's continued innovation in making work more intuitive and human through exceptional mobile experiences.
+
+
+Best,
+
+Andrew DeFranco

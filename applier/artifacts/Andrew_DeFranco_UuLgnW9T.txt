@@ -1,0 +1,12 @@
+2025-07-03
+
+Dear Hiring Manager,
+
+I am excited to apply for the Senior Software Engineer III position at Perforce. With over 9 years of progressive engineering experience, I bring a strong foundation in Python development, scalable infrastructure design, and comprehensive testing practices that align perfectly with your technical requirements. My experience includes extensive work with Python at both Kyra Health, where I built HIPAA-compliant LLM-powered tools, and at Affinitiv, where I modernized legacy systems. While my primary expertise is in TypeScript and Python rather than Java specifically, I have deep experience with similar object-oriented languages including Kotlin and have successfully adapted to new technology stacks throughout my career. My JavaScript expertise spans full-stack development with React and Redux, and I have over 5 years of Linux and systems experience through AWS, Docker, and Kubernetes deployments.
+
+What particularly excites me about this role is the opportunity to leverage my proven track record in scalable infrastructure design and development. At Stationhead, I architected our first microservice and created frameworks for breaking apart monoliths, while at Enterprise Mobility, I led a 10-developer team in a greenfield mobile app rebuild. My experience spans three successful startups where I've built systems from the ground up, implemented comprehensive testing strategies that reduced bugs by 80%, and optimized autoscaling infrastructure to handle exponential growth. I'm particularly drawn to Perforce's commitment to engineering excellence and would love to contribute my expertise in systems architecture, team leadership, and scalable software development to help drive your continued success.
+
+
+Best,
+
+Andrew DeFranco

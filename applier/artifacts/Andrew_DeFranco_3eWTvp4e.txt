@@ -1,0 +1,12 @@
+2025-07-03
+
+Dear Hiring Manager,
+
+I'm excited to apply for the Software Engineer II, Frontend (Growth) position at AllTrails. With over 9 years of product-focused development experience, I bring a proven track record of building user-centric frontend experiences that drive growth at scaling companies. My extensive React and Next.js experience, combined with my background leading frontend initiatives at startups from pre-launch through exponential growth phases, makes me an ideal fit for this role.
+
+My experience is particularly relevant to AllTrails' growth objectives. At Stationhead, I joined pre-launch and helped the company pivot to find product-market fit, then architected scalable systems that supported their explosive user growth. I've led frontend development using React across multiple companies, including building responsive web applications at Affinitiv and appointment booking systems at a healthcare startup using Next.js. Additionally, my mobile development experience with React Native at Enterprise, where I headed a 10-developer team rebuilding their consumer-facing apps, demonstrates my ability to create engaging user experiences across platforms. This combination of frontend expertise, growth-stage startup experience, and proven ability to scale technical teams positions me perfectly to contribute to AllTrails' continued success.
+
+
+Best,
+
+Andrew DeFranco

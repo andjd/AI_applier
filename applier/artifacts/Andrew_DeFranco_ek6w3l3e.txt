@@ -1,0 +1,12 @@
+2025-07-05
+
+Dear Hiring Manager,
+
+I'm excited to apply for the Staff Software Engineer position on Airbnb's Reservation Management team. With over 9 years of experience building scalable systems and leading high-performing teams, I'm particularly drawn to the opportunity to set technical vision for the backend foundation that powers delightful experiences for millions of guests and hosts. My experience architecting microservices at Stationhead, where I planned and implemented our first microservice creating a scalable framework for breaking apart our monolith, directly aligns with building performant services in large service-oriented architectures. Additionally, my work with Python, Kotlin, and TypeScript (equivalent to Java/Kotlin/Python) across companies like Kyra Health and Enterprise, combined with my expertise in REST APIs, GraphQL, and AWS infrastructure, positions me well to tackle the technical challenges of reservation management at scale.
+
+What excites me most about this role is the opportunity to mentor engineers while driving both technical excellence and product impact. At Enterprise, I headed a 10-developer team in the greenfield rebuild of mobile apps, demonstrating my ability to lead experienced engineers on large-scale projects with multiple dependencies. My startup experience at Kyra Health, Neeva, and Stationhead has given me deep experience in cross-functional collaboration with PMs, designers, and data science teams, while my work at Stationhead scaling from pre-launch to handling exponential growth mirrors the challenges of building reservation products that serve Airbnb's massive user base. I'm particularly passionate about end-to-end product delivery, having built everything from HIPAA-compliant LLM tools to payment systems, and I'd love to bring this comprehensive approach to ensuring every Airbnb guest and host has a 5-star experience.
+
+
+Best,
+
+Andrew DeFranco

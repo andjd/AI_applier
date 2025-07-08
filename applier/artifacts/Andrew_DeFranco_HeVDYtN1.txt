@@ -1,0 +1,12 @@
+2025-07-03
+
+Dear Hiring Manager,
+
+I'm excited to apply for the Full Stack Engineer position at Reveal, where I can leverage my 9+ years of experience building scalable systems to help revolutionize field operations for defense and security missions. Your mission-critical work in providing software tools for remote and extreme environments aligns perfectly with my background in developing robust, secure systems that operate under demanding conditions. My experience architecting microservices at Stationhead, building HIPAA-compliant systems at Kyra Health, and leading infrastructure design across multiple startups has prepared me to tackle the complex technical challenges of designing modular backend services for mission command and staff management systems.
+
+My technical expertise directly matches Reveal's requirements: I have extensive experience with Python, REST/GraphQL APIs, Docker/Kubernetes, and AWS cloud infrastructure, along with proven skills in database architecture and ETL pipeline development using technologies equivalent to Apache Kafka. At Stationhead, I designed and implemented secure data pipelines, built authentication systems hardened against various attack vectors, and created scalable database infrastructure for high availability - experience that translates well to DoD systems integration and the security-first approach required for government environments. Additionally, my frontend collaboration skills with React and TypeScript, combined with my leadership experience heading a 10-developer team at Enterprise Mobility, position me well to work cross-functionally with your team to deliver the interactive tools and data visualization capabilities that help people make critical operational decisions.
+
+
+Best,
+
+Andrew DeFranco

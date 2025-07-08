@@ -1,0 +1,12 @@
+2025-07-07
+
+Dear Hiring Manager,
+
+I'm thrilled to apply for the Senior Software Engineer II position at Virta Health, where I can combine my passion for healthcare technology with my extensive experience building scalable data platforms. Currently at Kyra Health, I've been developing HIPAA-compliant LLM-powered tools for health plan discovery, giving me direct experience with the healthcare data challenges and regulatory requirements that Virta faces daily. My background architecting microservices and data integrations at Stationhead, combined with my experience modernizing legacy systems at Affinitiv (including a 25-year-old SQL database), aligns perfectly with Virta's need to transition from file-based processes to modern API-driven architectures. I've built the exact type of partner-facing systems you need, having designed REST APIs, implemented third-party integrations over HTTPS and AMQP, and created scalable frameworks for breaking apart monoliths.
+
+What excites me most about this role is the opportunity to leverage AI not just as a buzzword, but as a practical tool to enhance system intelligence and development velocity. I've already integrated LLM capabilities into healthcare applications and use AI-powered tools like Claude Code to accelerate development, which directly matches your vision of AI-enhanced workflows for data quality and automation. My startup experience at three companies, including helping Stationhead pivot to find product-market fit and scale through exponential growth, has given me the high-agency mindset and experimental approach essential for this role. While I primarily work with Python and TypeScript rather than Golang, my experience with similar backend languages like Elixir and Ruby, combined with my deep understanding of cloud architecture and Kubernetes, will allow me to quickly adapt to your tech stack and immediately contribute to modernizing Virta's data engagement platform.
+
+
+Best,
+
+Andrew DeFranco

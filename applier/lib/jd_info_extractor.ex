@@ -28,7 +28,7 @@ defmodule JDInfoExtractor do
   end
 
   def extract_text(page, _application_id) do
-    with {:ok, text} <- extract_visible_text(page),
+    with {:ok, text} <- Scraper.extract_visible_text(page),
          {:ok, questions} <- Scraper.extract_questions(page)
     do
       {:ok, text, questions}
@@ -58,13 +58,6 @@ defmodule JDInfoExtractor do
     end
   end
 
-  defp extract_visible_text(page) do
-    # Extract visible text from body
-    cleaned_text = Playwright.Page.locator(page, "body")
-      |> Playwright.Locator.inner_text()
-      |> String.trim()
-    {:ok, cleaned_text}
-  end
 
   defp parse_metadata_json(response) do
     case JSON.decode(response) do

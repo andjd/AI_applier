@@ -1,0 +1,12 @@
+2025-07-05
+
+Dear Hiring Manager,
+
+I'm excited to apply for the Software Engineer II position at Coalition, where I can contribute to building the robust backend systems that power your Active Insurance platform. With 9+ years of experience developing scalable APIs and services, I'm particularly drawn to Coalition's mission of protecting businesses from digital risk through innovative technology. My background aligns perfectly with your technical requirements—I have extensive experience with Python development, cloud-native architectures using AWS and Docker, and multiple API formats including REST, GraphQL, gRPC, and WebSockets. At Stationhead, I architected microservices that scaled to handle exponential user growth, and I've consistently worked with agile teams using collaborative tools like Git and CI/CD pipelines. Additionally, I'm already proficient with AI-powered development tools like Claude Code and have built LLM-powered applications at Kyra Health.
+
+Your emphasis on engineering excellence and building joyful APIs resonates strongly with my approach to software development. During my time at Stationhead, I led the transition from a monolith to microservices architecture, implementing cryptographically signed payloads for enhanced security and designing load-testing systems for high-availability scenarios—experience that directly applies to Coalition's need for managing complex business rules with deterministic outcomes. My startup experience at Kyra Health, Neeva, and Stationhead has taught me how to work cross-functionally with product, design, and business stakeholders to break down requirements into actionable technical plans. I'm particularly excited about the opportunity to contribute to Coalition's mission while working with a team that values character, responsibility, and technical excellence.
+
+
+Best,
+
+Andrew DeFranco

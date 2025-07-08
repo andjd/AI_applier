@@ -1,0 +1,12 @@
+2025-07-03
+
+Dear Hiring Manager,
+
+I'm thrilled to apply for the Lead Automation Developer position at Under Armour. Your mission to bridge low-code platforms with API-first development perfectly aligns with my experience architecting scalable systems and leading high-performing development teams. While I don't have direct experience with Automation Anywhere, I have extensive experience building automation solutions using traditional programming approaches with Python, TypeScript, and JavaScript, along with deep expertise in API development using REST, GraphQL, and WebSockets. My work at Kyra Health developing HIPAA-compliant LLM-powered tools and at Neeva launching AI-powered search experiences directly addresses your need for someone who can combine automation platforms with advanced AI capabilities.
+
+My leadership experience heading a 10-developer team at Enterprise Mobility and founding the Android development team at Stationhead demonstrates my ability to coach developers and foster collaborative, innovative cultures. At Stationhead, I architected our first microservice and created scalable frameworks that became blueprints for breaking apart monoliths, experience that translates directly to implementing governance frameworks for scalable automation solutions. My startup experience across Kyra Health, Neeva, and Stationhead has taught me to stay ahead of emerging technologies while delivering practical solutions that drive business value. I'm excited about the opportunity to lead Under Armour's automation development team and help drive the company's digital transformation initiatives.
+
+
+Best,
+
+Andrew DeFranco

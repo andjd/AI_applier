@@ -1,0 +1,12 @@
+2025-07-03
+
+Dear Hiring Manager,
+
+I am excited to apply for the AI Product Engineer position at Teal. With over 9 years of experience building scalable systems and leading high-performing teams, I bring a unique combination of AI expertise and product development skills that would be valuable to your engineering team. At Kyra Health, I built a HIPAA-compliant LLM-powered tool for health plan discovery and enhanced our development environment to support multiple concurrent threads of AI code generation. My experience at Neeva, where I launched a proof-of-concept mobile search experience featuring LLM summaries, demonstrates my ability to translate cutting-edge AI technologies into user-facing products.
+
+My startup experience spans pre-launch to scale, having joined Stationhead before launch and helping them pivot to find product-market fit before scaling to handle exponential growth. I led a 10-developer team at Enterprise Mobility on a greenfield mobile app rebuild, and architected complex systems including microservices, payment integrations, and database infrastructure for high availability. My technical skills include LLMs, RAG, TypeScript, Python, React, and AWS, combined with strong product intuition and team leadership experience that would allow me to contribute immediately to Teal's mission of empowering job seekers with AI-powered tools.
+
+
+Best,
+
+Andrew DeFranco

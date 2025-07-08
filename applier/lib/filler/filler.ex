@@ -23,6 +23,10 @@ defmodule Filler do
         IO.puts("Detected JazzHR form, using JazzHR filler")
         Filler.JazzHR.fill_form(page, responses, resume_text, cover_letter_text)
       
+      Helpers.FormDetector.is_lever_form?(page) ->
+        IO.puts("Detected Lever form, using Lever filler")
+        Filler.Lever.fill_form(page, responses, resume_text, cover_letter_text)
+      
       true ->
         IO.puts("Using Generic filler")
         Filler.Generic.fill_form(page, responses, resume_text, cover_letter_text)

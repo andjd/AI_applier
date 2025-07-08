@@ -1,0 +1,12 @@
+2025-07-03
+
+Dear Hiring Manager,
+
+I'm excited to apply for the Backend Crypto Engineer position at Kraken. While I don't have direct blockchain experience, my 9+ years of backend development expertise building scalable, secure systems makes me well-positioned to contribute to your crypto infrastructure. At Stationhead, I architected microservices handling high-volume transactions with cryptographically signed payloads for security, designed APIs using REST and WebSockets, and built database infrastructure for high availability and strong consistency. My experience with Python, distributed systems architecture, and AWS cloud infrastructure at companies like Kyra Health and Affinitiv directly translates to the technical rigor required for L1 blockchain development.
+
+My startup experience at three different companies has taught me to rapidly learn new technologies and adapt to evolving technical requirements, which I believe is essential in the fast-moving crypto space. At Stationhead, I helped scale the platform from pre-launch through exponential growth, implementing robust security measures and load-testing systems for high-traffic scenarios. The combination of my backend expertise in building secure, scalable systems and my proven ability to quickly master new technical domains makes me confident I can quickly get up to speed on blockchain fundamentals and contribute meaningfully to Kraken's crypto engineering team.
+
+
+Best,
+
+Andrew DeFranco

@@ -1,0 +1,12 @@
+2025-07-03
+
+Dear Hiring Manager,
+
+I'm excited to apply for the Senior Software Engineer position at Knock, where I can contribute to transforming the homeownership experience through innovative technology. With 9+ years of full-stack development experience and a proven track record at startups like Kyra Health, Neeva, and Stationhead, I'm well-positioned to deliver the modern, high-performing web applications that power Knock.com. My expertise in TypeScript, React, and GraphQL directly aligns with your frontend-focused role, and I've successfully built production-grade applications using Next.js and React at my recent healthcare startup work. Additionally, my experience with AWS, SQL databases, and full development lifecycle management from my time scaling Stationhead from pre-launch to handling exponential growth demonstrates my ability to create scalable, reliable systems that can support Knock's expanding customer base.
+
+What particularly excites me about this opportunity is the chance to apply my startup experience and technical leadership skills to solve real problems in the real estate industry. At Stationhead, I led the architecture of critical features including payment systems and microservices, while at Enterprise Mobility I headed a 10-developer team rebuilding mobile applications, giving me the mentorship and collaboration experience essential for your remote-first culture. My backend development experience with Python and database optimization work (equivalent to the Node.js experience you're seeking) ensures I can contribute effectively to the 30% backend portion of this role. I'm eager to bring my passion for building intuitive user experiences and my proven ability to thrive in fast-paced, distributed startup environments to help Knock continue revolutionizing how people buy and sell homes.
+
+
+Best,
+
+Andrew DeFranco

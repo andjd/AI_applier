@@ -20,7 +20,7 @@ defmodule Helpers.BrowserManager do
 
   @doc """
   Gets a new page from the managed browser instance.
-  
+
   ## Returns
   {:ok, page} on success
   {:error, reason} on failure
@@ -31,11 +31,11 @@ defmodule Helpers.BrowserManager do
 
   @doc """
   Navigates a page to the specified URL.
-  
+
   ## Parameters
   - page: Playwright page object
   - url: URL to navigate to
-  
+
   ## Returns
   {:ok, page} on success
   {:error, reason} on failure
@@ -54,7 +54,7 @@ defmodule Helpers.BrowserManager do
 
   @doc """
   Closes a specific page while keeping the browser alive.
-  
+
   ## Parameters
   - page: Playwright page object to close
   """
@@ -82,12 +82,12 @@ defmodule Helpers.BrowserManager do
   @impl true
   def init(_opts) do
     Logger.info("Starting browser manager...")
-    
+
     case launch_browser() do
       {:ok, browser} ->
         Logger.info("Browser launched successfully")
         {:ok, %{browser: browser, pages: []}}
-      
+
       {:error, reason} ->
         Logger.error("Failed to launch browser: #{reason}")
         {:stop, reason}
@@ -101,7 +101,7 @@ defmodule Helpers.BrowserManager do
         new_pages = [page | pages]
         Logger.info("Created new page. Total pages: #{length(new_pages)}")
         {:reply, {:ok, page}, %{state | pages: new_pages}}
-      
+
       {:error, reason} ->
         Logger.error("Failed to create new page: #{reason}")
         {:reply, {:error, reason}, state}
@@ -116,7 +116,7 @@ defmodule Helpers.BrowserManager do
   @impl true
   def handle_call(:shutdown, _from, %{browser: browser, pages: pages} = state) do
     Logger.info("Shutting down browser manager...")
-    
+
     # Close all pages first
     Enum.each(pages, fn page ->
       try do
@@ -126,7 +126,7 @@ defmodule Helpers.BrowserManager do
           Logger.warning("Error closing page during shutdown: #{inspect(error)}")
       end
     end)
-    
+
     # Close the browser
     try do
       Playwright.Browser.close(browser)
@@ -135,7 +135,7 @@ defmodule Helpers.BrowserManager do
       error ->
         Logger.error("Error closing browser: #{inspect(error)}")
     end
-    
+
     {:stop, :normal, :ok, state}
   end
 
@@ -158,7 +158,7 @@ defmodule Helpers.BrowserManager do
   @impl true
   def terminate(reason, %{browser: browser, pages: pages}) do
     Logger.info("Browser manager terminating with reason: #{inspect(reason)}")
-    
+
     # Clean up pages
     Enum.each(pages, fn page ->
       try do
@@ -168,7 +168,7 @@ defmodule Helpers.BrowserManager do
           Logger.warning("Error closing page during terminate: #{inspect(error)}")
       end
     end)
-    
+
     # Clean up browser
     try do
       Playwright.Browser.close(browser)
@@ -176,17 +176,17 @@ defmodule Helpers.BrowserManager do
       error ->
         Logger.warning("Error closing browser during terminate: #{inspect(error)}")
     end
-    
+
     :ok
   end
 
   # Private Functions
 
   defp launch_browser do
-    case Playwright.launch(:chromium, @browser_opts) do
+    case Playwright.launch(:firefox, @browser_opts) do
       {:ok, browser} ->
         {:ok, browser}
-      
+
       other_response ->
         {:error, "Failed to start Playwright: #{inspect(other_response)}"}
     end

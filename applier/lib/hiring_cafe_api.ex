@@ -83,7 +83,7 @@ defmodule Applier.HiringCafeAPI do
     # Generate a unique ID for the application
     job_info = job["job_information"]
     job_data = job["v5_processed_job_data"]
-    id_base = job["apply_url"] || inspect(:calendar.local_time())
+    id_base = job["apply_url"]
     application_id = Helpers.Hash.generate(id_base)
 
     attrs = %{

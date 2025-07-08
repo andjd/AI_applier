@@ -15,16 +15,60 @@ defmodule Scraper do
     end
   end
 
+  def extract_visible_text(page) do
+    with {:ok, page} <- navigate_to_jd_if_lever(page),
+         cleaned_text = Playwright.Page.locator(page, "body")
+                        |> Playwright.Locator.inner_text()
+                        |> String.trim()
+    do
+      {:ok, cleaned_text}
+    else
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  defp navigate_to_jd_if_lever(page) do
+    if Helpers.FormDetector.is_lever_form?(page) do
+      navigate_to_lever_jd(page)
+    else
+      {:ok, page}
+    end
+  end
+
+  defp navigate_to_lever_jd(page) do
+    url = Playwright.Page.url(page)
+
+    if String.contains?(url, "/apply") do
+      # Remove /apply to get the JD page
+      jd_url = String.replace(url, "/apply", "")
+      IO.puts("Navigating to Lever JD page: #{jd_url}")
+
+      response = Playwright.Page.goto(page, jd_url)
+      if response.status == 200 do
+        {:ok, page}
+      else
+        {:error, inspect(response)}
+      end
+    else
+      # Already on JD page
+      {:ok, page}
+    end
+  end
+
   defp extract_and_cache_questions(page, url, cache_key) do
     result = cond do
       Helpers.FormDetector.is_greenhouse_form?(page) ->
         IO.puts("Detected Greenhouse form, using Greenhouse scraper")
         Scraper.Greenhouse.extract_questions(page)
-      
+
       Helpers.FormDetector.is_jazzhr_form?(page) ->
         IO.puts("Detected JazzHR form, using JazzHR scraper")
         Scraper.JazzHR.extract_questions(page)
-      
+
+      Helpers.FormDetector.is_lever_form?(page) ->
+        IO.puts("Detected Lever form, using Lever scraper")
+        Scraper.Lever.extract_questions(page)
+
       true ->
         IO.puts("Using Generic scraper")
         Scraper.Generic.extract_questions(page)

@@ -1,0 +1,12 @@
+2025-07-03
+
+Dear Hiring Manager,
+
+I'm excited to apply for the Fullstack Engineer position on LaunchDarkly's Feature Management team. With 9+ years of full-stack development experience and a proven track record of building developer-first tooling, I'm particularly drawn to your mission of empowering developers with best-in-class feature management controls. My experience building HIPAA-compliant LLM-powered tools at Kyra Health and scaling team productivity through enhanced development environments aligns perfectly with your focus on AI tooling and developer workflow optimization. I have extensive experience with TypeScript and React, along with equivalent backend experience using Python and Node.js-style architectures, and I'm passionate about creating maintainable code that other developers can easily understand and build upon.
+
+My leadership experience at Enterprise Mobility, where I headed a 10-developer team rebuilding mobile apps, and my foundational work at Stationhead, where I joined pre-launch and helped scale through exponential growth, demonstrate my ability to collaborate cross-functionally with product and design teams in fast-paced environments. At Stationhead, I architected our first microservice and created a reactive state-management framework that reduced bugs by 80%+, while also optimizing autoscaling infrastructure on AWS and building load-testing systems for production reliability. This combination of technical depth, team leadership, and startup agility positions me well to contribute to LaunchDarkly's developer-focused roadmap while maintaining the high standards your production systems require.
+
+
+Best,
+
+Andrew DeFranco

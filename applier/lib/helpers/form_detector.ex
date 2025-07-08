@@ -1,10 +1,10 @@
 defmodule Helpers.FormDetector do
   @doc """
   Detects if a page contains a Greenhouse form by checking URL and HTML content.
-  
+
   ## Parameters
   - page: Playwright page object
-  
+
   ## Returns
   Boolean indicating whether this is a Greenhouse form
   """
@@ -14,15 +14,34 @@ defmodule Helpers.FormDetector do
 
   @doc """
   Detects if a page contains a JazzHR form by checking URL and HTML content.
-  
+
   ## Parameters
   - page: Playwright page object
-  
+
   ## Returns
   Boolean indicating whether this is a JazzHR form
   """
   def is_jazzhr_form?(page) do
     is_jazzhr_url?(page) or is_jazzhr_html?(page)
+  end
+
+  @doc """
+  Detects if a page contains a Lever form by checking URL and HTML content.
+
+  ## Parameters
+  - page: Playwright page object
+
+  ## Returns
+  Boolean indicating whether this is a Lever form
+  """
+  def is_lever_form?(page) do
+    url = Playwright.Page.url(page)
+    if url && String.length(url) > 0 do
+      url_lower = String.downcase(url)
+      String.contains?(url_lower, "jobs.lever.co")
+    else
+      false
+    end
   end
 
   defp is_greenhouse_url?(page) do

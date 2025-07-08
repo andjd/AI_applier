@@ -1,0 +1,12 @@
+2025-07-03
+
+Dear Hiring Manager,
+
+I am excited to apply for the Senior LLM Engineer position at SmartAsset, where I can leverage my extensive experience building scalable AI-powered systems to help millions of people make smart financial decisions. Your mission resonates strongly with my background in developing LLM-powered tools that solve real-world problems, particularly my recent work at Kyra Health where I built a HIPAA-compliant LLM-powered tool for health plan discovery and enhanced development environments to support concurrent AI code generation threads. My experience with Python, AWS infrastructure, and LLM frameworks like OpenAI and Claude, combined with my proven track record of designing high-performance, scalable services that handle hundreds of concurrent users, directly aligns with your need for someone who can build reliable LLM capabilities at scale.
+
+My startup experience across Kyra Health, Neeva, and Stationhead has given me deep expertise in the full lifecycle of AI product development, from architecting microservices and RAG pipelines to optimizing autoscaling infrastructure using Terraform and AWS. At Stationhead, I led a 10-developer team and built load-testing systems to stress-test server infrastructure for high-concurrency scenarios, while at Neeva I launched LLM-powered search experiences that required seamless integration of AI technologies. My experience with vector databases is equivalent through my extensive work with Elasticsearch and other database systems, and I have hands-on experience with DevOps tools including Docker, Kubernetes, and CI/CD pipelines. The leadership and cross-functional collaboration skills I've developed while scaling teams and working with stakeholders across business functions will be invaluable as I work with SmartAsset's Marketing, Product, Sales, and Technology teams to identify and implement LLM use cases that drive business value.
+
+
+Best,
+
+Andrew DeFranco

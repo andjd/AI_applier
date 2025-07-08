@@ -1,0 +1,12 @@
+2025-07-03
+
+Dear Hiring Manager,
+
+I'm excited to apply for the Software Engineer position on the Capital Insights team at Upstart. Your mission of enabling access to effortless credit based on true risk deeply resonates with me, and I'm energized by the opportunity to build reporting infrastructure that supports your capital markets operations. With 9+ years of full-stack development experience and a proven track record of building scalable systems at startups like Kyra Health, Neeva, and Stationhead, I'm well-positioned to help define the future state of your reporting infrastructure. My experience with Python and React (equivalent to your Ruby on Rails and Kotlin stack), combined with cloud-native deployment on AWS and microservices architecture, directly aligns with your technical requirements. At Stationhead, I architected our first microservice and built ETL pipelines for SQL, Redis, and Elasticsearch databases, while at Kyra Health I enhanced dev environments to support multiple concurrent AI development threads.
+
+What makes me particularly excited about this role is the opportunity to work with cross-functional teams to deliver self-service tools that enhance the investor experience. At Enterprise Mobility, I led a 10-developer team rebuilding mobile applications, demonstrating my ability to collaborate effectively with diverse stakeholders and deliver critical business systems. My experience building secure integrations and optimizing database performance for high availability aligns perfectly with your need for reliable, scalable systems that meet regulatory requirements. Having worked in regulated industries including healthcare and automotive, I understand the importance of compliance and security in financial services, and I'm eager to contribute to Upstart's innovative approach to AI-powered lending.
+
+
+Best,
+
+Andrew DeFranco
