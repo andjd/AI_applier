@@ -1,0 +1,12 @@
+2025-07-08
+
+Dear Hiring Manager,
+
+I'm thrilled to apply for the Senior Mobile Developer position at The Motley Fool, where I can combine my passion for building exceptional mobile experiences with a mission that genuinely helps people improve their financial futures. With over 9 years of experience in mobile and full-stack development, I've led teams through complex technical challenges and delivered production-grade applications that serve millions of users. Most recently, I headed a 10-developer team in the greenfield rebuild of Enterprise Rent-a-car's mobile apps using React Native, and I've successfully launched mobile experiences at startups like Neeva and Stationhead. My expertise spans the entire mobile development lifecycle, from React Native and TypeScript to integrating RESTful APIs with Redux state management, implementing CI/CD workflows, and optimizing performance for both iOS and Android platforms.
+
+Your role represents the perfect intersection of my technical skills and leadership experience with my interest in fintech applications. At Stationhead, I founded and grew the Android team while creating a custom reactive state-management framework that reduced bugs by 80%, and I've consistently built scalable, reusable components across multiple projects. My experience building secure financial integrations at Affinitiv (CRM software for car dealerships) gives me valuable context for fintech applications, and my startup experience at Kyra Health, Neeva, and Stationhead has taught me how to work autonomously, move fast, and deliver user-focused solutions. I'm excited about the opportunity to lead the next evolution of The Motley Fool's mobile experience and contribute to a platform that empowers people to take control of their financial futures.
+
+
+Best,
+
+Andrew DeFranco

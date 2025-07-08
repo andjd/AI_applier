@@ -11,7 +11,9 @@ defmodule Applier.Applications do
   Returns all applications (excluding rejected ones).
   """
   def list_applications do
-    from(a in ApplicationRecord, where: a.rejected == false)
+    from(a in ApplicationRecord, 
+      where: a.rejected == false,
+      order_by: [desc: a.priority, asc: a.inserted_at])
     |> Repo.all()
   end
 
@@ -21,7 +23,9 @@ defmodule Applier.Applications do
   def list_applications(filter) when filter in [:all, :completed, :awaiting_approval, :approved_pending, :rejected] do
     query = case filter do
       :all ->
-        from(a in ApplicationRecord, where: a.rejected == false)
+        from(a in ApplicationRecord, 
+          where: a.rejected == false,
+          order_by: [desc: a.priority, asc: a.inserted_at])
       
       :completed ->
         from(a in ApplicationRecord, where: a.submitted == true and a.rejected == false)
@@ -30,7 +34,9 @@ defmodule Applier.Applications do
         from(a in ApplicationRecord, where: a.approved == false and a.rejected == false)
       
       :approved_pending ->
-        from(a in ApplicationRecord, where: a.approved == true and a.submitted == false and a.rejected == false)
+        from(a in ApplicationRecord, 
+          where: a.approved == true and a.submitted == false and a.rejected == false,
+          order_by: [desc: a.priority, asc: a.inserted_at])
         
       :rejected ->
         from(a in ApplicationRecord, where: a.rejected == true)
@@ -114,6 +120,18 @@ defmodule Applier.Applications do
   """
   def approve_application(id) when is_binary(id) do
     with {:ok, application} <- update_application(id, %{approved: true, errors: nil})
+    do
+      # Trigger background processing
+      Applier.ProcessApplication.process_async(id)
+      {:ok, application}
+    end
+  end
+
+  @doc """
+  Marks an application as priority by setting priority to true and approved to true.
+  """
+  def mark_priority_application(id) when is_binary(id) do
+    with {:ok, application} <- update_application(id, %{priority: true, approved: true, errors: nil})
     do
       # Trigger background processing
       Applier.ProcessApplication.process_async(id)

@@ -15,3 +15,5 @@ end
 ```
 
 Use the built-in JSON module instead of Jason lib for JSON parsing and encoding.
+
+- Do not write or try to run automated tests unless specifically asked to do so.

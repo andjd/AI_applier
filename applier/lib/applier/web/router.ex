@@ -61,57 +61,216 @@ defmodule Applier.Web.Router do
 
   post "/applications/:id/approve" do
     case Applier.Applications.approve_application(id) do
-      {:ok, _application} ->
-        conn
-        |> put_resp_header("location", "/")
-        |> send_resp(302, "")
+      {:ok, application} ->
+        case get_req_header(conn, "x-requested-with") do
+          ["XMLHttpRequest"] ->
+            conn
+            |> put_resp_content_type("application/json")
+            |> send_resp(200, JSON.encode!(%{
+              success: true,
+              message: "Application approved successfully",
+              application: %{
+                id: application.id,
+                parsed: application.parsed,
+                approved: application.approved,
+                docs_generated: application.docs_generated,
+                form_filled: application.form_filled,
+                submitted: application.submitted,
+                priority: application.priority
+              }
+            }))
+          _ ->
+            conn
+            |> put_resp_header("location", "/")
+            |> send_resp(302, "")
+        end
 
       {:error, reason} ->
-        conn
-        |> put_resp_content_type("text/plain")
-        |> send_resp(400, "Failed to approve application: #{inspect(reason)}")
+        case get_req_header(conn, "x-requested-with") do
+          ["XMLHttpRequest"] ->
+            conn
+            |> put_resp_content_type("application/json")
+            |> send_resp(400, JSON.encode!(%{
+              success: false,
+              message: "Failed to approve application: #{inspect(reason)}"
+            }))
+          _ ->
+            conn
+            |> put_resp_content_type("text/plain")
+            |> send_resp(400, "Failed to approve application: #{inspect(reason)}")
+        end
+    end
+  end
+
+  post "/applications/:id/priority" do
+    case Applier.Applications.mark_priority_application(id) do
+      {:ok, application} ->
+        case get_req_header(conn, "x-requested-with") do
+          ["XMLHttpRequest"] ->
+            conn
+            |> put_resp_content_type("application/json")
+            |> send_resp(200, JSON.encode!(%{
+              success: true,
+              message: "Application marked as priority successfully",
+              application: %{
+                id: application.id,
+                parsed: application.parsed,
+                approved: application.approved,
+                docs_generated: application.docs_generated,
+                form_filled: application.form_filled,
+                submitted: application.submitted,
+                priority: application.priority
+              }
+            }))
+          _ ->
+            conn
+            |> put_resp_header("location", "/")
+            |> send_resp(302, "")
+        end
+
+      {:error, reason} ->
+        case get_req_header(conn, "x-requested-with") do
+          ["XMLHttpRequest"] ->
+            conn
+            |> put_resp_content_type("application/json")
+            |> send_resp(400, JSON.encode!(%{
+              success: false,
+              message: "Failed to mark application as priority: #{inspect(reason)}"
+            }))
+          _ ->
+            conn
+            |> put_resp_content_type("text/plain")
+            |> send_resp(400, "Failed to mark application as priority: #{inspect(reason)}")
+        end
     end
   end
 
   post "/applications/:id/retry" do
     case Applier.Applications.retry_application(id) do
-      {:ok, _application} ->
-        conn
-        |> put_resp_header("location", "/")
-        |> send_resp(302, "")
+      {:ok, application} ->
+        case get_req_header(conn, "x-requested-with") do
+          ["XMLHttpRequest"] ->
+            conn
+            |> put_resp_content_type("application/json")
+            |> send_resp(200, JSON.encode!(%{
+              success: true,
+              message: "Application processing started",
+              application: %{
+                id: application.id,
+                parsed: application.parsed,
+                approved: application.approved,
+                docs_generated: application.docs_generated,
+                form_filled: application.form_filled,
+                submitted: application.submitted,
+                priority: application.priority
+              }
+            }))
+          _ ->
+            conn
+            |> put_resp_header("location", "/")
+            |> send_resp(302, "")
+        end
 
       {:error, reason} ->
-        conn
-        |> put_resp_content_type("text/plain")
-        |> send_resp(400, "Failed to retry application: #{inspect(reason)}")
+        case get_req_header(conn, "x-requested-with") do
+          ["XMLHttpRequest"] ->
+            conn
+            |> put_resp_content_type("application/json")
+            |> send_resp(400, JSON.encode!(%{
+              success: false,
+              message: "Failed to retry application: #{inspect(reason)}"
+            }))
+          _ ->
+            conn
+            |> put_resp_content_type("text/plain")
+            |> send_resp(400, "Failed to retry application: #{inspect(reason)}")
+        end
     end
   end
 
   post "/applications/:id/complete" do
     case Applier.ProcessApplication.mark_complete(id) do
-      {:ok, _application} ->
-        conn
-        |> put_resp_header("location", "/")
-        |> send_resp(302, "")
+      {:ok, application} ->
+        case get_req_header(conn, "x-requested-with") do
+          ["XMLHttpRequest"] ->
+            conn
+            |> put_resp_content_type("application/json")
+            |> send_resp(200, JSON.encode!(%{
+              success: true,
+              message: "Application marked as complete",
+              application: %{
+                id: application.id,
+                parsed: application.parsed,
+                approved: application.approved,
+                docs_generated: application.docs_generated,
+                form_filled: application.form_filled,
+                submitted: application.submitted,
+                priority: application.priority
+              }
+            }))
+          _ ->
+            conn
+            |> put_resp_header("location", "/")
+            |> send_resp(302, "")
+        end
 
       {:error, reason} ->
-        conn
-        |> put_resp_content_type("text/plain")
-        |> send_resp(400, "Failed to mark application as complete: #{inspect(reason)}")
+        case get_req_header(conn, "x-requested-with") do
+          ["XMLHttpRequest"] ->
+            conn
+            |> put_resp_content_type("application/json")
+            |> send_resp(400, JSON.encode!(%{
+              success: false,
+              message: "Failed to mark application as complete: #{inspect(reason)}"
+            }))
+          _ ->
+            conn
+            |> put_resp_content_type("text/plain")
+            |> send_resp(400, "Failed to mark application as complete: #{inspect(reason)}")
+        end
     end
   end
 
   post "/applications/:id/reject" do
     case Applier.Applications.reject_application(id) do
-      {:ok, _application} ->
-        conn
-        |> put_resp_header("location", "/")
-        |> send_resp(302, "")
+      {:ok, application} ->
+        case get_req_header(conn, "x-requested-with") do
+          ["XMLHttpRequest"] ->
+            conn
+            |> put_resp_content_type("application/json")
+            |> send_resp(200, JSON.encode!(%{
+              success: true,
+              message: "Application rejected successfully",
+              application: %{
+                id: application.id,
+                parsed: application.parsed,
+                approved: application.approved,
+                docs_generated: application.docs_generated,
+                form_filled: application.form_filled,
+                submitted: application.submitted,
+                priority: application.priority
+              }
+            }))
+          _ ->
+            conn
+            |> put_resp_header("location", "/")
+            |> send_resp(302, "")
+        end
 
       {:error, reason} ->
-        conn
-        |> put_resp_content_type("text/plain")
-        |> send_resp(400, "Failed to reject application: #{inspect(reason)}")
+        case get_req_header(conn, "x-requested-with") do
+          ["XMLHttpRequest"] ->
+            conn
+            |> put_resp_content_type("application/json")
+            |> send_resp(400, JSON.encode!(%{
+              success: false,
+              message: "Failed to reject application: #{inspect(reason)}"
+            }))
+          _ ->
+            conn
+            |> put_resp_content_type("text/plain")
+            |> send_resp(400, "Failed to reject application: #{inspect(reason)}")
+        end
     end
   end
 

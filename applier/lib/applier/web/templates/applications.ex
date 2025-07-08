@@ -18,10 +18,8 @@ defmodule Applier.Web.Templates.Applications do
           end
 
           div class: "action-buttons" do
-            form action: "/fetch-jobs", method: "post", style: "display: inline;" do
-              button type: "submit", class: "btn btn-primary", onclick: "this.disabled=true; this.innerText='Fetching...'; this.form.submit();" do
-                "Fetch New Jobs"
-              end
+            button type: "button", class: "btn btn-primary", onclick: "fetchJobs(this)" do
+              "Fetch New Jobs"
             end
           end
         end
@@ -38,6 +36,7 @@ defmodule Applier.Web.Templates.Applications do
               th do: "Source"
               th do: "Parsed"
               th do: "Approved"
+              th do: "Priority"
               th do: "Docs Generated"
               th do: "Form Filled"
               th do: "Submitted"
@@ -121,6 +120,11 @@ defmodule Applier.Web.Templates.Applications do
           end
         end
         td do
+          span class: "status-#{app.priority}" do
+            raw if app.priority, do: "⭐", else: "○"
+          end
+        end
+        td do
           span class: "status-#{app.docs_generated}" do
             raw if app.docs_generated, do: "✓", else: "○"
           end
@@ -198,74 +202,57 @@ defmodule Applier.Web.Templates.Applications do
       div style: "display: flex; gap: 5px;" do
         cond do
           !app.parsed ->
-            form action: "/applications/#{app.id}/retry", method: "post", style: "display: inline;" do
-              button type: "submit", class: "btn btn-secondary" do
-                "Processing..."
-              end
+            button type: "button", class: "btn btn-secondary", onclick: "makeAjaxCall('/applications/#{app.id}/retry', this)" do
+              "Processing..."
             end
 
           !app.approved ->
-            form action: "/applications/#{app.id}/approve", method: "post", style: "display: inline;" do
-              button type: "submit", class: "btn btn-primary" do
-                "Approve"
-              end
+            button type: "button", class: "btn btn-primary", onclick: "makeAjaxCall('/applications/#{app.id}/approve', this)" do
+              "Approve"
+            end
+            button type: "button", class: "btn btn-warning", onclick: "makeAjaxCall('/applications/#{app.id}/priority', this)" do
+              "Priority"
             end
 
           app.approved && !app.docs_generated ->
-            form action: "/applications/#{app.id}/retry", method: "post", style: "display: inline;" do
-              button type: "submit", class: "btn btn-secondary" do
-                "Generate Docs"
-              end
+            button type: "button", class: "btn btn-secondary", onclick: "makeAjaxCall('/applications/#{app.id}/retry', this)" do
+              "Generate Docs"
             end
 
           app.docs_generated && !app.form_filled ->
-            form action: "/applications/#{app.id}/retry", method: "post", style: "display: inline;" do
-              button type: "submit", class: "btn btn-secondary" do
-                "Fill Form"
-              end
+            button type: "button", class: "btn btn-secondary", onclick: "makeAjaxCall('/applications/#{app.id}/retry', this)" do
+              "Fill Form"
             end
 
           app.form_filled && !app.submitted ->
             # Show both "Fill Form" and "Mark Complete" buttons
-            form action: "/applications/#{app.id}/retry", method: "post", style: "display: inline;" do
-              button type: "submit", class: "btn btn-secondary" do
-                "Fill Form"
-              end
+            button type: "button", class: "btn btn-secondary", onclick: "makeAjaxCall('/applications/#{app.id}/retry', this)" do
+              "Fill Form"
             end
-            form action: "/applications/#{app.id}/complete", method: "post", style: "display: inline;" do
-              button type: "submit", class: "btn btn-success" do
-                "Mark Complete"
-              end
+            button type: "button", class: "btn btn-success", onclick: "makeAjaxCall('/applications/#{app.id}/complete', this)" do
+              "Mark Complete"
             end
 
           app.submitted ->
             # Show "Fill Form" button even when complete
-            form action: "/applications/#{app.id}/retry", method: "post", style: "display: inline;" do
-              button type: "submit", class: "btn btn-secondary" do
-                "Fill Form"
-              end
+            button type: "button", class: "btn btn-secondary", onclick: "makeAjaxCall('/applications/#{app.id}/retry', this)" do
+              "Fill Form"
             end
 
           app.errors ->
-            form action: "/applications/#{app.id}/retry", method: "post", style: "display: inline;" do
-              button type: "submit", class: "btn btn-warning" do
-                "Retry"
-              end
+            button type: "button", class: "btn btn-warning", onclick: "makeAjaxCall('/applications/#{app.id}/retry', this)" do
+              "Retry"
             end
 
           true ->
-            form action: "/applications/#{app.id}/retry", method: "post", style: "display: inline;" do
-              button type: "submit", class: "btn btn-secondary" do
-                "Continue"
-              end
+            button type: "button", class: "btn btn-secondary", onclick: "makeAjaxCall('/applications/#{app.id}/retry', this)" do
+              "Continue"
             end
         end
 
         # Reject button - always show
-        form action: "/applications/#{app.id}/reject", method: "post", style: "display: inline;", onsubmit: "return confirmReject('#{app.company_name || "this application"}', '#{app.job_title || ""}');" do
-          button type: "submit", class: "btn btn-danger" do
-            "Reject"
-          end
+        button type: "button", class: "btn btn-danger", onclick: "handleReject(#{app.id}, this)" do
+          "Reject"
         end
       end
     end

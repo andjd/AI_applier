@@ -174,6 +174,204 @@ defmodule Applier.Web.Templates.Layout do
               
               return confirm(message);
             }
+            
+            // AJAX helper function
+            function makeAjaxCall(url, button, confirmMessage) {
+              if (confirmMessage && !confirm(confirmMessage)) {
+                return;
+              }
+              
+              // Set button to loading state
+              const originalText = button.textContent;
+              button.disabled = true;
+              button.textContent = 'Processing...';
+              
+              fetch(url, {
+                method: 'POST',
+                headers: {
+                  'X-Requested-With': 'XMLHttpRequest',
+                }
+              })
+              .then(response => response.json())
+              .then(data => {
+                if (data.success) {
+                  // Update the application row with new data
+                  updateApplicationRow(data.application);
+                  showMessage(data.message, 'success');
+                } else {
+                  showMessage(data.message, 'error');
+                }
+              })
+              .catch(error => {
+                console.error('Error:', error);
+                showMessage('An error occurred. Please try again.', 'error');
+              })
+              .finally(() => {
+                // Reset button state
+                button.disabled = false;
+                button.textContent = originalText;
+              });
+            }
+            
+            // Update application row with new data
+            function updateApplicationRow(application) {
+              const row = document.querySelector(`tr[data-app-id="${application.id}"]`);
+              if (!row) return;
+              
+              // Update status indicators
+              const statusMapping = {
+                'parsed': application.parsed,
+                'approved': application.approved,
+                'docs_generated': application.docs_generated,
+                'form_filled': application.form_filled,
+                'submitted': application.submitted
+              };
+              
+              Object.keys(statusMapping).forEach(status => {
+                const cell = row.querySelector(`td:nth-child(${getStatusColumnIndex(status)}) span`);
+                if (cell) {
+                  cell.className = `status-${statusMapping[status]}`;
+                  cell.innerHTML = statusMapping[status] ? '✓' : '○';
+                }
+              });
+              
+              // Update action buttons
+              const actionCell = row.querySelector('td:last-child');
+              if (actionCell) {
+                actionCell.innerHTML = generateActionButtons(application);
+              }
+            }
+            
+            // Get column index for status updates
+            function getStatusColumnIndex(status) {
+              const mapping = {
+                'parsed': 8,
+                'approved': 9,
+                'docs_generated': 10,
+                'form_filled': 11,
+                'submitted': 12
+              };
+              return mapping[status] || 0;
+            }
+            
+            // Generate action buttons HTML
+            function generateActionButtons(app) {
+              let html = '<div style="display: flex; gap: 5px;">';
+              
+              if (!app.parsed) {
+                html += '<button class="btn btn-secondary" onclick="makeAjaxCall(\\'/applications/' + app.id + '/retry\\', this)">Processing...</button>';
+              } else if (!app.approved) {
+                html += '<button class="btn btn-primary" onclick="makeAjaxCall(\\'/applications/' + app.id + '/approve\\', this)">Approve</button>';
+              } else if (app.approved && !app.docs_generated) {
+                html += '<button class="btn btn-secondary" onclick="makeAjaxCall(\\'/applications/' + app.id + '/retry\\', this)">Generate Docs</button>';
+              } else if (app.docs_generated && !app.form_filled) {
+                html += '<button class="btn btn-secondary" onclick="makeAjaxCall(\\'/applications/' + app.id + '/retry\\', this)">Fill Form</button>';
+              } else if (app.form_filled && !app.submitted) {
+                html += '<button class="btn btn-secondary" onclick="makeAjaxCall(\\'/applications/' + app.id + '/retry\\', this)">Fill Form</button>';
+                html += '<button class="btn btn-success" onclick="makeAjaxCall(\\'/applications/' + app.id + '/complete\\', this)">Mark Complete</button>';
+              } else if (app.submitted) {
+                html += '<button class="btn btn-secondary" onclick="makeAjaxCall(\\'/applications/' + app.id + '/retry\\', this)">Fill Form</button>';
+              } else {
+                html += '<button class="btn btn-secondary" onclick="makeAjaxCall(\\'/applications/' + app.id + '/retry\\', this)">Continue</button>';
+              }
+              
+              // Always add reject button
+              html += '<button class="btn btn-danger" onclick="handleReject(' + app.id + ', this)">Reject</button>';
+              html += '</div>';
+              
+              return html;
+            }
+            
+            // Handle reject action with confirmation
+            function handleReject(applicationId, button) {
+              const row = button.closest('tr');
+              const companyName = row.querySelector('td:nth-child(2)').textContent.trim();
+              const jobTitle = row.querySelector('td:nth-child(3)').textContent.trim();
+              
+              const confirmMessage = createRejectConfirmMessage(companyName, jobTitle);
+              makeAjaxCall('/applications/' + applicationId + '/reject', button, confirmMessage);
+            }
+            
+            // Create reject confirmation message
+            function createRejectConfirmMessage(companyName, jobTitle) {
+              let message = 'Are you sure you want to reject the application';
+              if (companyName && companyName !== '-') {
+                message += ' for ' + companyName;
+                if (jobTitle && jobTitle !== '-') {
+                  message += ' (' + jobTitle + ')';
+                }
+              }
+              message += '?\\n\\nRejected applications will be hidden from the main dashboard but can be viewed in the Rejected filter.';
+              return message;
+            }
+            
+            // Show success/error messages
+            function showMessage(message, type) {
+              // Remove any existing messages
+              const existingMessage = document.querySelector('.ajax-message');
+              if (existingMessage) {
+                existingMessage.remove();
+              }
+              
+              // Create new message
+              const messageDiv = document.createElement('div');
+              messageDiv.className = `ajax-message alert alert-${type}`;
+              messageDiv.textContent = message;
+              messageDiv.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 10px 20px;
+                border-radius: 4px;
+                font-weight: bold;
+                z-index: 1000;
+                max-width: 300px;
+                ${type === 'success' ? 'background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb;' : 'background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;'}
+              `;
+              
+              document.body.appendChild(messageDiv);
+              
+              // Remove message after 3 seconds
+              setTimeout(() => {
+                messageDiv.remove();
+              }, 3000);
+            }
+            
+            // Handle fetch jobs button
+            function fetchJobs(button) {
+              // Set button to loading state
+              const originalText = button.textContent;
+              button.disabled = true;
+              button.textContent = 'Fetching...';
+              
+              fetch('/fetch-jobs', {
+                method: 'POST',
+                headers: {
+                  'X-Requested-With': 'XMLHttpRequest',
+                }
+              })
+              .then(response => response.json())
+              .then(data => {
+                if (data.success) {
+                  showMessage(data.message, 'success');
+                  // Optionally reload the page to show new jobs
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 2000);
+                } else {
+                  showMessage(data.message, 'error');
+                }
+              })
+              .catch(error => {
+                console.error('Error:', error);
+                showMessage('An error occurred while fetching jobs. Please try again.', 'error');
+              })
+              .finally(() => {
+                // Reset button state
+                button.disabled = false;
+                button.textContent = originalText;
+              });
+            }
             """
           end
         end
