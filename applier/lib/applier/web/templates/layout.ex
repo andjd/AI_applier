@@ -151,6 +151,96 @@ defmodule Applier.Web.Templates.Layout do
                     <span class="live-status">${message}</span>
                   `;
                 }
+                
+                // Update application state and action buttons based on status
+                updateApplicationStateFromWebSocket(row, status);
+              });
+            }
+            
+            function updateApplicationStateFromWebSocket(row, status) {
+              // Get current application state from the row
+              const app = extractApplicationStateFromRow(row);
+              
+              // Update application state based on WebSocket status
+              switch (status) {
+                case 'parsed':
+                  app.parsed = true;
+                  break;
+                case 'docs_generated':
+                  app.docs_generated = true;
+                  break;
+                case 'form_filled':
+                  app.form_filled = true;
+                  break;
+                case 'completed':
+                  app.submitted = true;
+                  break;
+                case 'error':
+                  app.errors = true;
+                  break;
+                // For status updates that don't directly map to state changes,
+                // we can infer state from the current status
+                case 'processing':
+                  // Application is being processed, no state change needed
+                  break;
+                case 'generating_docs':
+                  // Docs are being generated, application must be approved
+                  app.approved = true;
+                  break;
+                case 'filling_form':
+                  // Form is being filled, docs must be generated
+                  app.docs_generated = true;
+                  break;
+                case 'completing':
+                  // Application is being marked complete, form must be filled
+                  app.form_filled = true;
+                  break;
+                case 'waiting_approval':
+                  // Application is waiting for approval, must be parsed
+                  app.parsed = true;
+                  break;
+              }
+              
+              // Update the status indicators in the row
+              updateStatusIndicators(row, app);
+              
+              // Update action buttons
+              const actionCell = row.querySelector('td:last-child');
+              if (actionCell) {
+                actionCell.innerHTML = generateActionButtons(app);
+              }
+            }
+            
+            function extractApplicationStateFromRow(row) {
+              // Extract current application state from the row's status indicators
+              const app = {
+                id: row.dataset.appId,
+                parsed: row.querySelector('td:nth-child(8) span').textContent.trim() === '✓',
+                approved: row.querySelector('td:nth-child(9) span').textContent.trim() === '✓',
+                docs_generated: row.querySelector('td:nth-child(10) span').textContent.trim() === '✓',
+                form_filled: row.querySelector('td:nth-child(11) span').textContent.trim() === '✓',
+                submitted: row.querySelector('td:nth-child(12) span').textContent.trim() === '✓',
+                errors: false // Will be set based on status
+              };
+              return app;
+            }
+            
+            function updateStatusIndicators(row, app) {
+              const statusMapping = {
+                'parsed': { index: 8, value: app.parsed },
+                'approved': { index: 9, value: app.approved },
+                'docs_generated': { index: 10, value: app.docs_generated },
+                'form_filled': { index: 11, value: app.form_filled },
+                'submitted': { index: 12, value: app.submitted }
+              };
+              
+              Object.keys(statusMapping).forEach(status => {
+                const { index, value } = statusMapping[status];
+                const cell = row.querySelector(`td:nth-child(${index}) span`);
+                if (cell) {
+                  cell.className = `status-${value}`;
+                  cell.innerHTML = value ? '✓' : '○';
+                }
               });
             }
             
@@ -259,9 +349,10 @@ defmodule Applier.Web.Templates.Layout do
               let html = '<div style="display: flex; gap: 5px;">';
               
               if (!app.parsed) {
-                html += '<button class="btn btn-secondary" onclick="makeAjaxCall(\\'/applications/' + app.id + '/retry\\', this)">Processing...</button>';
+                html += '<button class="btn btn-secondary" disabled>Processing...</button>';
               } else if (!app.approved) {
                 html += '<button class="btn btn-primary" onclick="makeAjaxCall(\\'/applications/' + app.id + '/approve\\', this)">Approve</button>';
+                html += '<button class="btn btn-warning" onclick="makeAjaxCall(\\'/applications/' + app.id + '/priority\\', this)">Priority</button>';
               } else if (app.approved && !app.docs_generated) {
                 html += '<button class="btn btn-secondary" onclick="makeAjaxCall(\\'/applications/' + app.id + '/retry\\', this)">Generate Docs</button>';
               } else if (app.docs_generated && !app.form_filled) {
@@ -271,6 +362,8 @@ defmodule Applier.Web.Templates.Layout do
                 html += '<button class="btn btn-success" onclick="makeAjaxCall(\\'/applications/' + app.id + '/complete\\', this)">Mark Complete</button>';
               } else if (app.submitted) {
                 html += '<button class="btn btn-secondary" onclick="makeAjaxCall(\\'/applications/' + app.id + '/retry\\', this)">Fill Form</button>';
+              } else if (app.errors) {
+                html += '<button class="btn btn-warning" onclick="makeAjaxCall(\\'/applications/' + app.id + '/retry\\', this)">Retry</button>';
               } else {
                 html += '<button class="btn btn-secondary" onclick="makeAjaxCall(\\'/applications/' + app.id + '/retry\\', this)">Continue</button>';
               }

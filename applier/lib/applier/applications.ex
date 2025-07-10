@@ -13,7 +13,7 @@ defmodule Applier.Applications do
   def list_applications do
     from(a in ApplicationRecord, 
       where: a.rejected == false,
-      order_by: [desc: a.priority, asc: a.inserted_at])
+      order_by: [desc: a.priority, desc: a.inserted_at])
     |> Repo.all()
   end
 
@@ -25,7 +25,7 @@ defmodule Applier.Applications do
       :all ->
         from(a in ApplicationRecord, 
           where: a.rejected == false,
-          order_by: [desc: a.priority, asc: a.inserted_at])
+          order_by: [desc: a.priority, desc: a.inserted_at])
       
       :completed ->
         from(a in ApplicationRecord, where: a.submitted == true and a.rejected == false)
@@ -36,7 +36,7 @@ defmodule Applier.Applications do
       :approved_pending ->
         from(a in ApplicationRecord, 
           where: a.approved == true and a.submitted == false and a.rejected == false,
-          order_by: [desc: a.priority, asc: a.inserted_at])
+          order_by: [desc: a.priority, desc: a.inserted_at])
         
       :rejected ->
         from(a in ApplicationRecord, where: a.rejected == true)

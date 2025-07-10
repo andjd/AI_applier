@@ -105,6 +105,7 @@ defmodule Applier.HiringCafeAPI do
       |> Repo.insert()) do
 
         Logger.info("Created application #{application.id} for #{attrs["company_name"]} - #{attrs["job_title"]}")
+        Applier.ProcessApplication.process_async(application.id)
         {:ok, application}
       else
       {:error, changeset} ->

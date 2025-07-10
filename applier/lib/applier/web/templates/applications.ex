@@ -27,22 +27,10 @@ defmodule Applier.Web.Templates.Applications do
         table do
           thead do
             tr do
-              th do: "ID"
-              th do: "Company"
-              th do: "Job Title"
-              th do: "Salary Range"
-              th do: "Location"
+              th do: "ID / Date"
+              th do: "Job Details"
               th do: "Attendance"
-              th do: "Source"
-              th do: "Parsed"
-              th do: "Approved"
-              th do: "Priority"
-              th do: "Docs Generated"
-              th do: "Form Filled"
-              th do: "Submitted"
-              th do: "Live Status"
-              th do: "Errors"
-              th do: "Created"
+              th do: "Status"
               th do: "Actions"
             end
           end
@@ -100,50 +88,25 @@ defmodule Applier.Web.Templates.Applications do
   def application_row(app) do
     temple do
       tr "data-app-id": app.id do
-        td do: app.id
-        td do: app.company_name || raw "-"
-        td do: app.job_title || raw "-"
-        td do: format_salary_range(app)
-        td do: app.office_location || raw "-"
+        td do
+          div style: "display: flex; flex-direction: column; gap: 2px;" do
+            div style: "font-weight: bold;", do: app.id
+            div style: "font-size: 0.9em; color: #666;", do: format_datetime(app.inserted_at)
+          end
+        end
+        td do
+          div style: "display: flex; flex-direction: column; gap: 2px;" do
+            div style: "font-weight: bold;", do: app.company_name || raw "-"
+            div do
+              format_job_title_with_link(app)
+            end
+            div style: "font-size: 0.9em; color: #666;", do: format_salary_range(app)
+          end
+        end
         td do: app.office_attendance || raw "-"
         td do
-          format_source(app)
+          format_combined_status(app)
         end
-        td do
-          span class: "status-#{app.parsed}" do
-            raw if app.parsed, do: "✓", else: "○"
-          end
-        end
-        td do
-          span class: "status-#{app.approved}" do
-            raw if app.approved, do: "✓", else: "○"
-          end
-        end
-        td do
-          span class: "status-#{app.priority}" do
-            raw if app.priority, do: "⭐", else: "○"
-          end
-        end
-        td do
-          span class: "status-#{app.docs_generated}" do
-            raw if app.docs_generated, do: "✓", else: "○"
-          end
-        end
-        td do
-          span class: "status-#{app.form_filled}" do
-            raw if app.form_filled, do: "✓", else: "○"
-          end
-        end
-        td do
-          span class: "status-#{app.submitted}" do
-            raw if app.submitted, do: "✓", else: "○"
-          end
-        end
-        td class: "live-status-cell" do
-          raw "-"
-        end
-        td do: app.errors || raw "-"
-        td do: format_datetime(app.inserted_at)
         td do: action_button(app)
       end
     end
@@ -183,18 +146,34 @@ defmodule Applier.Web.Templates.Applications do
     end
   end
 
-  defp format_source(app) do
+  defp format_job_title_with_link(app) do
     cond do
-      app.source_url ->
+      app.source_url && app.job_title ->
         {_, url} = html_escape(app.source_url)
-        raw "<a href=\"#{url}\" target=\"_blank\">#{url}</a>"
-      app.source_text -> html_escape(app.source_text)
+        {_, title} = html_escape(app.job_title)
+        raw "<a href=\"#{url}\" target=\"_blank\">#{title}</a>"
+      app.job_title -> html_escape(app.job_title)
       true -> raw "-"
     end
   end
 
   defp format_datetime(datetime) do
     html_escape "#{datetime.month}/#{datetime.day}/#{datetime.year}"
+  end
+
+  defp format_combined_status(app) do
+    temple do
+      div style: "display: flex; flex-direction: column; gap: 2px;" do
+        div class: "live-status-cell" do
+          raw "-"
+        end
+        if app.errors do
+          div style: "font-size: 0.9em; color: #d32f2f;" do
+            html_escape(app.errors)
+          end
+        end
+      end
+    end
   end
 
   defp action_button(app) do
