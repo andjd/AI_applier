@@ -39,6 +39,39 @@ defmodule Applier.Web.Router do
     |> send_resp(200, safe_to_string(html))
   end
 
+  get "/applications/:id" do
+    case Applier.Applications.get_application(id) do
+      {:ok, application} ->
+        # Get short ID for artifact files
+        short_id = case String.split(id, "_") do
+          [_, short_id] -> short_id
+          _ -> String.slice(id, 0, 8)
+        end
+        
+        # Read cover letter if it exists
+        cover_letter_path = "artifacts/Andrew_DeFranco_#{short_id}.txt"
+        cover_letter = if File.exists?(cover_letter_path), do: File.read!(cover_letter_path), else: nil
+        
+        # Get questions/answers if they exist (would need to check how they're stored)
+        questions_answers = get_questions_answers(application)
+        
+        html = Applications.show(%{
+          application: application,
+          cover_letter: cover_letter,
+          questions_answers: questions_answers
+        })
+        
+        conn
+        |> put_resp_content_type("text/html")
+        |> send_resp(200, safe_to_string(html))
+        
+      {:error, :not_found} ->
+        conn
+        |> put_resp_content_type("text/html")
+        |> send_resp(404, "Application not found")
+    end
+  end
+
   post "/add" do
     case Applier.Applications.create_application(conn.params) do
       {:ok, _application} ->
@@ -297,5 +330,12 @@ defmodule Applier.Web.Router do
 
   match _ do
     send_resp(conn, 404, "Not found")
+  end
+
+  # Helper function to get questions/answers for an application
+  defp get_questions_answers(application) do
+    # This would need to be implemented based on how Q&A are stored
+    # For now, return nil - you might store them in a separate table or file
+    nil
   end
 end

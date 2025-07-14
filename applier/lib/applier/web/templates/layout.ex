@@ -101,6 +101,33 @@ defmodule Applier.Web.Templates.Layout do
             .status-error { background-color: #dc3545; }
             .status-waiting_approval { background-color: #6c757d; }
             .live-status { font-size: 12px; color: #666; margin-left: 5px; }
+            
+            /* Detail page styles */
+            .application-detail { max-width: 1200px; margin: 0 auto; }
+            .detail-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+            .detail-content { display: flex; flex-direction: column; gap: 30px; }
+            .section { border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; }
+            .section h2 { margin-top: 0; color: #495057; border-bottom: 1px solid #dee2e6; padding-bottom: 10px; }
+            .section h3 { margin-top: 0; color: #6c757d; }
+            .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; }
+            .info-item { display: flex; }
+            .info-item .label { font-weight: bold; min-width: 140px; color: #6c757d; }
+            .info-item .value { flex: 1; word-break: break-all; }
+            .status-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+            .status-item { display: flex; align-items: center; }
+            .status-item .label { font-weight: bold; min-width: 120px; color: #6c757d; }
+            .status-badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; }
+            .status-success { background-color: #d4edda; color: #155724; }
+            .status-pending { background-color: #f8f9fa; color: #6c757d; }
+            .source-text { background-color: #f8f9fa; padding: 15px; border-radius: 4px; white-space: pre-wrap; max-height: 400px; overflow-y: auto; }
+            .copy-section { border: 1px solid #dee2e6; border-radius: 4px; }
+            .copy-header { background-color: #f8f9fa; padding: 10px 15px; border-bottom: 1px solid #dee2e6; display: flex; justify-content: space-between; align-items: center; }
+            .copy-content { padding: 15px; background-color: white; white-space: pre-wrap; max-height: 400px; overflow-y: auto; }
+            .btn-copy { background-color: #28a745; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; }
+            .btn-copy:hover { background-color: #218838; }
+            .btn-copy.copied { background-color: #6c757d; }
+            .error-section { margin-top: 15px; }
+            .error-text { background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 4px; border: 1px solid #f5c6cb; }
             """
           end
           script do
@@ -464,6 +491,68 @@ defmodule Applier.Web.Templates.Layout do
                 button.disabled = false;
                 button.textContent = originalText;
               });
+            }
+            
+            // Copy to clipboard functionality
+            function copyToClipboard(elementId, button) {
+              const element = document.getElementById(elementId);
+              if (!element) {
+                console.error('Element not found:', elementId);
+                return;
+              }
+              
+              const text = element.textContent || element.innerText;
+              
+              if (navigator.clipboard && window.isSecureContext) {
+                // Use modern clipboard API
+                navigator.clipboard.writeText(text).then(() => {
+                  showCopySuccess(button);
+                }).catch(err => {
+                  console.error('Failed to copy text: ', err);
+                  fallbackCopyTextToClipboard(text, button);
+                });
+              } else {
+                // Fallback for older browsers
+                fallbackCopyTextToClipboard(text, button);
+              }
+            }
+            
+            function fallbackCopyTextToClipboard(text, button) {
+              const textArea = document.createElement("textarea");
+              textArea.value = text;
+              
+              // Avoid scrolling to bottom
+              textArea.style.top = "0";
+              textArea.style.left = "0";
+              textArea.style.position = "fixed";
+              
+              document.body.appendChild(textArea);
+              textArea.focus();
+              textArea.select();
+              
+              try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                  showCopySuccess(button);
+                } else {
+                  console.error('Fallback copy failed');
+                }
+              } catch (err) {
+                console.error('Fallback copy failed', err);
+              }
+              
+              document.body.removeChild(textArea);
+            }
+            
+            function showCopySuccess(button) {
+              const originalText = button.textContent;
+              button.textContent = '✓ Copied!';
+              button.classList.add('copied');
+              
+              setTimeout(() => {
+                button.textContent = originalText;
+                button.classList.remove('copied');
+              }, 2000);
             }
             """
           end

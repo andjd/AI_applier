@@ -91,8 +91,7 @@ defmodule Applier.ProcessApplication do
     broadcast_update(id, "parsing", "Parsing job description metadata")
 
     with job_text <- get_job_text(application),
-      {:ok, metadata} <- Applier.MetadataExtractor.process(job_text, application.id),
-        {:ok, updated_app} <- update_with_metadata(application, metadata)
+      {:ok, updated_app} <- Applier.MetadataExtractor.process(job_text, application.id)
     do
       broadcast_update(id, "parsed", "Metadata parsing completed")
       {:ok, updated_app}
@@ -191,21 +190,6 @@ defmodule Applier.ProcessApplication do
       [_, short_id] -> {:ok, short_id}
       _ -> {:ok, String.slice(id, 0, 8)}  # Fallback to first 8 chars
     end
-  end
-
-  defp update_with_metadata(application, metadata) do
-    attrs = %{
-      company_name: metadata["company_name"],
-      job_title: metadata["job_title"],
-      salary_range_min: cast_salary_value(metadata["salary_range_min"]),
-      salary_range_max: cast_salary_value(metadata["salary_range_max"]),
-      salary_period: metadata["salary_period"],
-      office_location: metadata["office_location"],
-      office_attendance: metadata["office_attendance"],
-      parsed: true
-    }
-
-    Applications.update_application(application.id, attrs)
   end
 
   defp cast_salary_value(nil), do: nil

@@ -1,0 +1,12 @@
+2025-07-10
+
+Dear Hiring Manager,
+
+I'm thrilled to apply for the Staff Software Engineer position at Yum! Brands, where I can leverage my 9+ years of experience building scalable platforms to help revolutionize restaurant back-of-house operations. Your GraphQL-driven inventory platform perfectly aligns with my expertise in architecting scalable services using React, TypeScript, and modern web technologies, along with my deep experience in database design and multi-location system architecture. At Stationhead, I architected our first microservice and built scalable infrastructure on AWS using similar technologies, while at Kyra Health, I enhanced development environments to support multiple concurrent AI-powered workflows. My experience leading a 10-developer team at Enterprise Mobility and founding the Android team at Stationhead demonstrates my ability to mentor engineers and drive technical alignment across platform initiatives.
+
+What excites me most about this role is the opportunity to model complex real-world restaurant operations in code while building systems that operators will genuinely love using. My startup experience at Kyra Health, Neeva, and Stationhead has prepared me to thrive in fast-moving environments where smart tradeoffs between velocity and stability are crucial. At Stationhead, I joined pre-launch, helped pivot to find product-market fit, and then scaled our platform to handle exponential growth, experience that directly translates to building robust, intuitive systems for Yum!'s multi-brand, multi-location environment. I'm particularly drawn to championing code quality and testing practices, having implemented frameworks that reduced bugs by 80% while maintaining rapid development cycles.
+
+
+Best,
+
+Andrew DeFranco

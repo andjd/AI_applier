@@ -28,18 +28,24 @@ defmodule Applier.Applications do
           order_by: [desc: a.priority, desc: a.inserted_at])
       
       :completed ->
-        from(a in ApplicationRecord, where: a.submitted == true and a.rejected == false)
+        from(a in ApplicationRecord, 
+          where: a.submitted == true and a.rejected == false,
+          order_by: [desc: a.inserted_at])
       
       :awaiting_approval ->
-        from(a in ApplicationRecord, where: a.approved == false and a.rejected == false)
+        from(a in ApplicationRecord, 
+          where: a.approved == false and a.rejected == false,
+          order_by: [desc: a.priority, desc: a.inserted_at])
       
       :approved_pending ->
         from(a in ApplicationRecord, 
           where: a.approved == true and a.submitted == false and a.rejected == false,
-          order_by: [desc: a.priority, desc: a.inserted_at])
+          order_by: [desc: a.inserted_at])
         
       :rejected ->
-        from(a in ApplicationRecord, where: a.rejected == true)
+        from(a in ApplicationRecord, 
+          where: a.rejected == true,
+          order_by: [desc: a.inserted_at])
     end
     
     Repo.all(query)

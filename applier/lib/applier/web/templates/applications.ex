@@ -85,12 +85,151 @@ defmodule Applier.Web.Templates.Applications do
     end
   end
 
+  def show(assigns) do
+    temple do
+      c &Layout.app/1, title: "Application Details" do
+        div class: "application-detail" do
+          div class: "detail-header" do
+            h1 do: "Application Details"
+            a href: "/", class: "btn btn-secondary", do: "← Back to Applications"
+          end
+
+          div class: "detail-content" do
+            # Basic Information
+            div class: "section" do
+              h2 do: "Basic Information"
+              div class: "info-grid" do
+                div class: "info-item" do
+                  span class: "label", do: "Application ID:"
+                  span class: "value", do: @application.id
+                end
+                div class: "info-item" do
+                  span class: "label", do: "Created:"
+                  span class: "value", do: format_datetime(@application.inserted_at)
+                end
+                div class: "info-item" do
+                  span class: "label", do: "Company:"
+                  span class: "value", do: @application.company_name || "-"
+                end
+                div class: "info-item" do
+                  span class: "label", do: "Job Title:"
+                  span class: "value", do: @application.job_title || "-"
+                end
+                div class: "info-item" do
+                  span class: "label", do: "Salary Range:"
+                  span class: "value", do: format_salary_range(@application)
+                end
+                div class: "info-item" do
+                  span class: "label", do: "Office Location:"
+                  span class: "value", do: @application.office_location || "-"
+                end
+                div class: "info-item" do
+                  span class: "label", do: "Office Attendance:"
+                  span class: "value", do: @application.office_attendance || "-"
+                end
+                if @application.source_url do
+                  div class: "info-item" do
+                    span class: "label", do: "Job Posting URL:"
+                    span class: "value" do
+                      a href: @application.source_url, target: "_blank", do: @application.source_url
+                    end
+                  end
+                end
+              end
+            end
+
+            # Status Information
+            div class: "section" do
+              h2 do: "Status"
+              div class: "status-grid" do
+                div class: "status-item" do
+                  span class: "label", do: "Parsed:"
+                  span class: status_badge(@application.parsed)
+                end
+                div class: "status-item" do
+                  span class: "label", do: "Approved:"
+                  span class: status_badge(@application.approved)
+                end
+                div class: "status-item" do
+                  span class: "label", do: "Documents Generated:"
+                  span class: status_badge(@application.docs_generated)
+                end
+                div class: "status-item" do
+                  span class: "label", do: "Form Filled:"
+                  span class: status_badge(@application.form_filled)
+                end
+                div class: "status-item" do
+                  span class: "label", do: "Submitted:"
+                  span class: status_badge(@application.submitted)
+                end
+                div class: "status-item" do
+                  span class: "label", do: "Priority:"
+                  span class: status_badge(@application.priority)
+                end
+                div class: "status-item" do
+                  span class: "label", do: "Rejected:"
+                  span class: status_badge(@application.rejected)
+                end
+              end
+              if @application.errors do
+                div class: "error-section" do
+                  h3 do: "Errors"
+                  div class: "error-text", do: @application.errors
+                end
+              end
+            end
+
+            # Job Description
+            if @application.source_text do
+              div class: "section" do
+                h2 do: "Job Description"
+                div class: "source-text", do: @application.source_text
+              end
+            end
+
+            # Cover Letter
+            if @cover_letter do
+              div class: "section" do
+                h2 do: "Generated Cover Letter"
+                div class: "copy-section" do
+                  div class: "copy-header" do
+                    button type: "button", class: "btn btn-copy", onclick: "copyToClipboard('cover-letter-content', this)" do
+                      "📋 Copy Cover Letter"
+                    end
+                  end
+                  div class: "copy-content", id: "cover-letter-content", do: @cover_letter
+                end
+              end
+            end
+
+            # Questions & Answers
+            if @questions_answers do
+              div class: "section" do
+                h2 do: "Questions & Answers"
+                div class: "copy-section" do
+                  div class: "copy-header" do
+                    button type: "button", class: "btn btn-copy", onclick: "copyToClipboard('questions-answers-content', this)" do
+                      "📋 Copy Q&A"
+                    end
+                  end
+                  div class: "copy-content", id: "questions-answers-content", do: @questions_answers
+                end
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+
   def application_row(app) do
     temple do
       tr "data-app-id": app.id do
         td do
           div style: "display: flex; flex-direction: column; gap: 2px;" do
-            div style: "font-weight: bold;", do: app.id
+            div style: "font-weight: bold;" do
+              a href: "/applications/#{app.id}", do: app.id
+            end
             div style: "font-size: 0.9em; color: #666;", do: format_datetime(app.inserted_at)
           end
         end
@@ -248,6 +387,16 @@ defmodule Applier.Web.Templates.Applications do
         a href: href, class: "btn btn-filter" do
           "#{label}"
         end
+      end
+    end
+  end
+
+  defp status_badge(status) do
+    temple do
+      if status do
+        span class: "status-badge status-success", do: "✓"
+      else
+        span class: "status-badge status-pending", do: "○"
       end
     end
   end
