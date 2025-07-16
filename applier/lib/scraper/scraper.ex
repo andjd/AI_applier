@@ -16,22 +16,26 @@ defmodule Scraper do
   end
 
   def extract_visible_text(page) do
-    with {:ok, page} <- navigate_to_jd_if_lever(page),
+    with {:ok, page} <- navigate_to_jd_if_necessary(page),
          cleaned_text = Playwright.Page.locator(page, "body")
                         |> Playwright.Locator.inner_text()
                         |> String.trim()
     do
+      IO.puts(cleaned_text)
       {:ok, cleaned_text}
     else
       {:error, reason} -> {:error, reason}
     end
   end
 
-  defp navigate_to_jd_if_lever(page) do
-    if Helpers.FormDetector.is_lever_form?(page) do
-      navigate_to_lever_jd(page)
-    else
-      {:ok, page}
+  defp navigate_to_jd_if_necessary(page) do
+    cond do
+      Helpers.FormDetector.is_lever_form?(page) ->
+        navigate_to_lever_jd(page)
+      Helpers.FormDetector.is_ashbyhq_form?(page) ->
+        navigate_to_ashbyhq_jd(page)
+      true ->
+        {:ok, page}
     end
   end
 
@@ -44,6 +48,28 @@ defmodule Scraper do
       IO.puts("Navigating to Lever JD page: #{jd_url}")
 
       response = Playwright.Page.goto(page, jd_url)
+      :timer.sleep(200)
+      if response.status == 200 do
+        {:ok, page}
+      else
+        {:error, inspect(response)}
+      end
+    else
+      # Already on JD page
+      {:ok, page}
+    end
+  end
+
+  defp navigate_to_ashbyhq_jd(page) do
+    url = Playwright.Page.url(page)
+
+    if String.contains?(url, "/application") do
+      # Remove /application to get the JD page
+      jd_url = String.replace(url, "/application", "")
+      IO.puts("Navigating to AshbyHQ JD page: #{jd_url}")
+
+      response = Playwright.Page.goto(page, jd_url)
+      :timer.sleep(200)
       if response.status == 200 do
         {:ok, page}
       else
@@ -68,6 +94,10 @@ defmodule Scraper do
       Helpers.FormDetector.is_lever_form?(page) ->
         IO.puts("Detected Lever form, using Lever scraper")
         Scraper.Lever.extract_questions(page)
+
+      Helpers.FormDetector.is_ashbyhq_form?(page) ->
+        IO.puts("Detected AshbyHQ form, using AshbyHQ scraper")
+        Scraper.AshbyHQ.extract_questions(page)
 
       true ->
         IO.puts("Using Generic scraper")

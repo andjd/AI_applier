@@ -8,20 +8,14 @@ defmodule JDInfoExtractor do
   def extract_text(url, application_id) when is_binary(url) do
     case Helpers.Browser.get_page_and_navigate(url) do
       {:ok, page} ->
-        try do
           case extract_text(page, application_id) do
-            {:ok, text, questions} -> 
+            {:ok, text, questions} ->
               Helpers.Browser.close_managed_page(page)
               {:ok, text, questions}
-            {:error, reason} -> 
+            {:error, reason} ->
               Helpers.Browser.close_managed_page(page)
               {:error, reason}
           end
-        rescue
-          error ->
-            Helpers.Browser.close_managed_page(page)
-            {:error, "Exception during extraction: #{inspect(error)}"}
-        end
       {:error, reason} ->
         {:error, reason}
     end

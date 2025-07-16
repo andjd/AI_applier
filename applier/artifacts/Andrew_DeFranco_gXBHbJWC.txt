@@ -1,0 +1,12 @@
+2025-07-14
+
+Dear Hiring Manager,
+
+I am excited to apply for the Senior Software Engineer, Voice Services position at GFiber. With 9+ years of full-stack development experience and a proven track record of building scalable backend systems, I am eager to bring my expertise in microservices architecture and team leadership to help expand GFiber's voice services. My experience building real-time communication systems at Stationhead, where I architected scalable microservices for live audio features and payment processing, provides a strong foundation for voice service development. Additionally, my backend development experience with Python and modern frameworks (equivalent to Java/Spring Boot) and extensive AWS cloud experience (transferrable to GCP) align well with your technical requirements.
+
+My leadership experience heading a 10-developer team at Enterprise Mobility and founding the Android development team at Stationhead demonstrates my ability to foster collaborative environments and mentor junior engineers. At Stationhead, I successfully planned and implemented our first microservice, created frameworks for breaking apart monoliths, and built secure third-party integrations with payment providers - experience that directly translates to the integration and provisioning challenges in telecom services. My startup experience at Kyra Health, Neeva, and Stationhead has taught me to quickly adapt to new technologies and deliver high-quality solutions under tight timelines, skills that will be valuable as GFiber continues to expand its voice services across more cities.
+
+
+Best,
+
+Andrew DeFranco

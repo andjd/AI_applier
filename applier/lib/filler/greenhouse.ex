@@ -14,10 +14,10 @@ defmodule Filler.Greenhouse do
   {:ok, :form_filled} on success
   {:error, reason} on failure
   """
-  def fill_form(page, responses, resume_text \\ nil, cover_letter_text \\ nil) when is_map(responses) do
+  def fill_form(page, responses, short_id) when is_map(responses) do
     with :ok <- (Logger.info("Starting form fill process..."); :ok),
          {:ok, :form_filled} <- fill_all_fields(page, responses),
-         {:ok, :documents_uploaded} <- handle_document_uploads(page, resume_text, cover_letter_text),
+         {:ok, :documents_uploaded} <- handle_document_uploads(page, short_id),
          :ok <- (Logger.info("Form fill completed successfully"); :ok)
     do
       {:ok, :form_filled}
@@ -237,9 +237,9 @@ defmodule Filler.Greenhouse do
     end
   end
 
-  defp handle_document_uploads(page, resume_text, cover_letter_text) do
-    with {:ok, :resume_handled} <- handle_resume_upload(page, resume_text),
-         {:ok, :cover_letter_handled} <- handle_cover_letter_upload(page, cover_letter_text)
+  defp handle_document_uploads(page, short_id) do
+    with {:ok, :resume_handled} <- handle_resume_upload(page, short_id),
+         {:ok, :cover_letter_handled} <- handle_cover_letter_upload(page, short_id)
     do
       {:ok, :documents_uploaded}
     else
@@ -247,75 +247,59 @@ defmodule Filler.Greenhouse do
     end
   end
 
-  defp handle_resume_upload(_page, nil) do
-    Logger.info("No resume text provided, skipping resume upload")
-    {:ok, :resume_handled}
-  end
+  defp handle_resume_upload(page, short_id) when is_binary(short_id) do
+    case Helpers.DocumentFetcher.get_resume(short_id, :txt) do
+      {:ok, resume_text} when is_binary(resume_text) and resume_text != "" ->
+        # First check if the form has resume upload fields
+        case form_has_resume_fields?(page) do
+          false ->
+            Logger.info("Form does not request resume upload, skipping")
+            {:ok, :resume_handled}
+          
+          true ->
+            Logger.info("Form requests resume upload, handling via 'enter manually'")
 
-  defp handle_resume_upload(page, resume_text) when is_binary(resume_text) and resume_text != "" do
-    # First check if the form has resume upload fields
-    case form_has_resume_fields?(page) do
-      false ->
-        Logger.info("Form does not request resume upload, skipping")
+            with {:ok, enter_button} <- find_resume_enter_manually_button(page),
+                 :ok <- click_enter_manually_button(enter_button),
+                 {:ok, textarea} <- find_resume_textarea(page),
+                 :ok <- fill_resume_textarea(textarea, resume_text)
+            do
+              Logger.info("Successfully uploaded resume via text entry")
+              {:ok, :resume_handled}
+            else
+              {:error, reason} ->
+                Logger.error("Failed to handle resume upload: #{reason}")
+                {:error, reason}
+            end
+        end
+      
+      {:error, reason} ->
+        Logger.info("No resume text available: #{reason}")
         {:ok, :resume_handled}
       
-      true ->
-        Logger.info("Form requests resume upload, handling via 'enter manually'")
-
-        with {:ok, enter_button} <- find_resume_enter_manually_button(page),
-             :ok <- click_enter_manually_button(enter_button),
-             {:ok, textarea} <- find_resume_textarea(page),
-             :ok <- fill_resume_textarea(textarea, resume_text)
-        do
-          Logger.info("Successfully uploaded resume via text entry")
-          {:ok, :resume_handled}
-        else
-          {:error, reason} ->
-            Logger.error("Failed to handle resume upload: #{reason}")
-            {:error, reason}
-        end
+      {:ok, _} ->
+        Logger.info("Resume text is empty, skipping resume upload")
+        {:ok, :resume_handled}
     end
   end
 
-  defp handle_resume_upload(_page, _resume_text) do
-    Logger.info("Invalid resume text, skipping resume upload")
-    {:ok, :resume_handled}
-  end
-
-  defp handle_cover_letter_upload(page, nil) do
-    Logger.info("No cover letter text provided, skipping cover letter upload")
-    {:ok, :cover_letter_handled}
-  end
-
-  defp handle_cover_letter_upload(page, cover_letter_text) when is_binary(cover_letter_text) and cover_letter_text != "" do
-    # First check if the form has cover letter upload fields
-    case form_has_cover_letter_fields?(page) do
-      false ->
-        Logger.info("Form does not request cover letter upload, skipping")
+  defp handle_cover_letter_upload(page, short_id) when is_binary(short_id) do
+    case Helpers.DocumentFetcher.get_cover_letter(short_id, :txt) do
+      {:ok, cover_letter_text} when is_binary(cover_letter_text) and cover_letter_text != "" ->
+        # Handle cover letter upload logic here
+        Logger.info("Cover letter text found, but cover letter upload not yet implemented for Greenhouse")
         {:ok, :cover_letter_handled}
       
-      true ->
-        Logger.info("Form requests cover letter upload, handling via 'enter manually'")
-
-        with {:ok, enter_button} <- find_cover_letter_enter_manually_button(page),
-             :ok <- click_enter_manually_button(enter_button),
-             {:ok, textarea} <- find_cover_letter_textarea(page),
-             :ok <- fill_cover_letter_textarea(textarea, cover_letter_text)
-        do
-          Logger.info("Successfully uploaded cover letter via text entry")
-          {:ok, :cover_letter_handled}
-        else
-          {:error, reason} ->
-            Logger.error("Failed to handle cover letter upload: #{reason}")
-            {:error, reason}
-        end
+      {:error, reason} ->
+        Logger.info("No cover letter text available: #{reason}")
+        {:ok, :cover_letter_handled}
+      
+      {:ok, _} ->
+        Logger.info("Cover letter text is empty, skipping cover letter upload")
+        {:ok, :cover_letter_handled}
     end
   end
 
-  defp handle_cover_letter_upload(_page, _cover_letter_text) do
-    Logger.info("Invalid cover letter text, skipping cover letter upload")
-    {:ok, :cover_letter_handled}
-  end
 
   # Check if the form has resume upload fields
   defp form_has_resume_fields?(page) do

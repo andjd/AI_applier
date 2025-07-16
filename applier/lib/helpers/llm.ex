@@ -21,7 +21,7 @@ defmodule Helpers.LLM do
     }
 
     merged_options = Map.merge(default_options, options)
-    
+
     case application_id do
       nil ->
         make_api_request_without_cache(prompt, merged_options)
@@ -38,9 +38,10 @@ defmodule Helpers.LLM do
 
   defp make_api_request_and_cache(prompt, options, application_id, prompt_hash) do
     payload = build_payload(prompt, options)
-
+    IO.inspect(payload)
     case Req.post(@api_url,
              json: payload,
+
              headers: [
                {"x-api-key", get_api_key()},
                {"anthropic-version", "2023-06-01"}

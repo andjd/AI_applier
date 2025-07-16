@@ -90,7 +90,7 @@ defmodule Applier.ProcessApplication do
     Logger.info("Parsing metadata for application #{id}")
     broadcast_update(id, "parsing", "Parsing job description metadata")
 
-    with job_text <- get_job_text(application),
+    with {:ok, job_text} <- get_job_text(application),
       {:ok, updated_app} <- Applier.MetadataExtractor.process(job_text, application.id)
     do
       broadcast_update(id, "parsed", "Metadata parsing completed")
@@ -122,7 +122,7 @@ defmodule Applier.ProcessApplication do
     Logger.info("Generating documents for application #{id}")
     broadcast_update(id, "generating_docs", "Generating cover letter and documents")
 
-    with job_text <- get_job_text(application),
+    with {:ok, job_text}  <- get_job_text(application),
          {:ok, short_id} <- get_short_id(application),
          {:ok, _cover_letter} <- generate_cover_letter_if_needed(job_text, short_id, id),
          {:ok, updated_app} <- Applications.update_application(id, %{docs_generated: true})
@@ -157,7 +157,7 @@ defmodule Applier.ProcessApplication do
     Logger.info("Filling form for application #{id}")
     broadcast_update(id, "filling_form", "Filling out application form")
 
-    with job_text <- get_job_text(application),
+    with {:ok, job_text}  <- get_job_text(application),
          {:ok, short_id} <- get_short_id(application),
          {:ok, _result} <- fill_application_form(form_url, job_text, short_id, id),
          {:ok, updated_app} <- Applications.update_application(id, %{form_filled: true})
@@ -175,14 +175,14 @@ defmodule Applier.ProcessApplication do
 
 
   # Helper functions
-  defp get_job_text(%ApplicationRecord{source_text: text}) when not is_nil(text), do: text
+  defp get_job_text(%ApplicationRecord{source_text: text}) when not is_nil(text), do: {:ok, text}
   defp get_job_text(%ApplicationRecord{source_url: url, id: id}) when not is_nil(url) do
     case JDInfoExtractor.extract_text(url, id) do
-      {:ok, text, _questions} -> text
-      {:error, _reason} -> ""
+      {:ok, text, _} -> {:ok, text}
+      error -> error
     end
   end
-  defp get_job_text(_), do: ""
+  defp get_job_text(_), do: {:error, "No Job Text"}
 
   defp get_short_id(%ApplicationRecord{id: id}) do
     # Extract short ID from the full hash ID (assuming it follows the existing pattern)
@@ -241,7 +241,7 @@ defmodule Applier.ProcessApplication do
     case Helpers.Browser.get_page_and_navigate(form_url) do
       {:ok, page} ->
         try do
-          with {:ok, _text, questions} <- JDInfoExtractor.extract_text(page, application_id),
+          with {:ok, _text, questions} <- JDInfoExtractor.extract_text(form_url, application_id),
                {:ok, responses} <- (if is_nil(questions) do
                  Logger.info("No questions found for form")
                  {:ok, nil}
@@ -250,7 +250,7 @@ defmodule Applier.ProcessApplication do
                  Questions.answer(resume, questions, application_id)
                end),
                :ok <- Questions.validate_responses(questions, responses),
-               {:ok, :form_filled} <- Filler.fill_form(page, responses, resume, get_cover_letter_text(short_id))
+               {:ok, :form_filled} <- Filler.fill_form(page, responses, short_id)
           do
             Logger.info("Successfully filled form for #{short_id}")
             Logger.info("Leaving page open for manual review and submission. Page will remain open indefinitely.")
@@ -274,13 +274,6 @@ defmodule Applier.ProcessApplication do
     end
   end
 
-  defp get_cover_letter_text(short_id) do
-    txt_path = "artifacts/Andrew_DeFranco_#{short_id}.txt"
-    case File.read(txt_path) do
-      {:ok, content} -> content
-      _ -> ""
-    end
-  end
 
   defp ensure_artifacts_dir do
     case File.mkdir_p("artifacts") do

@@ -14,12 +14,12 @@ defmodule Filler.Lever do
   {:ok, :form_filled} on success
   {:error, reason} on failure
   """
-  def fill_form(page, responses, resume_text \\ nil, cover_letter_text \\ nil) when is_map(responses) do
+  def fill_form(page, responses, short_id) when is_map(responses) do
     with :ok <- (Logger.info("Starting Lever form fill process..."); :ok),
          {:ok, page} <- navigate_to_application_form(page),
-         {:ok, :resume_uploaded} <- handle_resume_upload(page, resume_text),
+         {:ok, :resume_uploaded} <- handle_resume_upload(page, short_id),
          {:ok, :form_filled} <- fill_all_fields(page, responses),
-         {:ok, :additional_info_filled} <- fill_additional_information(page, cover_letter_text),
+         {:ok, :additional_info_filled} <- fill_additional_information(page, short_id),
          :ok <- (Logger.info("Lever form fill completed successfully"); :ok)
     do
       {:ok, :form_filled}
@@ -46,12 +46,16 @@ defmodule Filler.Lever do
     end
   end
 
-  defp handle_resume_upload(page, resume_text) do
-    if resume_text do
-      upload_resume_file(page, resume_text)
-    else
-      Logger.info("No resume provided, skipping upload")
-      {:ok, :resume_uploaded}
+  defp handle_resume_upload(page, short_id) do
+    case Helpers.DocumentFetcher.get_resume(short_id, :txt) do
+      {:ok, resume_text} when is_binary(resume_text) and resume_text != "" ->
+        upload_resume_file(page, resume_text)
+      {:error, reason} ->
+        Logger.info("No resume text available: #{reason}")
+        {:ok, :resume_uploaded}
+      {:ok, _} ->
+        Logger.info("Resume text is empty, skipping upload")
+        {:ok, :resume_uploaded}
     end
   end
 
@@ -319,28 +323,34 @@ defmodule Filler.Lever do
     end
   end
 
-  defp fill_additional_information(page, cover_letter_text) do
-    if cover_letter_text do
-      try do
-        additional_info_selector = "textarea[name='comments'], textarea[id='additional-information']"
-        textarea = Playwright.Page.locator(page, additional_info_selector)
+  defp fill_additional_information(page, short_id) do
+    case Helpers.DocumentFetcher.get_cover_letter(short_id, :txt) do
+      {:ok, cover_letter_text} when is_binary(cover_letter_text) and cover_letter_text != "" ->
+        try do
+          additional_info_selector = "textarea[name='comments'], textarea[id='additional-information']"
+          textarea = Playwright.Page.locator(page, additional_info_selector)
 
-        if Playwright.Locator.count(textarea) > 0 do
-          Playwright.Locator.fill(textarea, cover_letter_text)
-          Logger.info("Filled additional information with cover letter")
-          {:ok, :additional_info_filled}
-        else
-          Logger.warning("Additional information textarea not found")
-          {:ok, :additional_info_filled}
+          if Playwright.Locator.count(textarea) > 0 do
+            Playwright.Locator.fill(textarea, cover_letter_text)
+            Logger.info("Filled additional information with cover letter")
+            {:ok, :additional_info_filled}
+          else
+            Logger.warning("Additional information textarea not found")
+            {:ok, :additional_info_filled}
+          end
+        rescue
+          error ->
+            Logger.error("Error filling additional information: #{inspect(error)}")
+            {:error, "Failed to fill additional information: #{inspect(error)}"}
         end
-      rescue
-        error ->
-          Logger.error("Error filling additional information: #{inspect(error)}")
-          {:error, "Failed to fill additional information: #{inspect(error)}"}
-      end
-    else
-      Logger.info("No cover letter provided, skipping additional information")
-      {:ok, :additional_info_filled}
+      
+      {:error, reason} ->
+        Logger.info("No cover letter text available: #{reason}")
+        {:ok, :additional_info_filled}
+      
+      {:ok, _} ->
+        Logger.info("Cover letter text is empty, skipping additional information")
+        {:ok, :additional_info_filled}
     end
   end
 end

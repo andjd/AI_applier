@@ -17,10 +17,10 @@ defmodule Filler.JazzHR do
   {:ok, :form_filled} on success
   {:error, reason} on failure
   """
-  def fill_form(page, responses, resume_text \\ nil, cover_letter_text \\ nil) when is_map(responses) do
+  def fill_form(page, responses, short_id) when is_map(responses) do
     with :ok <- (Logger.info("Starting JazzHR form fill process..."); :ok),
          {:ok, :paste_resume_handled} <- handle_paste_resume_link(page),
-         {:ok, :form_filled} <- Filler.Generic.fill_form(page, responses, resume_text, cover_letter_text),
+         {:ok, :form_filled} <- Filler.Generic.fill_form(page, responses, short_id),
          :ok <- (Logger.info("JazzHR form fill completed successfully"); :ok)
     do
       {:ok, :form_filled}

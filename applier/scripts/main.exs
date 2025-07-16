@@ -78,7 +78,7 @@ defmodule Main do
         case get_page_and_navigate(input_value) do
           {:ok, page} ->
             try do
-              process_with_browser(page, resume, filename)
+              process_with_browser(page, resume, filename, short_id)
             after
               Helpers.Browser.close_managed_page(page)
             end
@@ -92,7 +92,7 @@ defmodule Main do
     end
   end
 
-  defp process_with_browser(page, resume, filename) do
+  defp process_with_browser(page, resume, filename, short_id) do
     with {:ok, job_description, questions} <- JDInfoExtractor.extract_text(page),
         _ <- IO.puts("✓ Successfully obtained job description"),
         {:safe, _} <-
@@ -124,7 +124,7 @@ defmodule Main do
         :ok <- Questions.validate_responses(questions, responses) do
           IO.inspect(questions)
           IO.puts("Filling Form")
-          Filler.fill_form(page, responses, resume, File.read!(txt_filename(filename)))
+          Filler.fill_form(page, responses, short_id)
           Process.sleep(600_000)
           IO.puts("Process completed successfully!")
     else

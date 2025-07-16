@@ -1,0 +1,12 @@
+2025-07-16
+
+Dear Hiring Manager,
+
+I'm thrilled to apply for the Senior Backend Engineer position at Sully.ai, where I can leverage my 9+ years of full-stack development experience to build the AI-native healthcare infrastructure that will power next-generation multimodal AI agents. My background perfectly aligns with your technical requirements, having built production-grade APIs and microservices using TypeScript across multiple roles, with particularly relevant experience in healthcare systems integration. At Kyra Health, I developed HIPAA-compliant LLM-powered tools for health plan discovery, while at my previous healthcare startup, I built appointment booking applications using modern frameworks. My expertise in data integration is demonstrated through secure third-party integrations over HTTPS, SOAP, and AMQP at Affinitiv, and complex payment system integrations at Stationhead. I've extensive experience with both SQL and NoSQL databases, having designed schemas, managed migrations, and optimized performance across PostgreSQL, Redis, and Elasticsearch systems.
+
+What particularly excites me about this opportunity is the chance to work at the intersection of AI and healthcare infrastructure, building systems that will genuinely save lives. My startup experience spans three companies, where I joined Stationhead pre-launch, helped them pivot to find product-market fit, and then scaled their infrastructure to handle exponential growth. At Stationhead, I architected their first microservice and created a scalable framework for breaking apart their monolith, while implementing rigorous security measures including cryptographically signed payloads and session protection. My leadership experience includes heading a 10-developer team at Enterprise Mobility for a greenfield React Native rebuild, and founding the Android development team at Stationhead. I'm particularly drawn to Sully.ai's 0-to-1 building philosophy and the opportunity to create real AI impact in healthcare, combining my technical expertise in TypeScript, microservices architecture, and healthcare compliance with my passion for building scalable, fault-tolerant systems.
+
+
+Best,
+
+Andrew DeFranco

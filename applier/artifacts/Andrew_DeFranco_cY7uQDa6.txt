@@ -1,0 +1,12 @@
+2025-07-14
+
+Dear Hiring Manager,
+
+I'm excited to apply for the Senior Full Stack Engineer position at GoodParty.org, where I can combine my 9+ years of full-stack development experience with my passion for building technology that creates meaningful impact. Your mission to democratize democracy through AI-powered tools resonates deeply with me, and I'm eager to contribute to a platform that's already empowering thousands of independent candidates across the country. My experience building LLM-powered tools at Kyra Health, where I developed a HIPAA-compliant AI system for health plan discovery, directly aligns with your need for someone who can integrate AI and LLM use cases into your platform. Additionally, my work at Neeva launching proof-of-concept mobile search experiences featuring LLM summaries demonstrates my ability to translate complex AI capabilities into intuitive user experiences.
+
+My technical background is an excellent fit for your requirements, with strong JavaScript and React expertise demonstrated through projects at multiple companies, including leading a 10-developer team in a greenfield React Native rebuild at Enterprise Mobility and developing responsive web applications using React at both Affinitiv and recent healthcare startups. I bring the fast-paced 0-to-1 environment experience you're seeking, having joined Stationhead pre-launch and helping them pivot to find product-market fit before scaling to handle exponential growth, plus current work at pre-launch Kyra Health. My experience with TypeScript, AWS infrastructure optimization, and API design using REST and WebSockets, combined with my track record of building scalable systems and creating custom frameworks, positions me well to help scale GoodParty.org's platform. The leadership and collaborative skills I've developed through founding teams, managing outsourced development, and working across product, design, and engineering functions will enable me to thrive in your lean, agile environment while reporting directly to the CTO.
+
+
+Best,
+
+Andrew DeFranco

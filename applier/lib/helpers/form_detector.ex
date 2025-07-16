@@ -44,6 +44,25 @@ defmodule Helpers.FormDetector do
     end
   end
 
+  @doc """
+  Detects if a page contains an AshbyHQ form by checking URL and HTML content.
+
+  ## Parameters
+  - page: Playwright page object
+
+  ## Returns
+  Boolean indicating whether this is an AshbyHQ form
+  """
+  def is_ashbyhq_form?(page) do
+    url = Playwright.Page.url(page)
+    if url && String.length(url) > 0 do
+      url_lower = String.downcase(url)
+      String.contains?(url_lower, "jobs.ashbyhq.com")
+    else
+      false
+    end
+  end
+
   defp is_greenhouse_url?(page) do
     url = Playwright.Page.url(page)
     if url && String.length(url) > 0 do

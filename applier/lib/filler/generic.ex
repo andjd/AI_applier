@@ -14,10 +14,10 @@ defmodule Filler.Generic do
   {:ok, :form_filled} on success
   {:error, reason} on failure
   """
-  def fill_form(page, responses, resume_text \\ nil, cover_letter_text \\ nil) when is_map(responses) do
+  def fill_form(page, responses, short_id) when is_map(responses) do
     with :ok <- (Logger.info("Starting generic form fill process..."); :ok),
          {:ok, :form_filled} <- fill_all_fields(page, responses),
-         {:ok, :documents_handled} <- handle_document_uploads(page, resume_text, cover_letter_text),
+         {:ok, :documents_handled} <- handle_document_uploads(page, short_id),
          :ok <- (Logger.info("Generic form fill completed successfully"); :ok)
     do
       {:ok, :form_filled}
@@ -259,9 +259,9 @@ defmodule Filler.Generic do
     end
   end
 
-  defp handle_document_uploads(page, resume_text, cover_letter_text) do
-    with {:ok, :resume_handled} <- handle_resume_upload(page, resume_text),
-         {:ok, :cover_letter_handled} <- handle_cover_letter_upload(page, cover_letter_text)
+  defp handle_document_uploads(page, short_id) do
+    with {:ok, :resume_handled} <- handle_resume_upload(page, short_id),
+         {:ok, :cover_letter_handled} <- handle_cover_letter_upload(page, short_id)
     do
       {:ok, :documents_handled}
     else
@@ -269,96 +269,98 @@ defmodule Filler.Generic do
     end
   end
 
-  defp handle_resume_upload(_page, nil) do
-    Logger.info("No resume text provided, skipping resume upload")
-    {:ok, :resume_handled}
-  end
+  defp handle_resume_upload(page, short_id) when is_binary(short_id) do
+    case Helpers.DocumentFetcher.get_resume(short_id, :txt) do
+      {:ok, resume_text} when is_binary(resume_text) and resume_text != "" ->
+        Logger.info("Attempting to handle resume upload")
 
-  defp handle_resume_upload(page, resume_text) when is_binary(resume_text) and resume_text != "" do
-    Logger.info("Attempting to handle resume upload")
+        resume_fields = [
+          "textarea[id*='resume'], textarea[name*='resume']",
+          "input[id*='resume'], input[name*='resume']",
+          "textarea[placeholder*='resume'], textarea[placeholder*='Resume']"
+        ]
 
-    resume_fields = [
-      "textarea[id*='resume'], textarea[name*='resume']",
-      "input[id*='resume'], input[name*='resume']",
-      "textarea[placeholder*='resume'], textarea[placeholder*='Resume']"
-    ]
+        found_field = Enum.find_value(resume_fields, fn selector ->
+          element = Playwright.Page.locator(page, selector)
+          case Playwright.Locator.count(element) do
+            0 -> nil
+            _ -> element
+          end
+        end)
 
-    found_field = Enum.find_value(resume_fields, fn selector ->
-      element = Playwright.Page.locator(page, selector)
-      case Playwright.Locator.count(element) do
-        0 -> nil
-        _ -> element
-      end
-    end)
+        case found_field do
+          nil ->
+            Logger.info("No resume text field found, skipping resume upload")
+            {:ok, :resume_handled}
 
-    case found_field do
-      nil ->
-        Logger.info("No resume text field found, skipping resume upload")
+          element ->
+            try do
+              Playwright.Locator.clear(element)
+              Playwright.Locator.fill(element, resume_text)
+              Logger.info("Successfully filled resume text field")
+              {:ok, :resume_handled}
+            rescue
+              error ->
+                Logger.error("Failed to fill resume field: #{inspect(error)}")
+                {:error, "Failed to fill resume field: #{inspect(error)}"}
+            end
+        end
+      
+      {:error, reason} ->
+        Logger.info("No resume text available: #{reason}")
         {:ok, :resume_handled}
-
-      element ->
-        try do
-          Playwright.Locator.clear(element)
-          Playwright.Locator.fill(element, resume_text)
-          Logger.info("Successfully filled resume text field")
-          {:ok, :resume_handled}
-        rescue
-          error ->
-            Logger.error("Failed to fill resume field: #{inspect(error)}")
-            {:error, "Failed to fill resume field: #{inspect(error)}"}
-        end
+      
+      {:ok, _} ->
+        Logger.info("Resume text is empty, skipping resume upload")
+        {:ok, :resume_handled}
     end
   end
 
-  defp handle_resume_upload(_page, _resume_text) do
-    Logger.info("Invalid resume text, skipping resume upload")
-    {:ok, :resume_handled}
-  end
+  defp handle_cover_letter_upload(page, short_id) when is_binary(short_id) do
+    case Helpers.DocumentFetcher.get_cover_letter(short_id, :txt) do
+      {:ok, cover_letter_text} when is_binary(cover_letter_text) and cover_letter_text != "" ->
+        Logger.info("Attempting to handle cover letter upload")
 
-  defp handle_cover_letter_upload(_page, nil) do
-    Logger.info("No cover letter text provided, skipping cover letter upload")
-    {:ok, :cover_letter_handled}
-  end
+        cover_letter_fields = [
+          "textarea[id*='cover'], textarea[name*='cover']",
+          "input[id*='cover'], input[name*='cover']",
+          "textarea[placeholder*='cover'], textarea[placeholder*='Cover']",
+          "textarea[id*='letter'], textarea[name*='letter']"
+        ]
 
-  defp handle_cover_letter_upload(page, cover_letter_text) when is_binary(cover_letter_text) and cover_letter_text != "" do
-    Logger.info("Attempting to handle cover letter upload")
+        found_field = Enum.find_value(cover_letter_fields, fn selector ->
+          element = Playwright.Page.locator(page, selector)
+          case Playwright.Locator.count(element) do
+            0 -> nil
+            _ -> element
+          end
+        end)
 
-    cover_letter_fields = [
-      "textarea[id*='cover'], textarea[name*='cover']",
-      "input[id*='cover'], input[name*='cover']",
-      "textarea[placeholder*='cover'], textarea[placeholder*='Cover']",
-      "textarea[id*='letter'], textarea[name*='letter']"
-    ]
+        case found_field do
+          nil ->
+            Logger.info("No cover letter text field found, skipping cover letter upload")
+            {:ok, :cover_letter_handled}
 
-    found_field = Enum.find_value(cover_letter_fields, fn selector ->
-      element = Playwright.Page.locator(page, selector)
-      case Playwright.Locator.count(element) do
-        0 -> nil
-        _ -> element
-      end
-    end)
-
-    case found_field do
-      nil ->
-        Logger.info("No cover letter text field found, skipping cover letter upload")
+          element ->
+            try do
+              Playwright.Locator.clear(element)
+              Playwright.Locator.fill(element, cover_letter_text)
+              Logger.info("Successfully filled cover letter text field")
+              {:ok, :cover_letter_handled}
+            rescue
+              error ->
+                Logger.error("Failed to fill cover letter field: #{inspect(error)}")
+                {:error, "Failed to fill cover letter field: #{inspect(error)}"}
+            end
+        end
+      
+      {:error, reason} ->
+        Logger.info("No cover letter text available: #{reason}")
         {:ok, :cover_letter_handled}
-
-      element ->
-        try do
-          Playwright.Locator.clear(element)
-          Playwright.Locator.fill(element, cover_letter_text)
-          Logger.info("Successfully filled cover letter text field")
-          {:ok, :cover_letter_handled}
-        rescue
-          error ->
-            Logger.error("Failed to fill cover letter field: #{inspect(error)}")
-            {:error, "Failed to fill cover letter field: #{inspect(error)}"}
-        end
+      
+      {:ok, _} ->
+        Logger.info("Cover letter text is empty, skipping cover letter upload")
+        {:ok, :cover_letter_handled}
     end
-  end
-
-  defp handle_cover_letter_upload(_page, _cover_letter_text) do
-    Logger.info("Invalid cover letter text, skipping cover letter upload")
-    {:ok, :cover_letter_handled}
   end
 end
