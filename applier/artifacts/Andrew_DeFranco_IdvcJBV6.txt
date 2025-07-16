@@ -1,0 +1,12 @@
+2025-07-16
+
+Dear Hiring Manager,
+
+I'm excited to apply for the Senior Software Engineer position on Upstart's Auto Lending Growth team. With 9+ years of full-stack development experience and a strong background in React and TypeScript, I'm well-positioned to help scale Upstart's Auto Lending platform across all 50 states. At Stationhead, I architected complex payment systems including tipping features with automated In-App-Purchase integrations, while at my current role at Kyra Health, I've built HIPAA-compliant systems and scaled team productivity - experiences that directly translate to building compliant, high-conversion credit applications. My recent work includes developing appointment booking applications using Next.js and React, giving me hands-on experience with the preferred Vercel/Next.js deployment stack mentioned in your requirements.
+
+My leadership experience heading a 10-developer team at Enterprise Mobility in a greenfield mobile app rebuild, combined with my expertise in AWS infrastructure optimization and microservice architecture from Stationhead, positions me to drive both existing and greenfield projects while maintaining the technical excellence culture Upstart values. Having worked at multiple startups including pre-launch companies like Kyra Health and having helped Stationhead scale through exponential growth, I understand the balance between moving efficiently and building resilient, maintainable systems. I'm particularly drawn to Upstart's mission of enabling access to effortless credit based on true risk, and I'm eager to contribute to expanding affordable credit access through innovative technology solutions.
+
+
+Best,
+
+Andrew DeFranco

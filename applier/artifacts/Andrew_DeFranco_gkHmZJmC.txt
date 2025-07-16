@@ -1,0 +1,12 @@
+2025-07-16
+
+Dear Hiring Manager,
+
+I'm excited to apply for the Senior Platform Engineer position at ASSA ABLOY Level, where I can contribute to building the backbone of your smart home platform. My experience architecting scalable, fault-tolerant systems aligns perfectly with your needs for processing high-volume real-time data and managing hundreds of thousands of IoT devices. At Stationhead, I designed our first microservice architecture and built load-testing systems for stress-testing server infrastructure, while at Kyra Health, I scaled team productivity through enhanced development environments. My expertise with Python, Kubernetes, Kafka, Redis, and AWS Lambda (along with similar technologies like Elasticsearch and WebSockets) positions me well to tackle your complex distributed systems challenges, and I'm eager to learn Go to contribute to your primary services.
+
+Your focus on user-centric design philosophy resonates strongly with my product-focused approach to development. Leading a 10-developer team at Enterprise Mobility and growing the Android team at Stationhead has prepared me to uplevel junior engineers while delivering high-impact features. My startup experience at Kyra Health, Neeva, and Stationhead has taught me to break down ambiguous problems, design elegant solutions, and drive them from prototype to production at scale. I'm particularly drawn to ASSA ABLOY Level's mission of creating simple, intuitive smart home experiences, and I'm excited about the opportunity to architect your new device platform and build cutting-edge IoT device management systems that will define the future of home automation.
+
+
+Best,
+
+Andrew DeFranco

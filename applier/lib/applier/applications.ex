@@ -11,7 +11,7 @@ defmodule Applier.Applications do
   Returns all applications (excluding rejected ones).
   """
   def list_applications do
-    from(a in ApplicationRecord, 
+    from(a in ApplicationRecord,
       where: a.rejected == false,
       order_by: [desc: a.priority, desc: a.inserted_at])
     |> Repo.all()
@@ -23,31 +23,31 @@ defmodule Applier.Applications do
   def list_applications(filter) when filter in [:all, :completed, :awaiting_approval, :approved_pending, :rejected] do
     query = case filter do
       :all ->
-        from(a in ApplicationRecord, 
+        from(a in ApplicationRecord,
           where: a.rejected == false,
           order_by: [desc: a.priority, desc: a.inserted_at])
-      
+
       :completed ->
-        from(a in ApplicationRecord, 
+        from(a in ApplicationRecord,
           where: a.submitted == true and a.rejected == false,
           order_by: [desc: a.inserted_at])
-      
+
       :awaiting_approval ->
-        from(a in ApplicationRecord, 
+        from(a in ApplicationRecord,
           where: a.approved == false and a.rejected == false,
           order_by: [desc: a.priority, desc: a.inserted_at])
-      
+
       :approved_pending ->
-        from(a in ApplicationRecord, 
+        from(a in ApplicationRecord,
           where: a.approved == true and a.submitted == false and a.rejected == false,
           order_by: [desc: a.inserted_at])
-        
+
       :rejected ->
-        from(a in ApplicationRecord, 
+        from(a in ApplicationRecord,
           where: a.rejected == true,
           order_by: [desc: a.inserted_at])
     end
-    
+
     Repo.all(query)
   end
 
@@ -161,6 +161,7 @@ defmodule Applier.Applications do
   Rejects an application by setting rejected to true.
   """
   def reject_application(id) when is_binary(id) do
+    IO.puts("Rejecting application #{id}")
     update_application(id, %{rejected: true})
   end
 end

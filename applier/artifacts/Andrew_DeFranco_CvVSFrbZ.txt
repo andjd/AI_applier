@@ -1,0 +1,12 @@
+2025-07-16
+
+Dear Hiring Manager,
+
+I'm thrilled to apply for the Senior Software Engineer (AI Applications) position at Vanilla. Your mission to revolutionize estate planning through AI-powered solutions perfectly aligns with my passion for using cutting-edge technology to disrupt traditional workflows. With 9+ years of software engineering experience and recent hands-on work building LLM-powered applications, I'm excited to help Vanilla streamline estate advisory processes and deliver exceptional client experiences. My current role at Kyra Health involved building a HIPAA-compliant LLM-powered tool for health plan discovery, and at Neeva I launched AI-powered search experiences featuring LLM summaries, giving me direct experience with OpenAI and similar technologies that your team requires.
+
+My technical background spans the full stack of skills Vanilla needs: Python and TypeScript development, microservices architecture (I planned and implemented Stationhead's first microservice), SQL database design and optimization, and API development using REST and other protocols. At Stationhead, I architected scalable database infrastructure and ETL pipelines for SQL, Redis, and Elasticsearch, while also building secure integrations with third-party services. My startup experience at three pre-launch companies has honed my ability to tackle ambiguous problems and iterate quickly in fast-moving environments. From helping Stationhead pivot to find product-market fit to scaling systems for exponential growth, I've demonstrated the collaborative problem-solving approach and technical leadership that will help Vanilla continue disrupting the estate planning industry.
+
+
+Best,
+
+Andrew DeFranco

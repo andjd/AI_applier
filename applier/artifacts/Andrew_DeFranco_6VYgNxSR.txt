@@ -1,0 +1,12 @@
+2025-07-16
+
+Dear Hiring Manager,
+
+I'm excited to apply for the Senior Full Stack Developer position at The Mobility House, where I can contribute to shaping the zero emissions future of energy and mobility. Your mission to integrate flexible charging with energy systems resonates deeply with my passion for building scalable technology solutions that create meaningful impact. With over 9 years of full-stack development experience using Python and TypeScript, I'm well-positioned to help design and influence the software architecture for your Vehicle Grid Integration solutions.
+
+My experience architecting scalable systems at Stationhead directly aligns with your need for large-scale cloud applications and event-driven architectures. I built microservices handling high-throughput scenarios, implemented load-testing systems for stampeding herd conditions, and deployed infrastructure on AWS using Terraform - experience that translates well to managing real-time demand response execution and utility integrations. At Kyra Health, I developed HIPAA-compliant systems requiring the same level of security and reliability needed for grid integration, while my React and TypeScript work across multiple startups including recent healthcare marketplace development provides the frontend expertise needed for your ChargePilot interface. My leadership experience managing a 10-developer team at Enterprise Mobility demonstrates my ability to collaborate with product managers and drive full-stack development efforts, while my startup experience at three pre-launch companies has taught me to stay current with rapidly evolving technical standards - a crucial skill in the burgeoning EV and grid integration space.
+
+
+Best,
+
+Andrew DeFranco

@@ -5,6 +5,7 @@ defmodule Applier.Web.Router do
   alias Applier.Web.Templates.Applications
 
   plug Plug.Static, at: "/", from: :applier
+  plug Plug.Static, at: "/static", from: {:applier, "priv/static"}
   plug :match
   plug Plug.Parsers, parsers: [:urlencoded, :multipart]
   plug :dispatch

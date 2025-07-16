@@ -369,7 +369,7 @@ defmodule Applier.Web.Templates.Applications do
         end
 
         # Reject button - always show
-        button type: "button", class: "btn btn-danger", onclick: "handleReject(#{app.id}, this)" do
+        button type: "button", class: "btn btn-danger", onclick: "handleReject(\"#{app.id}\", this)" do
           "Reject"
         end
       end

@@ -1,0 +1,12 @@
+2025-07-16
+
+Dear Hiring Manager,
+
+I'm excited to apply for the Staff Software Engineer position at Tines, where I can contribute to building the orchestration and automation platform that powers critical workflows for companies like Canva and Databricks. Your focus on simplicity, speed, and soundness resonates strongly with my experience building scalable systems across startups and enterprise environments. My background spans the full technical stack you're looking for, with proficiency in TypeScript and Python, extensive AWS infrastructure experience including autoscaling systems and database optimization, and hands-on experience with Docker, SQL databases, and Terraform (equivalent to AWS CDK). At Stationhead, I architected load-testing systems for infrastructure stress-testing and built monitoring solutions to ensure high availability during exponential growth, directly aligning with your need for availability and scalability expertise.
+
+What makes me particularly suited for this role is my proven track record of thriving in collaborative, fast-moving environments where individual contributions have clear impact. At Kyra Health, I'm currently building HIPAA-compliant systems and scaling team productivity through enhanced development environments. Previously, I led a 10-developer team at Enterprise Mobility on a greenfield React Native rebuild, and at Stationhead, I joined pre-launch and helped the company pivot to find product-market fit before scaling to handle massive growth. My experience founding and growing the Android team there, combined with my full-stack capabilities across React, mobile development, and backend systems, positions me well to contribute across Tines' entire technology stack while helping shape your technical direction and collaborative culture.
+
+
+Best,
+
+Andrew DeFranco

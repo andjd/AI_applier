@@ -1,0 +1,12 @@
+2025-07-16
+
+Dear Hiring Manager,
+
+I'm thrilled to apply for the Senior Software Engineer position at SeatGeek. With 9+ years of experience building scalable consumer-facing applications, I'm excited to bring my expertise in full-stack development and mobile engineering to help SeatGeek continue revolutionizing how fans discover and purchase tickets for sports, music, and entertainment events.
+
+My background aligns perfectly with SeatGeek's technical needs and scale challenges. At Stationhead, I architected systems to handle explosive growth in the music and entertainment space, building autoscaling infrastructure on AWS and implementing load-testing systems specifically designed for high-traffic scenarios like ticket releases. I led the mobile app rebuild at Enterprise Rent-a-car, managing a 10-developer team using React Native, and developed consumer mobile experiences at Neeva. My full-stack expertise spans React, Python, Typescript, and modern cloud infrastructure, while my experience at entertainment-focused startups like Stationhead gives me deep understanding of the unique challenges in building products that connect fans with the content they love. I'm particularly drawn to SeatGeek's mission of making live events more accessible and would love to contribute to building the next generation of ticketing experiences.
+
+
+Best,
+
+Andrew DeFranco

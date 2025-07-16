@@ -1,0 +1,12 @@
+2025-07-16
+
+Dear Hiring Manager,
+
+I'm excited to apply for the Core Systems Software Engineer position on the Langflow Runtime team at DataStax. Your mission to build a highly efficient, scalable execution environment for Langflow applications aligns perfectly with my 9+ years of experience architecting and optimizing distributed systems. At Stationhead, I designed and implemented our first microservice architecture, created load-testing systems to handle stampeding herd scenarios, and optimized autoscaling infrastructure on AWS using Terraform. My experience with Python, Kotlin (equivalent to Java), and distributed systems patterns including microservices, queues (AMQP, Kafka), caching (Redis), and databases (SQL, Elasticsearch) directly matches your technical requirements. I've also worked extensively with cloud infrastructure including AWS, serverless, Docker, and Kubernetes, giving me the foundation needed to build world-class runtime experiences.
+
+What particularly excites me about this role is the opportunity to work on the technical heart of an AI platform while leveraging my startup experience from Kyra Health, Neeva, and Stationhead. At Kyra Health, I built HIPAA-compliant LLM-powered tools and enhanced development environments to support concurrent AI code generation, while at Neeva I launched AI-powered search experiences. My leadership experience includes heading a 10-developer team at Enterprise Mobility and founding the Android team at Stationhead, where I helped scale the company from pre-launch through exponential growth. I'm drawn to DataStax's collaborative engineering culture and the chance to tackle deep technical challenges that will scale to hundreds of thousands of users, and I'm eager to contribute to both the immediate technical goals and future leadership opportunities as the team expands.
+
+
+Best,
+
+Andrew DeFranco

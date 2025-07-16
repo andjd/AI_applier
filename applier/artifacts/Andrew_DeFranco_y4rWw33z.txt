@@ -1,0 +1,12 @@
+2025-07-16
+
+Dear Hiring Manager,
+
+I'm excited to apply for the Senior Principal Software Architect position at Deltek, where I can leverage my 9+ years of full-stack development experience to enhance the Costpoint ERP user interface. My expertise in HTML, JavaScript, and CSS, combined with strong analytical skills honed through debugging complex systems at companies like Stationhead and Enterprise Mobility, aligns perfectly with your need for someone who can analyze existing code and create polished UI experiences. While my backend experience has primarily been with Python and TypeScript rather than Java/.NET, I've built equivalent scalable systems and have successfully adapted to new technology stacks throughout my career, including learning React Native when leading Enterprise's mobile app rebuild.
+
+My experience developing sophisticated user interfaces spans both desktop and mobile platforms, from architecting React-based responsive web applications at Affinitiv to leading a 10-developer team in rebuilding Enterprise Rent-a-car's mobile apps in React Native. At Neeva, I launched a mobile search experience featuring LLM integration, while at Stationhead I built complex real-time features using WebSockets and REST APIs that required deep understanding of browser-server interactions. My startup experience has instilled the "no job is too small" mentality you're seeking, as I've successfully handled everything from database schema design to payment integrations to load testing infrastructure, always focusing on delivering delightful user experiences that meet business needs.
+
+
+Best,
+
+Andrew DeFranco
