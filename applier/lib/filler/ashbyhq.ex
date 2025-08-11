@@ -51,72 +51,100 @@ defmodule Filler.AshbyHQ do
   end
 
   defp handle_resume_upload(page, short_id) do
-    case Helpers.DocumentFetcher.get_resume(short_id, :pdf) do
-      {:ok, file_path} ->
-        upload_resume_file(page, file_path)
-      {:error, reason} ->
+    with {:ok, resume_path} <- Helpers.DocumentFetcher.get_resume(short_id, :pdf),
+         :ok<- upload_file_to_field(page, resume_path, "resume"),
+         {:ok, cover_letter_path} <- Helpers.DocumentFetcher.get_cover_letter(short_id, :pdf),
+         :ok <- upload_file_to_field(page, cover_letter_path, "cover_letter")
+    do
+      {:ok, :resume_uploaded}
+    else
+      {:error, reason} when reason == "Resume file not found" ->
         Logger.warning("Resume file not found: #{reason}")
         {:ok, :resume_uploaded}
+      {:error, reason} when reason == "Cover letter file not found" ->
+        Logger.warning("Cover letter file not found: #{reason}")
+        {:ok, :resume_uploaded}
+      {:error, reason} ->
+        Logger.error("File upload failed: #{reason}")
+        {:error, reason}
     end
   end
 
-  defp upload_resume_file(page, file_path) do
+  defp upload_file_to_field(page, file_path, field_type) do
     try do
       # Wait for page to load
       :timer.sleep(1000)
 
-      Logger.info("Starting file upload using file chooser event for: #{file_path}")
+      Logger.info("Starting #{field_type} upload for: #{file_path}")
 
-      # Find the upload button
-      upload_button_selectors = [
-        "button:has-text('Upload File')",
-      ]
+      # Get field-specific selectors
+      {file_input_selectors, upload_button_selectors} = get_field_selectors(field_type)
 
-      upload_button = find_first_matching_element(page, upload_button_selectors)
+      # Find the file input first
+      file_input = find_first_matching_element(page, file_input_selectors)
 
-      if upload_button do
-        Logger.info("Found upload button, trying to find associated file input")
+      if file_input do
+        Logger.info("Found #{field_type} file input, uploading directly")
 
-        # Try to find the associated file input near the button
-        file_input_selectors = [
-          "input[type='file'][id='_systemfield_resume']",
-          "input[type='file'][name='_systemfield_resume']",
-          "input[type='file'][id*='resume']",
-          "input[type='file'][name*='resume']"
-        ]
+        # Upload the file directly to the input
+        Playwright.Locator.set_input_files(file_input, file_path)
 
-        file_input = find_first_matching_element(page, file_input_selectors)
+        # Try to find and click the associated upload button
+        upload_button = find_first_matching_element(page, upload_button_selectors)
 
-        if file_input do
-          Logger.info("Found file input, uploading directly")
-
-          # Upload the file directly to the input
-          Playwright.Locator.set_input_files(file_input, file_path)
-
-          # Click the button to trigger any additional processing
+        if upload_button do
           Playwright.Locator.click(upload_button)
           Logger.info("Clicked upload button after setting files")
-
-          # Wait for upload to complete
-          :timer.sleep(2000)
-
-          Logger.info("Resume upload completed")
-          {:ok, :resume_uploaded}
         else
-          Logger.error("File input not found even though button was found")
-          log_available_file_inputs(page)
-          {:error, "File input not found"}
+          Logger.info("No upload button found, file may have been uploaded directly")
         end
+
+        # Wait for upload to complete
+        :timer.sleep(2000)
+
+        Logger.info("#{field_type} upload completed")
+        :ok
       else
-        Logger.error("Upload button not found")
-        log_available_buttons(page)
-        {:error, "Upload button not found"}
+        Logger.error("#{field_type} file input not found")
+        log_available_file_inputs(page)
+        {:error, "#{field_type} file input not found"}
       end
     rescue
       error ->
-        Logger.error("Error during resume upload: #{inspect(error)}")
-        {:error, "Resume upload failed: #{inspect(error)}"}
+        Logger.error("Error during #{field_type} upload: #{inspect(error)}")
+        {:error, "#{field_type} upload failed: #{inspect(error)}"}
     end
+  end
+
+  defp get_field_selectors("resume") do
+    file_input_selectors = [
+      "input[type='file'][id='_systemfield_resume']",
+      "input[type='file'][name='_systemfield_resume']",
+      "input[type='file'][id*='resume']",
+      "input[type='file'][name*='resume']"
+    ]
+
+    upload_button_selectors = [
+      "button:has-text('Upload File')",
+      "button:has-text('Replace')"
+    ]
+
+    {file_input_selectors, upload_button_selectors}
+  end
+
+  defp get_field_selectors("cover_letter") do
+    file_input_selectors = [
+      "input[type='file'][id*='cover']",
+      "input[type='file'][name*='cover']",
+      "input[type='file']:not([id='_systemfield_resume']):not([id*='resume']):not([name*='resume'])"
+    ]
+
+    upload_button_selectors = [
+      "button:has-text('Upload File')",
+      "button:has-text('Replace')"
+    ]
+
+    {file_input_selectors, upload_button_selectors}
   end
 
   defp find_first_matching_element(page, selectors) do
@@ -198,8 +226,7 @@ defmodule Filler.AshbyHQ do
         fill_yes_no_field(page, id, response)
 
       is_file_upload_field?(page, id) ->
-        Logger.info("Skipping file upload field: #{id}")
-        {:ok, :skipped}
+        fill_file_upload_field(page, id, response)
 
       is_regular_input?(page, id) ->
         fill_regular_input(page, id, response)
@@ -316,6 +343,33 @@ defmodule Filler.AshbyHQ do
       error ->
         Logger.error("Error filling yes/no field #{id}: #{inspect(error)}")
         {:error, "Failed to fill yes/no field: #{inspect(error)}"}
+    end
+  end
+
+  defp fill_file_upload_field(page, id, file_path) do
+    try do
+      Logger.info("Filling file upload field: #{id} with file: #{file_path}")
+
+      # Check if this is a resume or cover letter field
+      field_type = cond do
+        id == "_systemfield_resume" or String.contains?(id, "resume") ->
+          "resume"
+        String.contains?(id, "cover") ->
+          "cover_letter"
+        true ->
+          # For generic file uploads, determine type based on file path
+          if String.contains?(file_path, "resume") do
+            "resume"
+          else
+            "cover_letter"
+          end
+      end
+
+      upload_file_to_field(page, file_path, field_type)
+    rescue
+      error ->
+        Logger.error("Error filling file upload field #{id}: #{inspect(error)}")
+        {:error, "Failed to fill file upload field: #{inspect(error)}"}
     end
   end
 

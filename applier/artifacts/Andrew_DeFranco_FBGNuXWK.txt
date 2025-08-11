@@ -1,0 +1,12 @@
+2025-08-11
+
+Dear Hiring Manager,
+
+I am excited to apply for the Corporate Vice President - Full Stack Engineer Lead position at New York Life. Your focus on leveraging Generative AI to transform developer experiences and drive business value aligns perfectly with my passion for building innovative AI-powered solutions. Having built HIPAA-compliant LLM-powered tools at Kyra Health and launched proof-of-concept mobile search experiences featuring LLM summaries at Neeva, I bring the exact combination of AI expertise and full-stack leadership experience you're seeking. My technical background spans your key requirements including React and modern front-end frameworks, Python backend development (equivalent to Java/Spring Boot), experience with LLMs and RAG systems, and hands-on work with vector databases through Elasticsearch. Additionally, my AWS infrastructure experience using Terraform, combined with my track record of architecting microservices and designing REST/GraphQL APIs, positions me well to lead your end-to-end developer experience portal initiative.
+
+My leadership experience managing a 10-developer team during Enterprise's greenfield mobile app rebuild, coupled with my startup background at three different companies, has taught me how to balance innovation with enterprise standards while delivering scalable solutions under pressure. At Stationhead, I founded and grew the Android team from the ground up, architected our first microservice to break apart a monolith, and built load-testing systems for high-traffic scenarios - experience that directly translates to your needs for building robust, scalable AI solutions. My recent work at Kyra Health, where I enhanced developer productivity through AI-powered development environments supporting concurrent AI code generation, demonstrates my ability to apply cutting-edge AI technologies to solve real business problems. I'm particularly drawn to New York Life's commitment to ethical AI implementation and would love to contribute to your mission of redefining what's possible in financial services technology.
+
+
+Best,
+
+Andrew DeFranco

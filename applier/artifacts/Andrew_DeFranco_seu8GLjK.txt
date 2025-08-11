@@ -1,0 +1,12 @@
+2025-07-18
+
+Dear Hiring Manager,
+
+I'm excited to apply for the Senior Python Developer position and contribute to your e-commerce platform's continued growth. With 9+ years of full-stack development experience and a proven track record of building scalable, consumer-facing applications, I'm particularly drawn to the opportunity to work on high-performance APIs that power multiple frontend experiences. My background at Affinitiv developing CRM software for car dealerships directly aligns with your need for someone experienced in CRM and customer-facing systems, while my extensive work with SQL databases, including modernizing a 25-year-old system while maintaining backwards compatibility, demonstrates exactly the kind of direct database expertise you're seeking without relying on ORMs.
+
+Your emphasis on third-party integrations and API development resonates strongly with my experience architecting payment systems and external integrations at Stationhead, where I built secure integrations with In-App-Purchase providers and developed comprehensive REST APIs. My Python experience, combined with extensive work in performance optimization through caching systems, autoscaling infrastructure on AWS, and load-testing frameworks, positions me well to help reduce API latency and expand your backend capabilities. Having successfully taken ownership of established codebases and led teams through complex technical challenges, I'm confident in my ability to work independently while collaborating effectively with your backend and third-party teams to deliver seamless integrations and robust functionality.
+
+
+Best,
+
+Andrew DeFranco

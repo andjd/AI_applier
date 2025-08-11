@@ -255,7 +255,7 @@ defmodule Filler.Greenhouse do
           false ->
             Logger.info("Form does not request resume upload, skipping")
             {:ok, :resume_handled}
-          
+
           true ->
             Logger.info("Form requests resume upload, handling via 'enter manually'")
 
@@ -272,11 +272,11 @@ defmodule Filler.Greenhouse do
                 {:error, reason}
             end
         end
-      
+
       {:error, reason} ->
         Logger.info("No resume text available: #{reason}")
         {:ok, :resume_handled}
-      
+
       {:ok, _} ->
         Logger.info("Resume text is empty, skipping resume upload")
         {:ok, :resume_handled}
@@ -286,14 +286,33 @@ defmodule Filler.Greenhouse do
   defp handle_cover_letter_upload(page, short_id) when is_binary(short_id) do
     case Helpers.DocumentFetcher.get_cover_letter(short_id, :txt) do
       {:ok, cover_letter_text} when is_binary(cover_letter_text) and cover_letter_text != "" ->
-        # Handle cover letter upload logic here
-        Logger.info("Cover letter text found, but cover letter upload not yet implemented for Greenhouse")
-        {:ok, :cover_letter_handled}
-      
+        # First check if the form has cover letter upload fields
+        case form_has_cover_letter_fields?(page) do
+          false ->
+            Logger.info("Form does not request cover letter upload, skipping")
+            {:ok, :cover_letter_handled}
+
+          true ->
+            Logger.info("Form requests cover letter upload, handling via 'enter manually'")
+
+            with {:ok, enter_button} <- find_cover_letter_enter_manually_button(page),
+                 :ok <- click_enter_manually_button(enter_button),
+                 {:ok, textarea} <- find_cover_letter_textarea(page),
+                 :ok <- fill_cover_letter_textarea(textarea, cover_letter_text)
+            do
+              Logger.info("Successfully uploaded cover letter via text entry")
+              {:ok, :cover_letter_handled}
+            else
+              {:error, reason} ->
+                Logger.error("Failed to handle cover letter upload: #{reason}")
+                {:error, reason}
+            end
+        end
+
       {:error, reason} ->
         Logger.info("No cover letter text available: #{reason}")
         {:ok, :cover_letter_handled}
-      
+
       {:ok, _} ->
         Logger.info("Cover letter text is empty, skipping cover letter upload")
         {:ok, :cover_letter_handled}
@@ -320,11 +339,11 @@ defmodule Filler.Greenhouse do
   # Check if the form has cover letter upload fields
   defp form_has_cover_letter_fields?(page) do
     cover_letter_selectors = [
-      "[data-testid='cover_letter-text']",
-      "[data-testid*='cover']",
+      "#cover_letter_fieldset",
+      "textarea[id='cover_letter_text']",
+      "[data-field='cover_letter']",
       "input[type='file'][name*='cover']",
-      "textarea[name*='cover']",
-      "*[id*='cover']"
+      "textarea[name*='cover']"
     ]
 
     Enum.any?(cover_letter_selectors, fn selector ->
@@ -335,23 +354,47 @@ defmodule Filler.Greenhouse do
 
   defp find_resume_enter_manually_button(page) do
     # Look for the "Enter manually" button in the resume section
-    selector = "[data-testid='resume-text']"
-    button = Playwright.Page.locator(page, selector)
+    selectors = [
+      "[data-testid='resume-text']",
+      "[data-source='paste']"
+    ]
+    
+    # Try each selector until we find one that works
+    button = Enum.find_value(selectors, fn selector ->
+      element = Playwright.Page.locator(page, selector)
+      if Playwright.Locator.count(element) > 0 do
+        element
+      else
+        nil
+      end
+    end)
 
-    case Playwright.Locator.count(button) do
-      0 -> {:error, "Resume 'Enter manually' button not found"}
-      _ -> {:ok, Playwright.Locator.first(button)}
+    case button do
+      nil -> {:error, "Resume 'Enter manually' button not found"}
+      element -> {:ok, Playwright.Locator.first(element)}
     end
   end
 
   defp find_cover_letter_enter_manually_button(page) do
     # Look for the "Enter manually" button in the cover letter section
-    selector = "[data-testid='cover_letter-text']"
-    button = Playwright.Page.locator(page, selector)
+    selectors = [
+      "[data-testid='cover_letter-text']",
+      "[data-source='paste']"
+    ]
+    
+    # Try each selector until we find one that works
+    button = Enum.find_value(selectors, fn selector ->
+      element = Playwright.Page.locator(page, selector)
+      if Playwright.Locator.count(element) > 0 do
+        element
+      else
+        nil
+      end
+    end)
 
-    case Playwright.Locator.count(button) do
-      0 -> {:error, "Cover letter 'Enter manually' button not found"}
-      _ -> {:ok, Playwright.Locator.first(button)}
+    case button do
+      nil -> {:error, "Cover letter 'Enter manually' button not found"}
+      element -> {:ok, Playwright.Locator.first(element)}
     end
   end
 

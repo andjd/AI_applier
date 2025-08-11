@@ -1,0 +1,12 @@
+2025-07-18
+
+Dear Hiring Manager,
+
+I'm excited to apply for the Staff Software Engineer position at Dandy, where I can help transform the dental industry through innovative 0-to-1 product development. With 9+ years of full-stack engineering experience and a proven track record of leading complex product initiatives in high-growth startup environments, I'm uniquely positioned to drive both technical strategy and execution for your team. My experience spans the exact technologies you're looking for—React, TypeScript, GraphQL, and Python—which I've used extensively across multiple roles to build scalable, user-focused products from conception to delivery.
+
+What makes me particularly well-suited for this role is my deep experience with early-stage product development and team leadership in dynamic environments. At Kyra Health, I built HIPAA-compliant LLM-powered tools while scaling team productivity through enhanced development environments. At Stationhead, I joined pre-launch and helped pivot to find product-market fit, then scaled the platform to handle exponential growth while founding and growing the Android team. I've consistently balanced rapid iteration with long-term technical health, whether architecting microservices at Stationhead, leading a 10-developer team through a greenfield mobile app rebuild at Enterprise, or launching innovative search experiences at Neeva. My product-focused mindset, combined with experience mentoring engineers and shaping team culture around speed and experimentation, aligns perfectly with Dandy's mission to modernize dental practices through thoughtful, user-obsessed technology.
+
+
+Best,
+
+Andrew DeFranco

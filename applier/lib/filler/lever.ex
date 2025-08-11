@@ -1,19 +1,6 @@
 defmodule Filler.Lever do
   require Logger
 
-  @doc """
-  Fills a Lever form with the provided responses.
-
-  ## Parameters
-  - page: Playwright page object
-  - responses: List of maps with "id", "label", and "response" keys
-  - resume_text: Resume content as text (optional)
-  - cover_letter_text: Cover letter content as text (optional)
-
-  ## Returns
-  {:ok, :form_filled} on success
-  {:error, reason} on failure
-  """
   def fill_form(page, responses, short_id) when is_map(responses) do
     with :ok <- (Logger.info("Starting Lever form fill process..."); :ok),
          {:ok, page} <- navigate_to_application_form(page),
@@ -343,11 +330,11 @@ defmodule Filler.Lever do
             Logger.error("Error filling additional information: #{inspect(error)}")
             {:error, "Failed to fill additional information: #{inspect(error)}"}
         end
-      
+
       {:error, reason} ->
         Logger.info("No cover letter text available: #{reason}")
         {:ok, :additional_info_filled}
-      
+
       {:ok, _} ->
         Logger.info("Cover letter text is empty, skipping additional information")
         {:ok, :additional_info_filled}

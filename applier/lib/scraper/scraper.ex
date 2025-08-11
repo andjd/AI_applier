@@ -17,6 +17,7 @@ defmodule Scraper do
 
   def extract_visible_text(page) do
     with {:ok, page} <- navigate_to_jd_if_necessary(page),
+          _ <- :timer.sleep(400),
          cleaned_text = Playwright.Page.locator(page, "body")
                         |> Playwright.Locator.inner_text()
                         |> String.trim()

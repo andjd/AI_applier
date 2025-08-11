@@ -1,0 +1,12 @@
+2025-07-18
+
+Dear Hiring Manager,
+
+I'm excited to apply for the Engineering Lead position at Kin, where I can combine my passion for innovative technology with meaningful impact in the insurance industry. Your mission to redesign insurance to be smarter and more customer-centered resonates deeply with my experience building scalable systems at high-growth startups. My background leading engineering teams and architecting full-stack solutions aligns perfectly with Kin's need for hands-on technical leadership that can drive innovation while maintaining high performance and scalability.
+
+Throughout my career, I've successfully led cross-functional teams and delivered complex software projects in fast-paced startup environments. At Enterprise Mobility, I headed a 10-developer team rebuilding mobile applications in React Native, while at Stationhead I architected critical features like their tipping system using microservices architecture and automated integrations. My experience with Python and TypeScript (equivalent to your Ruby stack) spans multiple roles, from building HIPAA-compliant LLM tools at Kyra Health to developing responsive web applications at Affinitiv. I'm particularly drawn to Kin's innovative approach to insurance technology and would love to bring my experience scaling teams from pre-launch through exponential growth to help advance your engineering roadmap and mentor your talented team.
+
+
+Best,
+
+Andrew DeFranco

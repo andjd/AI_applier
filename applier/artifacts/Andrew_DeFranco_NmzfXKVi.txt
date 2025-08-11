@@ -1,0 +1,12 @@
+2025-07-17
+
+Dear Hiring Manager,
+
+I'm thrilled to apply for the Senior Software Engineer, Mobile & Web position at Flex. Your mission to transform the rent payment experience resonates deeply with me, and I'm excited about the opportunity to help build products that solve real financial challenges for millions of renters. With over 9 years of experience building scalable mobile and web applications, including leading a 10-developer team in the greenfield rebuild of Enterprise Rent-a-car's mobile apps using React Native, I'm confident I can make an immediate impact on your core user experience across platforms.
+
+My experience directly aligns with Flex's technical needs and growth-stage environment. I have extensive expertise in React and React Native with deep knowledge of the ecosystem including Hooks, Components, Context, and Redux, having built custom reactive state-management frameworks that reduced bugs by 80%. At Stationhead, I joined pre-launch and helped scale the platform to handle exponential user growth while maintaining performance for hundreds of thousands of users. My TypeScript proficiency, combined with experience in REST APIs, CI/CD practices, and mentoring engineering teams, positions me well to collaborate effectively with your cross-functional partners while delivering high-quality, maintainable code. The startup experience at Kyra Health, Neeva, and Stationhead has given me the agility and product-focused mindset essential for a growth-stage FinTech company like Flex.
+
+
+Best,
+
+Andrew DeFranco

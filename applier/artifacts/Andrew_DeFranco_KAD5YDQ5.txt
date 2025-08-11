@@ -1,0 +1,12 @@
+2025-07-18
+
+Dear Hiring Manager,
+
+I'm excited to apply for the Software Engineer II position on Abnormal's Detection Team, where I can contribute my 9+ years of experience building scalable, data-focused solutions to help protect organizations from sophisticated cyber threats. My background perfectly aligns with your need for someone who can architect message processing infrastructure at 50K+ QPS scale. At Stationhead, I built and optimized autoscaling infrastructure on AWS using Terraform, designed load-testing systems for high-traffic scenarios, and architected streaming pipelines using WebSockets, AMQP, and Kafka (equivalent to your real-time data pipeline requirements). I also have extensive experience with Python and AWS, and I've been using Claude Code for AI-assisted development, which directly matches your tech stack preferences.
+
+What particularly excites me about this role is the opportunity to apply my distributed systems expertise to cybersecurity challenges while working with cutting-edge AI technology. My startup experience at Kyra Health and Neeva has given me hands-on experience with LLMs and AI-powered systems, while my leadership roles at Enterprise Mobility (heading a 10-developer team) and Stationhead (founding the Android team and mentoring developers) demonstrate my ability to collaborate effectively with distributed teams and drive impact at scale. I'm particularly drawn to your mission of making the world safer through advanced detection technology, and I'm eager to bring my first-principles approach to building scalable solutions to help Abnormal handle 10x traffic growth while maintaining the reliability your customers depend on.
+
+
+Best,
+
+Andrew DeFranco

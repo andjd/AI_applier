@@ -1,0 +1,12 @@
+2025-08-11
+
+Dear Hiring Manager,
+
+I'm excited to apply for the Backend Software Engineer position at Angle Health. Your mission to make healthcare more accessible through modern infrastructure strongly resonates with my current work at Kyra Health, where I've built HIPAA-compliant, LLM-powered health plan discovery tools and enhanced development environments to support concurrent AI code generation. My experience with Python at Affinitiv, combined with backend frameworks like React/Next.js and extensive database work with SQL, Redis, and Elasticsearch, provides the technical foundation you're seeking. At Stationhead, I architected microservices from the ground up, designed scalable database infrastructure, and built load-testing systems to handle exponential growth scenarios—directly addressing your needs for architecting backend infrastructure that performs at scale.
+
+What excites me most about this opportunity is the chance to apply my startup experience to revolutionize healthcare delivery. I joined Stationhead pre-launch, helped pivot the company to find product-market fit, then scaled systems to handle explosive user growth, experience that translates perfectly to Angle Health's trajectory. My leadership of a 10-developer team at Enterprise Mobility demonstrates my ability to collaborate cross-functionally with product owners and designers, while my work across the full product lifecycle—from concept and design through deployment and optimization—aligns with your core responsibilities. Having worked in healthcare startups and understanding the critical importance of building reliable, compliant systems, I'm eager to contribute to Angle Health's mission of transforming healthcare infrastructure.
+
+
+Best,
+
+Andrew DeFranco

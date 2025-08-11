@@ -1,0 +1,12 @@
+2025-07-18
+
+Dear Hiring Manager,
+
+I am excited to apply for the Senior LLM & AI Engineer position at Kalles Group. Your mission to help secure the future for companies aligns perfectly with my experience building AI-powered solutions in high-stakes environments. At Kyra Health, I developed a HIPAA-compliant LLM-powered tool for health plan discovery and enhanced our development environment to support multiple concurrent threads of AI code generation, demonstrating my hands-on experience with large language models and MLOps practices. My work at Neeva launching a proof-of-concept mobile search experience featuring LLM summaries further showcases my expertise in NLP concepts and responsible AI implementation. With advanced Python proficiency and proven experience deploying scalable solutions on AWS, I bring the technical foundation you're seeking.
+
+Beyond my AI expertise, I offer the leadership and mentoring experience essential for this senior role. At Enterprise Mobility, I headed a 10-developer team rebuilding mobile applications, while at Stationhead I founded and grew the Android team, reducing bugs by 80% through custom frameworks and overseeing the transition from outsourced to in-house development. My experience spans startup environments where I've helped companies find product-market fit and scale exponentially, as well as enterprise settings where I've modernized legacy systems while maintaining backwards compatibility. I'm particularly drawn to Kalles Group's emphasis on building trust and relationships, and I'm eager to serve as a trusted AI consultant while contributing to your culture of technical excellence and continuous learning.
+
+
+Best,
+
+Andrew DeFranco

@@ -1,0 +1,12 @@
+2025-07-18
+
+Dear Hiring Manager,
+
+I'm excited to apply for the Founding Solutions Engineer role at Numeral. With 9+ years of experience building scalable systems and leading technical teams at SaaS companies, I'm particularly drawn to your mission of eliminating administrative burdens for internet businesses. My background perfectly aligns with your need for someone who can bridge the gap between technical implementation and customer success. I've architected payment systems with automated integrations at Stationhead (similar to your tax compliance automation), built HIPAA-compliant LLM-powered tools at Kyra Health, and developed proof-of-concept solutions at Neeva. My experience with Python, TypeScript, REST APIs, and cloud infrastructure on AWS positions me well to handle everything from technical discovery to production implementation.
+
+What excites me most about this opportunity is the chance to shape both product direction and customer success as your first Solutions Engineer. At Stationhead, I joined pre-launch and helped them pivot to find product-market fit while scaling to handle exponential growth, giving me deep appreciation for the customer-centric approach that drives successful startups. I've led a 10-developer team at Enterprise and collaborated cross-functionally at multiple startups, developing the communication skills needed to translate complex technical concepts for diverse audiences. My experience building internal tools, creating scalable architectures, and serving as the voice of the customer to inform product roadmaps makes me uniquely positioned to own the full technical sales lifecycle while directly contributing to Numeral's product evolution.
+
+
+Best,
+
+Andrew DeFranco

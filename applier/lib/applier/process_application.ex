@@ -182,6 +182,7 @@ defmodule Applier.ProcessApplication do
       error -> error
     end
   end
+
   defp get_job_text(_), do: {:error, "No Job Text"}
 
   defp get_short_id(%ApplicationRecord{id: id}) do

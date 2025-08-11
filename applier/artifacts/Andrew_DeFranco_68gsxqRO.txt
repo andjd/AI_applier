@@ -1,0 +1,12 @@
+2025-07-18
+
+Dear Hiring Manager,
+
+I'm thrilled to apply for the Senior Software Engineer position on the Toast Tables team. With over 9 years of full-stack development experience, I'm particularly excited about the opportunity to work on a reservations platform that directly impacts millions of restaurant-goers daily. My experience with Kotlin, React, TypeScript, REST, and GraphQL aligns perfectly with your technical requirements, and my background in SQL database schema design and optimization at Stationhead will be valuable for your PostgreSQL and DynamoDB systems. I've architected microservices and distributed systems, including implementing asynchronous communication patterns with Kafka (equivalent to your Pulsar/JMS requirements), and have extensive experience delivering reliable services to production across multiple high-growth startups.
+
+What makes me especially suited for this role is my proven track record of leading complex projects while mentoring teams and driving technical excellence. At Enterprise, I headed a 10-developer team rebuilding mobile applications, and at Stationhead, I architected our first microservice while scaling infrastructure to handle exponential growth from pre-launch to millions of users. My startup experience at Kyra Health, Neeva, and Stationhead has taught me how to balance rapid innovation with platform stability, communicate complex technical concepts to non-technical stakeholders, and tackle ambiguous problems collaboratively. I'm passionate about building well-engineered, scalable systems and would love to bring this expertise to help Toast Tables continue revolutionizing the restaurant industry.
+
+
+Best,
+
+Andrew DeFranco
